@@ -316,7 +316,39 @@
   @media (prefers-reduced-motion: reduce){ .marquee .mq{animation:none} }
 
   /* numbered layer grammar, 01 through 05, orange like the site nav */
-  .conn .lnum{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.24em;color:var(--mint);margin-bottom:3px}
+  .conn .lnum{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.24em;color:var(--mint);margin-bottom:3px}  /* commission wizard */
+  .wizfield{margin:18px 0}
+  .wizfield label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--mint);margin-bottom:8px}
+  .wizfield input{width:100%;background:#0E1426;border:1px solid var(--line);border-radius:10px;padding:14px 16px;color:var(--text);font-family:'Hanken Grotesk',sans-serif;font-size:16px;outline:none}
+  .wizfield input:focus{border-color:var(--mint)}
+  .wizfield .hint{font-size:12px;color:var(--faint);margin-top:6px;line-height:1.5}
+  .swatches{display:flex;gap:10px;flex-wrap:wrap}
+  .swatch{width:76px;height:40px;border-radius:9px;cursor:pointer;border:2px solid transparent;opacity:.75;transition:all .15s}
+  .swatch.on{border-color:#fff;opacity:1;transform:scale(1.06)}
+  .wizgo{margin-top:24px;background:var(--ombre);color:#fff;border:none;border-radius:10px;padding:15px 26px;font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:13px;letter-spacing:.06em;cursor:pointer}
+  .wizgo:disabled{opacity:.4;cursor:default}
+  .tcard.commissioned{cursor:default}
+  .tcard.commissioned .tk{color:var(--amber)}
+  .tcard .tbrief{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:10px;line-height:1.5}
+  .tcard .tpend{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.1em;margin-top:12px;line-height:1.7}
+  .tcard.running .tk{animation:enginepulse 1.4s ease-in-out infinite}
+  @keyframes enginepulse{0%,100%{opacity:1}50%{opacity:.35}}
+  /* generic generated track view */
+  .glayerhead{display:flex;align-items:baseline;gap:12px;font-family:'Fraunces',serif;font-size:21px;margin:30px 0 4px}
+  .glayerhead .lnum2{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.24em;color:var(--mint)}
+  .glayerhead .gpctl{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
+  .glayersub{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+  .gAtom{display:flex;gap:12px;padding:13px 8px;border-bottom:1px solid var(--line);cursor:pointer;align-items:flex-start}
+  .gAtom .gbox{width:20px;height:20px;border:1.5px solid var(--faint);border-radius:6px;flex:none;margin-top:1px}
+  .gAtom.on .gbox{background:var(--ombre-v);border-color:var(--mint)}
+  .gAtom.on .gn{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--faint)}
+  .gAtom .gn{font-size:14.5px;line-height:1.45}
+  .gAtom .ghrs{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--faint);flex:none;padding-top:3px}
+  .gdrawer{display:none;padding:2px 8px 18px 40px;border-bottom:1px solid var(--line)}
+  .gdrawer.open{display:block}
+  .gdrawer li{font-size:13.5px;color:var(--muted);line-height:1.6;margin:7px 0}
+  .gdrawer ol{padding-left:18px}
+  .gpass{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--mint);margin-top:10px;line-height:1.7}
 </style>
 </head>
 <body>
@@ -374,7 +406,7 @@
   <div class="bloom">
     <h3>Bloom protocol</h3>
     <p>This map is a living model, not a fixed syllabus. It grows on a loop: research passes on the cohort of nineteen surface new discoveries, discoveries become new atoms and modules, materials and readings refresh as better methods are found, and every gap you log below a layer becomes an input to the next pass. Hour estimates are recalibrated as your actual pace data comes in. Each pass increments the version. And every material holds one standard above all: written so simply a kid could learn from it, because a concept you cannot explain to a kid is a concept you do not understand.</p>
-    <div class="ver">Model v8 · multi track shell · Creative Director: 49 atoms, Materials 001 and 005 live · runtime hardened · new tracks commissioned by research pass</div>
+    <div class="ver">Model v10 · self serve engine live: commissioned stacks build themselves · per stack ombre identities · Creative Director: 49 atoms, Materials 001 and 005</div>
   </div>
 
   <div class="footer">
@@ -476,6 +508,65 @@
       </div>
       <div class="passnote" id="passnote">PASS CONDITION · Twenty timed specimens, ten seconds each, twenty correct. Anything less is practice. Free practice mode is untimed and explains every answer.</div>
     </section>
+  </div>
+</div>
+
+<!-- ============ GENERATED TRACK VIEW ============ -->
+<div class="wrap" id="gtrackView" style="display:none">
+  <header>
+    <div>
+      <button class="backbtn" id="gBack" style="margin-bottom:14px">&#9666; All tracks</button>
+      <div class="eyebrow" id="gEyebrow">Substrate Learning · Track</div>
+      <h1 id="gTitle"></h1>
+      <div class="sub" id="gSub"></div>
+    </div>
+    <div class="overall">
+      <div class="num" id="gPct">0%</div>
+      <div class="lbl">Known</div>
+    </div>
+  </header>
+  <div class="marquee"><span class="mq" id="gMq"></span></div>
+  <div class="projbar">
+    <div class="stat">
+      <div><span class="k">Remaining</span><span class="v" id="gRem">·</span></div>
+      <div><span class="k">Atoms</span><span class="v" id="gAtomsCt">·</span></div>
+      <div><span class="k">Engine</span><span class="v">Pass 1</span></div>
+    </div>
+  </div>
+  <div id="gLayers" style="margin-top:6px"></div>
+  <div class="bloom" style="margin-top:30px">
+    <h3>Bloom Protocol</h3>
+    <p>This substrate is the engine's first pass, generated the moment it was commissioned. Later passes deepen it the way Creative Director's did: cohort research, interactive materials with lessons and drills, hour recalibration from your real pace. Handcrafted materials ship by version.</p>
+  </div>
+</div>
+
+<!-- ============ COMMISSION WIZARD ============ -->
+<div class="mview" id="wizard">
+  <div class="mwrap" style="max-width:760px">
+    <div class="mtop">
+      <div>
+        <div class="eyebrow">Substrate Learning · New Stack</div>
+        <div class="mh1">Commission</div>
+      </div>
+      <button class="backbtn" id="wizBack">Cancel</button>
+    </div>
+    <div class="msub">Name a destination and the engine builds the rest: the outcome gets decomposed into deterministic atoms, a cohort of the best gets modeled, materials get written so simply a kid could learn from them, and the stack lands here with full tracking.</div>
+    <div class="wizfield">
+      <label>The destination</label>
+      <input id="wizName" maxlength="40" placeholder="Art Dealer, Theoretical Physicist Mode, Master Perfumer..." autocomplete="off">
+      <div class="hint">The specific thing you are becoming. Specific beats broad: the sharper the destination, the sharper the atoms.</div>
+    </div>
+    <div class="wizfield">
+      <label>What does done look like</label>
+      <input id="wizOutcome" maxlength="120" placeholder="One sentence. I can walk into any room and..." autocomplete="off">
+      <div class="hint">One sentence a kid would understand. This steers the research pass.</div>
+    </div>
+    <div class="wizfield">
+      <label>Its colors</label>
+      <div class="swatches" id="wizSwatches"></div>
+      <div class="hint">Every stack wears its own ombre so you always know where you are.</div>
+    </div>
+    <button class="wizgo" id="wizGo" disabled>Commission the stack</button>
   </div>
 </div>
 
@@ -1104,13 +1195,38 @@ function render(){
 }
 
 /* ---------- HOME · TRACK COLLECTION ---------- */
-const PENDING_TRACKS = [
-  {name:'Art Dealer', sub:'Culture and commerce lane · the most tacit heavy track of the three', note:'Model not yet built. Commissioned through a research pass: decomposition, practitioner accounts, cohort paths.'},
-  {name:'Physicist Mode Reasoning', sub:'The reasoning style, not the credential', note:'Model not yet built. Commissioned through a research pass when you call it.'}
+const THEMES = [
+  {id:'brand',  name:'Artful',      stops:['#F07A3C','#E63A5F','#9A55D6','#3FA0F0']},
+  {id:'ember',  name:'Ember',       stops:['#FFD23F','#F07A3C','#E63A5F','#B0234F']},
+  {id:'orchid', name:'Orchid',      stops:['#FF7AC6','#C84BD8','#7C4DFF','#4A6CF0']},
+  {id:'lagoon', name:'Lagoon',      stops:['#3FE0C5','#3FA0F0','#5A6CF0','#9A55D6']},
+  {id:'meadow', name:'Meadow',      stops:['#D8F03C','#5AD672','#3FA0F0','#2E5AE8']},
+  {id:'solar',  name:'Solar',       stops:['#FFF06B','#FFB23F','#F07A3C','#E63A5F']}
 ];
-function miniStack(pct, dim){
-  /* five slabs, filled bottom up by progress; dim for pending tracks */
-  const cols = ['#3FA0F0','#9A55D6','#E63A5F','#F07A3C','#F5A24B'];
+function themeById(id){ return THEMES.find(t=>t.id===id) || THEMES[0]; }
+function themeGrad(t){ return `linear-gradient(90deg,${t.stops.join(',')})`; }
+function setTheme(t){
+  const r = document.documentElement.style;
+  r.setProperty('--ombre', `linear-gradient(90deg,${t.stops.join(',')})`);
+  r.setProperty('--ombre-v', `linear-gradient(160deg,${t.stops[0]},${t.stops[1]} 45%,${t.stops[3]})`);
+  r.setProperty('--mint', t.stops[0]);
+}
+let shell = {tracks:[]};
+const SHELL_KEY = 'substrate-shell';
+async function loadShell(){
+  try{
+    const r = await window.storage.get(SHELL_KEY);
+    if(r && r.value) shell = JSON.parse(r.value);
+  }catch(e){}
+  if(!shell.tracks) shell.tracks = [];
+  renderHome();
+}
+async function saveShell(){ try{ await window.storage.set(SHELL_KEY, JSON.stringify(shell)); }catch(e){} }
+
+function miniStack(pct, dim, theme){
+  /* five slabs, filled bottom up by progress; each slab strokes its own ombre stop */
+  const t = theme || THEMES[0];
+  const cols = [t.stops[3], t.stops[2], t.stops[1], t.stops[0], t.stops[0]];
   const litFrom = 5 - Math.round((pct||0)/100*5); /* slab index where fill begins (0 top) */
   let s = '<svg viewBox="0 0 120 110" fill="none" xmlns="http://www.w3.org/2000/svg">';
   for(let i=0;i<5;i++){
@@ -1128,7 +1244,7 @@ function renderHome(){
   const pct = overallPct();
   let h = `
     <div class="tcard active" id="cdCard" role="button" tabindex="0" aria-label="Open the Creative Director track, ${pct} percent known">
-      ${miniStack(pct,false)}
+      ${miniStack(pct,false,themeById('brand'))}
       <div class="tk">Active track</div>
       <h2>Creative Director</h2>
       <div class="tsub">Transdisciplinary · culture lane · sculpted from the cohort of nineteen</div>
@@ -1138,37 +1254,221 @@ function renderHome(){
       </div>
       <div class="tbar"><i style="width:${pct}%"></i></div>
     </div>`;
-  PENDING_TRACKS.forEach(t=>{
-    h += `
-    <div class="tcard pending">
-      ${miniStack(0,true)}
-      <div class="tk">Pending track</div>
-      <h2>${t.name}</h2>
-      <div class="tsub">${t.sub}</div>
-      <div class="tpend">${t.note}</div>
+  shell.tracks.forEach(t=>{
+    const th = themeById(t.theme);
+    const grad = `background:${themeGrad(th)};-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent`;
+    if(t.status==='running'){
+      h += `
+    <div class="tcard commissioned running">
+      ${miniStack(0,false,th)}
+      <div class="tk" style="color:${th.stops[0]}">Engine running</div>
+      <h2 style="${grad}">${t.name}</h2>
+      <div class="tbrief">"${t.outcome}"</div>
+      <div class="tpend">Decomposing the destination into atoms. About a minute. This card wakes up on its own.</div>
     </div>`;
+    } else if(t.status==='ready' && t.model){
+      const st = gStats(t);
+      h += `
+    <div class="tcard active" data-gid="${t.id}" role="button" tabindex="0" aria-label="Open the ${t.name} track">
+      ${miniStack(st.pct,false,th)}
+      <div class="tk" style="color:${th.stops[0]}">Active track</div>
+      <h2 style="${grad}">${t.name}</h2>
+      <div class="tsub">${t.model.lane || ''}</div>
+      <div class="trow">
+        <div class="tpct" style="${grad}">${st.pct}%</div>
+        <div class="tmeta">${st.rem}h remaining<br>${st.done} of ${st.total} atoms known</div>
+      </div>
+      <div class="tbar"><i style="width:${st.pct}%;background:${themeGrad(th)}"></i></div>
+    </div>`;
+    } else {
+      h += `
+    <div class="tcard commissioned">
+      ${miniStack(0,false,th)}
+      <div class="tk" style="color:${th.stops[0]}">Commissioned</div>
+      <h2 style="${grad}">${t.name}</h2>
+      <div class="tbrief">"${t.outcome}"</div>
+      <div class="tpend">The engine could not be reached from here${t.err?' ('+t.err+')':''}. On the live site it builds itself. Or say build the ${t.name} track and it ships as the next version.</div>
+    </div>`;
+    }
   });
   h += `
-    <div class="tcard pending">
+    <div class="tcard pending" id="newStackCard" role="button" tabindex="0" aria-label="Commission a new stack">
       ${miniStack(0,true)}
-      <div class="tk">New track</div>
-      <h2>Commission a track</h2>
-      <div class="tsub">Name a destination and the engine runs: decomposition into atoms, cohort modeling, materials, projections.</div>
-      <div class="tpend">Opens as its own stack here with full tracking.</div>
+      <div class="tk">New stack</div>
+      <h2>Commission a stack</h2>
+      <div class="tsub">Name any destination. The engine decomposes it into atoms, models the best who ever did it, and writes the materials.</div>
+      <div class="tpend">Opens the commission console.</div>
     </div>`;
   const el = document.getElementById('trackCards');
   el.innerHTML = h;
   const cd = document.getElementById('cdCard');
   const openCD = ()=>{
+    setTheme(themeById('brand'));
     document.getElementById('homeView').style.display='none';
     document.getElementById('trackView').style.display='';
     window.scrollTo(0,0);
   };
   cd.addEventListener('click', openCD);
   cd.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openCD();} });
+  const ns = document.getElementById('newStackCard');
+  ns.addEventListener('click', openWizard);
+  ns.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openWizard();} });
+  el.querySelectorAll('[data-gid]').forEach(c=>{
+    const go = ()=>openGTrack(c.dataset.gid);
+    c.addEventListener('click', go);
+    c.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
+  });
 }
 document.getElementById('homeBack').addEventListener('click', ()=>{
+  setTheme(themeById('brand'));
   document.getElementById('trackView').style.display='none';
+  document.getElementById('homeView').style.display='';
+  renderHome();
+  window.scrollTo(0,0);
+});
+
+/* ---------- COMMISSION WIZARD ---------- */
+let wizTheme = null;
+function renderSwatches(){
+  const used = new Set(shell.tracks.map(t=>t.theme).concat(['brand']));
+  const el = document.getElementById('wizSwatches');
+  el.innerHTML = THEMES.filter(t=>t.id!=='brand').map(t=>
+    `<div class="swatch ${wizTheme===t.id?'on':''}" data-t="${t.id}" title="${t.name}${used.has(t.id)?' · in use':''}" style="background:${themeGrad(t)}"></div>`
+  ).join('');
+  el.querySelectorAll('.swatch').forEach(s=>{
+    s.addEventListener('click', ()=>{ wizTheme = s.dataset.t; renderSwatches(); wizCheck(); });
+  });
+}
+function wizCheck(){
+  const ok = document.getElementById('wizName').value.trim().length > 1 && wizTheme;
+  document.getElementById('wizGo').disabled = !ok;
+}
+function openWizard(){
+  wizTheme = null;
+  document.getElementById('wizName').value = '';
+  document.getElementById('wizOutcome').value = '';
+  renderSwatches(); wizCheck();
+  document.getElementById('wizard').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+document.getElementById('wizBack').addEventListener('click', ()=>{
+  document.getElementById('wizard').classList.remove('on');
+  document.body.style.overflow='';
+});
+document.getElementById('wizName').addEventListener('input', wizCheck);
+document.getElementById('wizGo').addEventListener('click', ()=>{
+  const name = document.getElementById('wizName').value.trim();
+  if(!name || !wizTheme) return;
+  const outcome = document.getElementById('wizOutcome').value.trim() || 'Definition pending, the engine will sharpen it.';
+  const t = {id:'t'+Date.now(), name, outcome, theme:wizTheme, status:'running', done:{}};
+  shell.tracks.push(t);
+  saveShell();
+  document.getElementById('wizard').classList.remove('on');
+  document.body.style.overflow='';
+  renderHome();
+  engineRun(t);
+});
+async function engineRun(t){
+  if(location.protocol === 'file:'){ t.status='commissioned'; t.err='local file, no engine'; saveShell(); renderHome(); return; }
+  try{
+    const ctrl = new AbortController();
+    const timer = setTimeout(()=>ctrl.abort(), 90000);
+    const r = await fetch('/api/commission', {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({name:t.name, outcome:t.outcome}),
+      signal: ctrl.signal
+    });
+    clearTimeout(timer);
+    const data = await r.json();
+    if(data && data.ok && data.model && data.model.layers){
+      t.status='ready'; t.model=data.model;
+    }else{
+      t.status='commissioned'; t.err=(data && data.error) || 'engine error';
+    }
+  }catch(e){
+    t.status='commissioned'; t.err='engine unreachable';
+  }
+  saveShell();
+  renderHome();
+}
+/* ---------- GENERATED TRACK VIEW ---------- */
+function gStats(t){
+  let total=0, done=0, rem=0;
+  (t.model && t.model.layers || []).forEach((l,li)=>l.atoms.forEach((a,ai)=>{
+    total++;
+    if(t.done && t.done[li+'-'+ai]) done++;
+    else rem += (a.hrs||4);
+  }));
+  return {total, done, rem, pct: total? Math.round(done/total*100) : 0};
+}
+let gCur = null;
+function openGTrack(id){
+  const t = shell.tracks.find(x=>x.id===id);
+  if(!t || !t.model) return;
+  gCur = t;
+  setTheme(themeById(t.theme));
+  document.getElementById('homeView').style.display='none';
+  document.getElementById('gtrackView').style.display='';
+  const words = t.name.split(' ');
+  document.getElementById('gTitle').innerHTML = words.length>1
+    ? `<span class="jw">${words[0]}</span> <span class="jg">${words.slice(1).join(' ')}</span>`
+    : `<span class="jg">${t.name}</span>`;
+  document.getElementById('gSub').textContent = t.outcome;
+  const mqBits = `${t.name}<b>·</b>${(t.model.lane||'Engine Pass 1')}<b>·</b>Taught, Timed, Tested<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>`;
+  document.getElementById('gMq').innerHTML = mqBits.repeat(4);
+  renderGTrack();
+  window.scrollTo(0,0);
+}
+function renderGTrack(){
+  const t = gCur; if(!t) return;
+  const st = gStats(t);
+  document.getElementById('gPct').textContent = st.pct+'%';
+  document.getElementById('gRem').textContent = st.rem+'h';
+  document.getElementById('gAtomsCt').textContent = st.done+' / '+st.total;
+  let h='';
+  t.model.layers.forEach((l,li)=>{
+    let ldone=0;
+    l.atoms.forEach((a,ai)=>{ if(t.done[li+'-'+ai]) ldone++; });
+    const lpct = Math.round(ldone/l.atoms.length*100);
+    h += `<div class="glayerhead"><span class="lnum2">0${li+1}</span>${l.name}<span class="gpctl">${lpct}%</span></div>
+          <div class="glayersub">${l.sub||''}</div>`;
+    l.atoms.forEach((a,ai)=>{
+      const k = li+'-'+ai;
+      const on = !!t.done[k];
+      const open = t._open===k;
+      h += `<div class="gAtom ${on?'on':''}" data-k="${k}">
+              <div class="gbox" data-box="${k}"></div>
+              <div class="gn">${a.n}</div>
+              <div class="ghrs">~${a.hrs||4}h</div>
+            </div>
+            <div class="gdrawer ${open?'open':''}">
+              <ol>${(a.ex||[]).map(x=>`<li>${x}</li>`).join('')}</ol>
+              <div class="gpass">PASS WHEN · ${a.pass||''}</div>
+            </div>`;
+    });
+  });
+  const el = document.getElementById('gLayers');
+  el.innerHTML = h;
+  el.querySelectorAll('.gbox').forEach(b=>{
+    b.addEventListener('click', e=>{
+      e.stopPropagation();
+      const k = b.dataset.box;
+      if(gCur.done[k]) delete gCur.done[k]; else gCur.done[k]=1;
+      saveShell();
+      renderGTrack();
+    });
+  });
+  el.querySelectorAll('.gAtom').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      gCur._open = gCur._open===row.dataset.k ? null : row.dataset.k;
+      renderGTrack();
+    });
+  });
+}
+document.getElementById('gBack').addEventListener('click', ()=>{
+  setTheme(themeById('brand'));
+  document.getElementById('gtrackView').style.display='none';
   document.getElementById('homeView').style.display='';
   renderHome();
   window.scrollTo(0,0);
@@ -1882,6 +2182,7 @@ cStartMode('free');
 cRenderLesson();
 
 load();
+loadShell();
 </script>
 </body>
 </html>

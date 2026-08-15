@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/commission.js": {
+      "maxDuration": 60
+    }
+  }
+}
