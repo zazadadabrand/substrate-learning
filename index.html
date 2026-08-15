@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Substrate Learning · Creative Director</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500&family=Lato&family=Source+Sans+3&family=Cabin&family=Inter&family=Archivo&family=Work+Sans&family=Poppins&family=Montserrat&family=Questrial&family=Libre+Baskerville&family=Gelasio&family=PT+Serif&family=Playfair+Display&family=Bodoni+Moda&family=DM+Serif+Display&family=Roboto+Slab&family=Zilla+Slab&family=Bitter&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B101F; --card:#121729; --line:#212945; --face:#161C31; --face-lit:#1E2642; --edge:#33406B;
+    --mint:#F07A3C; --mint-dim:#8A4A2A; --text:#F2F1EE; --muted:#96A0C0; --faint:#5A6488;
+    --amber:#E0C77F; --red:#EA5A5A;
+    --pink:#EA3B62;
+    --ombre:linear-gradient(90deg,#F07A3C,#E63A5F,#9A55D6,#3FA0F0);
+    --ombre-v:linear-gradient(160deg,#F07A3C,#E63A5F 45%,#3FA0F0);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;overflow-x:hidden}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:40px 28px 80px;position:relative}
+  .ambient{position:fixed;inset:0;pointer-events:none;filter:saturate(1.3);background:
+    linear-gradient(180deg, rgba(11,16,31,0) 26%, rgba(11,16,31,.72) 62%, rgba(11,16,31,.94) 88%),
+    radial-gradient(1000px 780px at 16% 12%, rgba(230,58,95,.38), transparent 60%),
+    radial-gradient(1100px 850px at 52% 0%, rgba(240,122,60,.26), transparent 58%),
+    radial-gradient(950px 800px at 90% 22%, rgba(63,160,240,.34), transparent 60%),
+    radial-gradient(800px 650px at 72% 62%, rgba(154,85,214,.20), transparent 65%),
+    radial-gradient(600px 500px at 30% 55%, rgba(230,58,95,.14), transparent 65%);}
+  .ambient::after{content:"";position:absolute;inset:0;opacity:.55;background:
+    repeating-linear-gradient(0deg, rgba(5,8,18,.5) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(90deg, rgba(5,8,18,.5) 0 1px, transparent 1px 6px);}
+  .ambient::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(340px 260px at 38% 20%, rgba(255,190,160,.10), transparent 70%);
+    filter:blur(28px);}
+
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:18px;position:relative;z-index:2}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.28em;color:var(--mint);text-transform:uppercase;margin-bottom:10px}
+  h1{font-size:clamp(28px,4vw,42px);font-weight:600;letter-spacing:-.01em;line-height:1.05}
+  .sub{color:var(--muted);font-size:14px;margin-top:8px;max-width:520px;line-height:1.5}
+  .overall{text-align:right;flex-shrink:0}
+  .overall .num{font-size:clamp(28px,4vw,40px);font-weight:600;color:var(--mint);font-variant-numeric:tabular-nums}
+  .overall .lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-top:2px}
+
+  .projbar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:12px}
+  .projbar .stat{display:flex;gap:26px;flex-wrap:wrap}
+  .projbar .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:3px;display:block}
+  .projbar .v{font-size:16px;font-weight:600;color:var(--text);display:block}
+  .projbar .v em{font-style:normal;color:var(--mint)}
+  .pace{display:flex;align-items:center;gap:8px}
+  .pace .k{margin:0 4px 0 0}
+  .pace button{background:none;border:1px solid #2A3355;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:7px 11px;border-radius:7px;cursor:pointer}
+  .pace button.on{border-color:var(--mint);color:var(--mint);background:rgba(230,58,95,.08)}
+
+  .today{position:relative;z-index:2;display:flex;align-items:center;gap:16px;background:linear-gradient(90deg,rgba(230,58,95,.08),transparent 70%);border:1px solid rgba(230,58,95,.22);border-radius:12px;padding:14px 18px;margin-bottom:26px;flex-wrap:wrap}
+  .today .chip{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;color:#FFFFFF;background:var(--mint);border-radius:5px;padding:5px 9px;text-transform:uppercase;flex-shrink:0}
+  .today .drill{font-size:14.5px;line-height:1.4;flex:1;min-width:220px}
+  .today .from{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;margin-top:2px}
+  .today button{background:none;border:1px solid var(--mint-dim);color:var(--mint);border-radius:7px;padding:7px 13px;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:12.5px;cursor:pointer;flex-shrink:0}
+
+  .grid{display:grid;grid-template-columns:minmax(380px,1fr) minmax(340px,480px);gap:20px;align-items:start;position:relative;z-index:2}
+
+  .stackcol{position:relative;height:900px;user-select:none}
+  .stack{position:absolute;inset:0}
+  .layer{position:absolute;left:44%;width:0;height:0;cursor:pointer}
+  .slab,.slab-under,.slab-glow{position:absolute;left:-118px;top:-118px;width:236px;height:236px;transform:rotateX(57deg) rotateZ(45deg);border-radius:10px}
+  .slab-under{background:#0D1222;border:1px solid var(--line);top:-103px}
+  .slab-glow{top:-110px;background:var(--mint);filter:blur(2px);opacity:.06;transition:opacity .5s}
+  .slab{background:linear-gradient(135deg,var(--face-lit),var(--face) 60%);border:1px solid var(--edge);transition:box-shadow .35s,border-color .35s;display:flex;align-items:center;justify-content:center}
+  .layer:hover .slab{border-color:var(--mint-dim)}
+  .layer.sel .slab{border-color:var(--mint);box-shadow:0 0 34px rgba(230,58,95,.18)}
+  .layer.sel .slab-glow{opacity:.32}
+  .slab svg{width:124px;height:124px;stroke:var(--mint);opacity:.8;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+  .conn{position:absolute;left:calc(44% + 142px);display:flex;align-items:center;gap:14px;transform:translateY(-50%)}
+  .conn .tick{width:30px;height:1px;background:var(--faint)}
+  .conn .name{font-size:15px;font-weight:500;line-height:1.25;color:var(--text);white-space:nowrap}
+  .conn .sublbl{color:var(--muted);font-size:12px}
+  .conn .bar{width:120px;height:2px;background:#222B4A;border-radius:2px;margin-top:6px;overflow:hidden}
+  .conn .bar i{display:block;height:100%;background:var(--mint);border-radius:2px;transition:width .5s}
+  .conn .pct{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mint);margin-top:3px}
+  .conn .hrs{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
+  .riser{position:absolute;left:calc(44% - 56px);width:1px;background:linear-gradient(to top,transparent,var(--mint-dim),transparent);opacity:.5}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto}
+  .panel::-webkit-scrollbar{width:6px}
+  .panel::-webkit-scrollbar-thumb{background:#2A3355;border-radius:3px}
+  .panel .lname{font-size:20px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .panel .lname .lpct{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--mint)}
+  .panel .ldesc{color:var(--muted);font-size:13.5px;line-height:1.55;margin-top:8px}
+  .panel .ltime{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:10px}
+  .panel .ltime em{font-style:normal;color:var(--mint)}
+  .panel .lbar{height:3px;background:#1A2138;border-radius:3px;margin:14px 0 16px;overflow:hidden}
+  .panel .lbar i{display:block;height:100%;background:var(--mint);transition:width .5s}
+
+  .grouphead{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--mint);text-transform:uppercase;margin:20px 0 4px;padding-top:16px;border-top:1px solid var(--line)}
+  .groupsub{color:var(--muted);font-size:12.5px;line-height:1.5;margin-bottom:8px}
+
+  .node{border-radius:9px;transition:background .2s}
+  .node.open,.node:hover{background:#182036}
+  .nrow{display:flex;align-items:flex-start;gap:12px;padding:10px;cursor:pointer}
+  .box{flex-shrink:0;width:17px;height:17px;border-radius:5px;border:1.5px solid var(--faint);margin-top:1px;position:relative;transition:all .25s;cursor:pointer}
+  .box:hover{border-color:var(--mint)}
+  .node[data-s="1"] .box{border-color:var(--mint);background:var(--mint);box-shadow:0 0 10px rgba(230,58,95,.35)}
+  .node[data-s="1"] .box::after{content:"";position:absolute;left:4.5px;top:1.5px;width:5px;height:9px;border:solid #0B101F;border-width:0 2px 2px 0;transform:rotate(42deg)}
+  .ntext{flex:1}
+  .nname{font-size:13.8px;line-height:1.45}
+  .node[data-s="1"] .nname{color:var(--muted)}
+  .nmeta{display:flex;gap:10px;align-items:center;flex-shrink:0;margin-top:3px}
+  .nhrs{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint)}
+  .chev{width:9px;height:9px;border:solid var(--faint);border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin-top:-3px;transition:transform .25s}
+  .node.open .chev{transform:rotate(225deg);margin-top:3px}
+
+  .drawer{padding:2px 12px 14px 39px}
+  .drawer .dl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--mint);text-transform:uppercase;margin:8px 0 6px}
+  .ex{display:flex;gap:10px;padding:4px 0;align-items:baseline}
+  .ex .num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mint-dim);flex-shrink:0;width:14px}
+  .ex .et{font-size:13px;color:#C4CDD5;line-height:1.5}
+  .passline{margin-top:10px;font-size:12.5px;color:var(--mint);line-height:1.5;border-left:2px solid var(--mint-dim);padding-left:10px}
+  .passline b{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;display:block;color:var(--mint-dim);margin-bottom:2px;font-weight:500}
+  .matbtn{margin-top:12px;display:inline-block;background:var(--mint);color:#FFFFFF;border:none;border-radius:8px;padding:10px 16px;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer}
+  .matpend{margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.1em}
+
+  .hint{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.08em;margin-top:14px}
+
+  .reads{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+  .reads h3,.gaps h3{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+  .read{display:flex;gap:10px;padding:7px 0;align-items:baseline}
+  .read .rt{font-size:13.5px;font-weight:500;flex-shrink:0}
+  .read .rw{font-size:12.5px;color:var(--muted);line-height:1.45}
+
+  .gaps{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+  .gap-item{font-size:13px;background:#182036;border-left:2px solid var(--amber);padding:8px 12px;border-radius:0 6px 6px 0;margin-bottom:8px;line-height:1.45}
+  .gap-row{display:flex;gap:8px;margin-top:10px}
+  .gap-row input{flex:1;background:var(--bg);border:1px solid #2A3355;border-radius:8px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none}
+  .gap-row input:focus{border-color:var(--mint-dim)}
+  .gap-row button{background:var(--mint);color:#FFFFFF;border:none;border-radius:8px;padding:0 16px;font-weight:600;font-size:13px;cursor:pointer;font-family:'Hanken Grotesk',sans-serif}
+
+  .bloom{position:relative;z-index:2;margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .bloom h3{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--mint);text-transform:uppercase;margin-bottom:8px}
+  .bloom p{color:var(--muted);font-size:13px;line-height:1.6}
+  .bloom .ver{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);margin-top:10px;letter-spacing:.1em}
+
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:20px;position:relative;z-index:2}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+  .legend span{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);display:flex;align-items:center;gap:7px}
+  .lk{width:11px;height:11px;border-radius:4px;border:1.5px solid var(--faint)}
+  .lk.full{border-color:var(--mint);background:var(--mint)}
+  .tcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;cursor:pointer;transition:border-color .2s, box-shadow .2s;position:relative}
+  .tcard:hover{border-color:var(--mint-dim)}
+  .tcard.active:hover{border-color:var(--mint);box-shadow:0 0 26px rgba(230,58,95,.12)}
+  .tcard .tk{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--mint);text-transform:uppercase;margin-bottom:8px}
+  .tcard h2{font-size:21px;font-weight:600;margin:0 0 4px}
+  .tcard .tsub{color:var(--muted);font-size:12.5px;line-height:1.5}
+  .tcard .trow{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px}
+  .tcard .tpct{font-size:26px;font-weight:600;color:var(--mint);font-variant-numeric:tabular-nums}
+  .tcard .tmeta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-align:right;line-height:1.6}
+  .tcard .tbar{height:3px;background:#1A2138;border-radius:3px;margin-top:12px;overflow:hidden}
+  .tcard .tbar i{display:block;height:100%;background:var(--mint);transition:width .5s}
+  .tcard.pending{cursor:default;opacity:.75}
+  .tcard.pending .tk{color:var(--faint)}
+  .tcard.pending .tpend{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.1em;margin-top:16px;line-height:1.7}
+  .reset{background:none;border:1px solid #2A3355;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;padding:8px 14px;border-radius:7px;cursor:pointer;text-transform:uppercase}
+  .saved{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mint-dim);letter-spacing:.1em;opacity:0;transition:opacity .3s}
+  .saved.show{opacity:1}
+
+  /* ============ MATERIAL OVERLAY ============ */
+  .mview{position:fixed;inset:0;background:var(--bg);z-index:100;overflow-y:auto;display:none}
+  .mview.on{display:block}
+  .mwrap{max-width:980px;margin:0 auto;padding:32px 24px 90px}
+  .mtop{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+  .backbtn{background:none;border:1px solid #2A3355;color:var(--muted);border-radius:8px;padding:9px 14px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+  .backbtn:hover{border-color:var(--mint-dim);color:var(--mint)}
+  .mh1{font-size:clamp(24px,4vw,34px);font-weight:600}
+  .msub{color:var(--muted);font-size:13.5px;margin-top:6px;line-height:1.55;max-width:640px}
+  .tabs{display:flex;gap:8px;margin:24px 0 22px;flex-wrap:wrap}
+  .tabs button{background:none;border:1px solid #2A3355;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer}
+  .tabs button.on{border-color:var(--mint);color:var(--mint);background:rgba(230,58,95,.08)}
+  .tabs button .done{color:var(--mint-dim)}
+  .msec{display:none}
+  .msec.on{display:block}
+  .mview h2{font-size:19px;font-weight:600;margin:26px 0 10px}
+  .mview p.body{color:#C4CDD5;font-size:14px;line-height:1.65;max-width:680px}
+  .tells{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:16px 0 8px}
+  .tell{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .tell b{display:block;font-size:13.5px;margin-bottom:5px}
+  .tell span{color:var(--muted);font-size:12.5px;line-height:1.5}
+  .cls{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:14px;display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center}
+  .cls .spec{font-size:44px;line-height:1;color:var(--text)}
+  .cls .spec small{display:block;font-size:20px;color:var(--muted);margin-top:6px}
+  .cls .info b{font-size:15px;display:block;margin-bottom:4px}
+  .cls .info .canon{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--mint);letter-spacing:.06em;margin-bottom:6px}
+  .cls .info span{color:var(--muted);font-size:13px;line-height:1.55;display:block}
+  .mnote{font-size:12px;color:var(--faint);line-height:1.5;margin-top:14px;max-width:640px}
+
+  /* lesson */
+  .lprog{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .lprog .lbar2{flex:1;height:3px;background:#1A2138;border-radius:3px;overflow:hidden}
+  .lprog .lbar2 i{display:block;height:100%;background:var(--mint);transition:width .4s}
+  .lprog .lct{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);letter-spacing:.1em;white-space:nowrap}
+  .lcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px}
+  .lkicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--mint);text-transform:uppercase;margin-bottom:8px}
+  .ltitle{font-size:20px;font-weight:600;margin-bottom:10px}
+  .lbody{color:#C4CDD5;font-size:14.5px;line-height:1.7;max-width:660px}
+  .lbody b{color:var(--text)}
+  .lshow{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0 4px}
+  .lspec{flex:1;min-width:180px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:18px;text-align:center}
+  .lspec .big{font-size:clamp(30px,5vw,46px);line-height:1.1}
+  .lspec .cap{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;margin-top:8px;text-transform:uppercase}
+  .lcheck{margin-top:20px;border-top:1px solid var(--line);padding-top:18px}
+  .lq{font-size:14.5px;font-weight:500;margin-bottom:12px}
+  .lopts{display:flex;gap:12px;flex-wrap:wrap}
+  .lopt{flex:1;min-width:170px;background:var(--bg);border:1.5px solid #2A3355;border-radius:12px;padding:20px 14px;text-align:center;cursor:pointer;transition:border-color .15s}
+  .lopt:hover{border-color:var(--mint-dim)}
+  .lopt .big{font-size:clamp(28px,5vw,42px);line-height:1.1}
+  .lopt.right{border-color:var(--mint);box-shadow:0 0 18px rgba(230,58,95,.15)}
+  .lopt.wrong{border-color:var(--red)}
+  .lfb{min-height:40px;margin-top:12px;font-size:13.5px;line-height:1.55}
+  .lfb .ok{color:var(--mint)}
+  .lfb .no{color:var(--red)}
+  .lfb .why{color:var(--muted);display:block;margin-top:2px}
+  .lnav{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
+  .lback{background:none;border:1px solid #2A3355;color:var(--muted);border-radius:9px;padding:11px 18px;font-family:'Hanken Grotesk',sans-serif;font-size:13.5px;cursor:pointer}
+  .lnext{background:var(--mint);color:#FFFFFF;border:none;border-radius:9px;padding:11px 22px;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:13.5px;cursor:pointer}
+  .lnext:disabled{opacity:.35;cursor:default}
+  .listen{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid var(--mint-dim);color:var(--mint);border-radius:8px;padding:7px 13px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;margin:0 0 12px}
+  .listen:hover{background:rgba(230,58,95,.08)}
+  .listen.playing{background:rgba(230,58,95,.12);border-color:var(--mint)}
+  .timeline{margin:16px 0 4px}
+  .tstep{display:flex;gap:12px;padding:7px 0;align-items:baseline}
+  .tstep .ty{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--mint);width:88px;flex-shrink:0;letter-spacing:.06em}
+  .tstep .tx{font-size:13.5px;color:#C4CDD5;line-height:1.55}
+  .tstep .tx b{color:var(--text)}
+
+  /* drill */
+  .gate{background:linear-gradient(90deg,rgba(224,199,127,.08),transparent 70%);border:1px solid rgba(224,199,127,.3);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--amber);line-height:1.5;display:none}
+  .gate.on{display:block}
+  .gate button{background:none;border:1px solid rgba(224,199,127,.4);color:var(--amber);border-radius:7px;padding:6px 12px;font-family:'Hanken Grotesk',sans-serif;font-size:12px;font-weight:600;cursor:pointer;margin-left:8px}
+  .scorebar{display:flex;gap:24px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:18px}
+  .scorebar div span{display:block}
+  .scorebar .k{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:2px}
+  .scorebar .v{font-size:17px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+  .scorebar .v.m{color:var(--mint)}
+  .modebtn{margin-left:auto;background:none;border:1px solid var(--mint-dim);color:var(--mint);border-radius:8px;padding:9px 14px;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:12.5px;cursor:pointer}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:40px 24px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+  .stage .timer{position:absolute;top:0;left:0;height:3px;background:var(--mint);transition:width .1s linear}
+  .specimen{font-size:clamp(40px,8vw,72px);line-height:1.05;word-break:break-word}
+  .specrow{font-size:clamp(24px,5vw,40px);color:var(--muted);margin-top:12px;letter-spacing:.04em}
+  .fb{min-height:52px;margin-top:18px;font-size:14px;line-height:1.5}
+  .fb .ok{color:var(--mint)}
+  .fb .no{color:var(--red)}
+  .fb .why{color:var(--muted);font-size:13px;display:block;margin-top:3px}
+  .answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .answers button{background:var(--card);border:1px solid #2A3355;color:var(--text);border-radius:10px;padding:14px 10px;font-family:'Hanken Grotesk',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:border-color .15s}
+  .answers button:hover{border-color:var(--mint-dim)}
+  .answers button:disabled{opacity:.45;cursor:default}
+  .nextbtn{margin-top:16px;width:100%;background:var(--mint);color:#FFFFFF;border:none;border-radius:10px;padding:13px;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:14px;cursor:pointer;display:none}
+  .nextbtn.show{display:block}
+  .result{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;text-align:center;display:none}
+  .result.show{display:block}
+  .result .big{font-size:30px;font-weight:600;margin-bottom:6px}
+  .result .big.pass{color:var(--mint)}
+  .result .big.fail{color:var(--amber)}
+  .result p{color:var(--muted);font-size:13.5px;line-height:1.55;margin-bottom:16px}
+  .result button{background:var(--mint);color:#FFFFFF;border:none;border-radius:9px;padding:11px 20px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:'Hanken Grotesk',sans-serif}
+  .passnote{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--faint);letter-spacing:.08em;margin-top:16px;line-height:1.6}
+  @media(max-width:640px){ .cls{grid-template-columns:1fr} .cls .spec{font-size:36px} }
+
+  @media (max-width:900px){
+    .grid{grid-template-columns:1fr}
+    .stackcol{height:760px}
+    .layer{left:38%}
+    .conn{left:calc(38% + 106px)}
+    .riser{left:calc(38% - 52px)}
+    .slab,.slab-under,.slab-glow{left:-92px;top:-92px;width:184px;height:184px}
+    .slab-under{top:-80px}.slab-glow{top:-86px}
+    .slab svg{width:96px;height:96px}
+    .conn .tick{width:14px}
+    .conn .name{font-size:13px;white-space:normal;max-width:126px}
+    .panel{position:static;max-height:none}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
+
+  /* ============ BERNARD STUDIA BRAND LAYER ============ */
+  h1, .mh1, .overall .num, .tpct{font-family:'Archivo Black',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:-.01em}
+  h1{line-height:.92}
+  #homeView h1{font-size:clamp(64px,12.5vw,180px);margin-left:-.03em}
+  #trackView h1{font-size:clamp(44px,8.5vw,124px);margin-left:-.03em}
+  .mh1{font-size:clamp(32px,6.5vw,80px);line-height:.94}
+  .overall .num{font-size:clamp(44px,6.5vw,92px);line-height:1}
+  .jg, .overall .num, .tpct, .mh1{background:var(--ombre);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;padding-bottom:.05em}
+  .jw{color:var(--text);-webkit-text-fill-color:var(--text)}
+  header{align-items:flex-end;flex-wrap:wrap}
+  .sub{max-width:640px;font-size:15px}
+  .eyebrow{font-family:'Fraunces',serif;font-weight:600;color:var(--pink);letter-spacing:.3em}
+  .tcard h2{font-family:'Archivo Black',sans-serif;font-weight:400;text-transform:uppercase;font-size:17px;letter-spacing:.02em;line-height:1.25}
+  .tcard .tk{color:var(--pink)}
+  .panel .lname > span:first-child, .ltitle{font-family:'Fraunces',serif;letter-spacing:-.01em}
+  .ltitle{font-size:26px}
+  .panel .lname > span:first-child{font-size:22px}
+  .conn .bar i, .panel .lbar i, .tcard .tbar i, .lprog .lbar2 i, .stage .timer{background:var(--ombre)}
+  .gap-row button, .matbtn, .nextbtn, .lnext, .today .chip, .result button{background:var(--ombre);color:#FFFFFF}
+  .node[data-s="1"] .box, .lk.full{background:var(--ombre-v);border-color:var(--mint)}
+  .layer.sel .slab{box-shadow:0 0 40px rgba(240,122,60,.28)}
+  .tcard{overflow:hidden}
+  .tcard .tstack{position:absolute;right:14px;top:14px;width:96px;height:86px;opacity:.9}
+  .tcard.pending .tstack{opacity:.35}
+  .tcard h2, .tcard .tsub{padding-right:100px}
+  .today{background:linear-gradient(90deg,rgba(240,122,60,.13),transparent 70%);border-color:rgba(230,58,95,.28)}
+
+  /* marquee ticker, the site signature: letterspaced caps with orange dots */
+  .marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin:22px 0 26px;position:relative;z-index:2}
+  .marquee .mq{display:inline-block;white-space:nowrap;animation:mqscroll 32s linear infinite;font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:12px;text-transform:uppercase;color:var(--muted);letter-spacing:.22em;will-change:transform}
+  .marquee .mq b{color:var(--mint);font-weight:700;padding:0 18px}
+  @keyframes mqscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion: reduce){ .marquee .mq{animation:none} }
+
+  /* numbered layer grammar, 01 through 05, orange like the site nav */
+  .conn .lnum{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.24em;color:var(--mint);margin-bottom:3px}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+
+<!-- ============ HOME · ALL TRACKS ============ -->
+<div class="wrap" id="homeView">
+  <header>
+    <div>
+      <div class="eyebrow">Substrate Learning</div>
+      <h1><span class="jg">Tracks</span></h1>
+      <div class="sub">Every discipline you are building toward, one substrate stack each. Open a track to work it. New tracks get commissioned through a research pass.</div>
+    </div>
+  </header>
+  <div class="marquee"><span class="mq">Create<b>·</b>Curate<b>·</b>Connect<b>·</b>Substrate Learning<b>·</b>Original Work<b>·</b>Visibility is the Product<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>Substrate Learning<b>·</b>Original Work<b>·</b>Visibility is the Product<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>Substrate Learning<b>·</b>Original Work<b>·</b>Visibility is the Product<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>Substrate Learning<b>·</b>Original Work<b>·</b>Visibility is the Product<b>·</b></span></div>
+  <div id="trackCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:10px"></div>
+</div>
+
+<!-- ============ TRACK · CREATIVE DIRECTOR ============ -->
+<div class="wrap" id="trackView" style="display:none">
+  <header>
+    <div>
+      <button class="backbtn" id="homeBack" style="margin-bottom:14px">&#9666; All tracks</button>
+      <div class="eyebrow">Substrate Learning · Track 01</div>
+      <h1><span class="jw">Creative</span> <span class="jg">Director</span></h1>
+      <div class="sub">Transdisciplinary track · sculpted from the cohort of nineteen · every atom is taught, timed, and tested inside the system</div>
+    </div>
+    <div class="overall">
+      <div class="num" id="overallPct">0%</div>
+      <div class="lbl">Known</div>
+    </div>
+  </header>
+  <div class="marquee"><span class="mq">The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b></span></div>
+
+  <div class="projbar">
+    <div class="stat">
+      <div><span class="k">Remaining</span><span class="v" id="remHrs">0h</span></div>
+      <div><span class="k">At current pace</span><span class="v" id="projDate">·</span></div>
+    </div>
+    <div class="pace">
+      <span class="k">Daily pace</span>
+      <button data-p="30">30m</button>
+      <button data-p="60">60m</button>
+      <button data-p="90">90m</button>
+    </div>
+  </div>
+
+  <div class="today" id="today"></div>
+
+  <div class="grid">
+    <div class="stackcol"><div class="stack" id="stack"></div></div>
+    <div class="panel" id="panel"></div>
+  </div>
+
+  <div class="bloom">
+    <h3>Bloom protocol</h3>
+    <p>This map is a living model, not a fixed syllabus. It grows on a loop: research passes on the cohort of nineteen surface new discoveries, discoveries become new atoms and modules, materials and readings refresh as better methods are found, and every gap you log below a layer becomes an input to the next pass. Hour estimates are recalibrated as your actual pace data comes in. Each pass increments the version. And every material holds one standard above all: written so simply a kid could learn from it, because a concept you cannot explain to a kid is a concept you do not understand.</p>
+    <div class="ver">Model v8 · multi track shell · Creative Director: 49 atoms, Materials 001 and 005 live · runtime hardened · new tracks commissioned by research pass</div>
+  </div>
+
+  <div class="footer">
+    <div class="legend">
+      <span><i class="lk"></i>Not yet</span>
+      <span><i class="lk full"></i>Known</span>
+      <span class="saved" id="saved">Saved</span>
+    </div>
+    <button class="reset" id="reset">Reset progress</button>
+  </div>
+</div>
+
+<!-- ============ MATERIAL 001 OVERLAY ============ -->
+<div class="mview" id="m001">
+  <div class="mwrap">
+    <div class="mtop">
+      <div>
+        <div class="eyebrow">Material 001 · Visual Language · Atom 01</div>
+        <div class="mh1">Typeface Classification</div>
+      </div>
+      <button class="backbtn" id="m001back">Back to map</button>
+    </div>
+    <div class="msub">The atom: classify any typeface into its family on sight. Start with the lesson, it assumes you know nothing and builds the eye concept by concept. The reference is your lookup sheet afterward. The drill decides whether you know it.</div>
+
+    <div class="tabs">
+      <button class="on" data-t="mlearn">Lesson <span class="done" id="lessonDoneMark"></span></button>
+      <button data-t="mref">Reference</button>
+      <button data-t="mdrill">Drill</button>
+    </div>
+
+    <!-- LESSON -->
+    <section id="mlearn" class="msec on">
+      <div class="lprog">
+        <div class="lbar2"><i id="lprogBar" style="width:0"></i></div>
+        <div class="lct" id="lprogCt">Step 1</div>
+      </div>
+      <div class="lcard" id="lcard"></div>
+      <div class="lnav">
+        <button class="lback" id="lback">Back</button>
+        <button class="lnext" id="lnext">Continue</button>
+      </div>
+    </section>
+
+    <!-- REFERENCE -->
+    <section id="mref" class="msec">
+      <h2>The five tells</h2>
+      <p class="body">Every classification decision runs through the same five features. You never memorize typefaces one by one, you read these features and the class falls out.</p>
+      <div class="tells">
+        <div class="tell"><b>Stroke contrast</b><span>How much thick and thin varies within a letter. None in most sans, extreme in didones.</span></div>
+        <div class="tell"><b>Stress axis</b><span>The angle of the thin parts. Tilted means older and humanist, vertical means rational and modern.</span></div>
+        <div class="tell"><b>Serif shape</b><span>Bracketed and soft, thin and unbracketed, or heavy rectangular slabs. Or absent entirely.</span></div>
+        <div class="tell"><b>Aperture</b><span>How open letters like a, c, and e are. Humanist forms open wide, grotesques close up.</span></div>
+        <div class="tell"><b>Terminals</b><span>How strokes end: cut flat, ball shaped, or flared. The g and a carry the most information.</span></div>
+      </div>
+      <h2>The six classes</h2>
+      <div class="cls"><div class="spec" style="font-family:'Lato'">Aa Rge<small style="font-family:'Source Sans 3'">Aa Rge</small></div>
+        <div class="info"><b>Humanist sans</b><div class="canon">Canon: Gill Sans, Frutiger, Optima</div>
+        <span>Sans serif built on calligraphic bones. Open apertures, slight stroke modulation, warmth. If a sans looks like it could have been written by a hand, it is humanist.</span></div></div>
+      <div class="cls"><div class="spec" style="font-family:'Inter'">Aa Rge<small style="font-family:'Archivo'">Aa Rge</small></div>
+        <div class="info"><b>Grotesque</b><div class="canon">Canon: Helvetica, Univers, Akzidenz Grotesk, Franklin Gothic</div>
+        <span>The neutral workhorses. Uniform strokes, closed apertures, flat horizontal terminals, no written memory.</span></div></div>
+      <div class="cls"><div class="spec" style="font-family:'Poppins'">Aa Rge<small style="font-family:'Montserrat'">Aa Rge</small></div>
+        <div class="info"><b>Geometric sans</b><div class="canon">Canon: Futura, Avant Garde, DIN</div>
+        <span>Letters drawn from circles and lines. Compass circle o, no contrast, constructed rather than written.</span></div></div>
+      <div class="cls"><div class="spec" style="font-family:'Libre Baskerville'">Aa Rge<small style="font-family:'Gelasio'">Aa Rge</small></div>
+        <div class="info"><b>Transitional serif</b><div class="canon">Canon: Baskerville, Times, Georgia</div>
+        <span>The middle of serif history. Moderate contrast, near vertical stress, bracketed serifs. The voice of books.</span></div></div>
+      <div class="cls"><div class="spec" style="font-family:'Playfair Display'">Aa Rge<small style="font-family:'Bodoni Moda'">Aa Rge</small></div>
+        <div class="info"><b>Didone</b><div class="canon">Canon: Bodoni, Didot</div>
+        <span>Extreme contrast, vertical stress, hairline unbracketed serifs, ball terminals. The fashion masthead class.</span></div></div>
+      <div class="cls"><div class="spec" style="font-family:'Roboto Slab'">Aa Rge<small style="font-family:'Zilla Slab'">Aa Rge</small></div>
+        <div class="info"><b>Slab serif</b><div class="canon">Canon: Rockwell, Clarendon, Courier</div>
+        <span>Serifs as heavy rectangular blocks, low contrast, sturdy and mechanical. Serifs that could hold weight.</span></div></div>
+      <div class="mnote">Specimens are rendered in freely licensed proxy faces from each class, since the canonical faces are not web licensed. The tells transfer exactly: you are learning features, not fonts.</div>
+    </section>
+
+    <!-- DRILL -->
+    <section id="mdrill" class="msec">
+      <div class="gate" id="gate">The lesson comes first. Drilling before the concepts is exactly the crude memorization this system refuses to be.<button id="gateGo">Open the lesson</button></div>
+      <div class="scorebar">
+        <div><span class="k">Round</span><span class="v" id="round">·</span></div>
+        <div><span class="k">Correct</span><span class="v m" id="score">0</span></div>
+        <div><span class="k">Streak</span><span class="v" id="streak">0</span></div>
+        <div><span class="k">Best streak</span><span class="v" id="best">0</span></div>
+        <button class="modebtn" id="modeBtn">Start pass test · 20 timed</button>
+      </div>
+      <div class="stage" id="stage">
+        <div class="timer" id="timer" style="width:0"></div>
+        <div class="specimen" id="specimen">Meridian</div>
+        <div class="specrow" id="specrow">a g e R c o</div>
+        <div class="fb" id="fb">Which class is this? The lowercase row is your evidence.</div>
+      </div>
+      <div class="answers" id="answers"></div>
+      <button class="nextbtn" id="nextBtn">Next specimen</button>
+      <div class="result" id="result">
+        <div class="big" id="resBig"></div>
+        <p id="resTxt"></p>
+        <button id="resBtn">Run it again</button>
+      </div>
+      <div class="passnote" id="passnote">PASS CONDITION · Twenty timed specimens, ten seconds each, twenty correct. Anything less is practice. Free practice mode is untimed and explains every answer.</div>
+    </section>
+  </div>
+</div>
+
+<!-- ============ MATERIAL 005 OVERLAY ============ -->
+<div class="mview" id="m005">
+  <div class="mwrap">
+    <div class="mtop">
+      <div>
+        <div class="eyebrow">Material 005 · Visual Language · Atom 05</div>
+        <div class="mh1">Color Harmonies</div>
+      </div>
+      <button class="backbtn" id="m005back">Back to map</button>
+    </div>
+    <div class="msub">The atom: name the six color harmonies and build a palette in each. The lesson teaches the wheel as a map and each harmony as a shape drawn on it. The drill shows you palettes and you call the harmony, cold.</div>
+
+    <div class="tabs">
+      <button class="on" data-t="c_learn">Lesson <span class="done" id="cLessonDoneMark"></span></button>
+      <button data-t="c_ref">Reference</button>
+      <button data-t="c_drill">Drill</button>
+    </div>
+
+    <section id="c_learn" class="msec on">
+      <div class="lprog">
+        <div class="lbar2"><i id="cProgBar" style="width:0"></i></div>
+        <div class="lct" id="cProgCt">Step 1</div>
+      </div>
+      <div class="lcard" id="cCard"></div>
+      <div class="lnav">
+        <button class="lback" id="cBack">Back</button>
+        <button class="lnext" id="cNext">Continue</button>
+      </div>
+    </section>
+
+    <section id="c_ref" class="msec">
+      <h2>The wheel and the six shapes</h2>
+      <p class="body">Every harmony is a geometric shape drawn on the color wheel. Learn the shape and you can both recognize a harmony on sight and construct one from any starting hue. The offsets below are in degrees around the wheel.</p>
+      <div id="cRefCards"></div>
+      <div class="mnote">Palettes on this page are generated live from the formulas, so every visit shows fresh examples of the same six shapes. That is the point: you are learning geometry, not specific color combinations.</div>
+    </section>
+
+    <section id="c_drill" class="msec">
+      <div class="gate" id="cGate">The lesson comes first. Drilling before the concepts is exactly the crude memorization this system refuses to be.<button id="cGateGo">Open the lesson</button></div>
+      <div class="scorebar">
+        <div><span class="k">Round</span><span class="v" id="c_round">·</span></div>
+        <div><span class="k">Correct</span><span class="v m" id="c_score">0</span></div>
+        <div><span class="k">Streak</span><span class="v" id="c_streak">0</span></div>
+        <div><span class="k">Best streak</span><span class="v" id="c_best">0</span></div>
+        <button class="modebtn" id="cModeBtn">Start pass test · 20 timed</button>
+      </div>
+      <div class="stage" id="cStage">
+        <div class="timer" id="cTimer" style="width:0"></div>
+        <div id="cPalette" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"></div>
+        <div class="fb" id="cFb">Which harmony is this palette built on?</div>
+      </div>
+      <div class="answers" id="cAnswers"></div>
+      <button class="nextbtn" id="cNextBtn">Next palette</button>
+      <div class="result" id="cResult">
+        <div class="big" id="cResBig"></div>
+        <p id="cResTxt"></p>
+        <button id="cResBtn">Run it again</button>
+      </div>
+      <div class="passnote" id="cPassnote">PASS CONDITION · Twenty timed palettes, ten seconds each, twenty correct. Anything less is practice. Free practice mode is untimed and explains every answer.</div>
+    </section>
+  </div>
+</div>
+
+<script>
+/* storage fallback: keeps the app booting in environments without the storage API */
+if(!window.storage){ window.storage = { async get(){return null}, async set(){return null}, async delete(){return null}, async list(){return {keys:[]}} }; }
+
+/* ==================== MAP (unchanged from v5.1 except version copy) ==================== */
+const STORAGE_KEY = 'substrate-cd-v5';
+
+const ICONS = {
+  visual: '<svg viewBox="0 0 100 100"><path d="M26 66 L40 26 L54 66 M31 52 h18"/><path d="M62 66 a9 9 0 1 1 .1 -18 a9 9 0 0 1 8.9 9 v9"/><path d="M16 66 h68" stroke-dasharray="3 4" opacity=".6"/><path d="M16 26 h68" stroke-dasharray="3 4" opacity=".3"/><circle cx="30" cy="80" r="4"/><circle cx="44" cy="80" r="4" style="fill:#F07A3C;fill-opacity:.35"/><circle cx="58" cy="80" r="4" style="fill:#F07A3C;fill-opacity:.8"/></svg>',
+  object: '<svg viewBox="0 0 100 100"><path d="M50 22 L74 34 L74 58 L50 70 L26 58 L26 34 Z"/><path d="M26 34 L50 46 L74 34 M50 46 L50 70"/><path d="M20 30 L20 62 M17 30 h6 M17 62 h6" opacity=".6"/><path d="M30 78 h40 M30 75 v6 M70 75 v6" opacity=".6"/><path d="M80 24 l8 0 M84 20 l0 8" opacity=".5"/></svg>',
+  craft: '<svg viewBox="0 0 100 100"><path d="M20 58 C 34 26, 58 26, 74 50"/><rect x="16" y="54" width="8" height="8"/><rect x="70" y="46" width="8" height="8"/><path d="M20 58 L34 40 M74 50 L60 36" opacity=".55"/><circle cx="34" cy="40" r="2.5"/><circle cx="60" cy="36" r="2.5"/><path d="M30 72 h40 M30 79 h40 M42 68 v15 M58 68 v15" opacity=".6"/></svg>',
+  direction: '<svg viewBox="0 0 100 100"><rect x="20" y="42" width="46" height="30" rx="3"/><path d="M20 42 L24 30 L70 30 L66 42 Z"/><path d="M30 31 l-4 11 M42 31 l-4 11 M54 31 l-4 11 M66 31 l-4 11"/><path d="M74 46 h12 M74 54 h12 M74 62 h12" opacity=".6"/><path d="M26 52 h22 M26 60 h14" opacity=".6"/></svg>',
+  cohort: '<svg viewBox="0 0 100 100"><circle cx="30" cy="30" r="4"/><circle cx="56" cy="22" r="4"/><circle cx="78" cy="36" r="4"/><circle cx="42" cy="50" r="4" style="fill:#F07A3C;fill-opacity:.7"/><circle cx="68" cy="56" r="4"/><path d="M33 32 L39 47 M45 48 L53 25 M59 24 L75 34 M76 40 L71 52 M46 52 L64 56" opacity=".6"/><rect x="24" y="70" width="7" height="16"/><rect x="34" y="66" width="7" height="20"/><path d="M45 68 l7 -2 5 20 -7 2 z"/><path d="M18 88 h64"/></svg>'
+};
+
+const NINETEEN_EX = [
+  'Hour one: build the chronology. Birth, education, first job, every post, in order, from interviews and published timelines.',
+  'Hour two: hear them think. Watch or read two long interviews or lectures and note the phrases they repeat, that repetition is the method.',
+  'Hour three: study three signature works closely. For each, name what was new about it and what it borrowed.',
+  'Hour four: close everything and write a one page summary from memory: origin discipline, path, method, three works.'
+];
+const NINETEEN_PASS = 'You can deliver the one page summary out loud, cold, with no notes.';
+
+const DEFAULT = {
+  selected: 0,
+  pace: 60,
+  layers: [
+    { id:'visual', name:'Visual Language', sub:'See it and name it', icon:'visual',
+      desc:'The perception layer. Sight skills with a right answer, tested cold at flashcard speed. This is where the daily reps live.',
+      nodes:[
+        {n:'Classify any typeface into its family: humanist, grotesque, geometric, transitional, didone, slab', s:0, hrs:10, mat:'m001', matLabel:'Material 001 · Lesson, reference, drill',
+         ex:['Take the Material 001 lesson from the top, it assumes zero knowledge and builds the six words you need one at a time.',
+             'Run the drill in free practice daily, five minutes, until the tells fire without thinking.',
+             'Add field reps: classify three faces per day in the wild, signage and packaging, and verify.',
+             'When free practice feels automatic, take the timed pass test.'],
+         pass:'Twenty timed specimens in a row, all correct, in the Material 001 pass test.'},
+        {n:'Identify twenty canonical typefaces on sight', s:0, hrs:8,
+         ex:['Build a flashcard deck of the canon: Helvetica, Univers, Akzidenz Grotesk, Futura, Gill Sans, Franklin Gothic, Frutiger, DIN, Optima, Avant Garde, Garamond, Caslon, Baskerville, Bodoni, Didot, Times, Rockwell, Clarendon, Courier, Cooper Black.',
+             'Learn one identifying quirk per face, the way type designers do: the straight leg of the Helvetica R, the single story a in Futura, the spectacles g in Gill Sans.',
+             'Run the deck five minutes daily, shuffled, showing full alphabets and single words.',
+             'Field reps: identify three faces per day in the wild, on signage, packaging, and title cards, and verify.'],
+         pass:'The full deck named cold, twice through, zero misses.'},
+        {n:'Define and correctly adjust kerning, tracking, and leading', s:0, hrs:6,
+         ex:['Learn the definitions and units first: kerning is per pair, tracking is per range, leading is line to line, all measured against the em.',
+             'Play KernType at type.method.ac daily until you score above ninety consistently. It trains the same judgment professionals use.',
+             'Set one paragraph at five different leading values and write one line on what each does to reading rhythm.',
+             'Kern a full wordmark by eye, then compare against the metrics defaults and account for every pair you moved.'],
+         pass:'Kern a wordmark by eye and defend every pair adjustment out loud.'},
+        {n:'Construct a twelve column grid and a baseline grid from scratch', s:0, hrs:8,
+         ex:['Study three grids from Grid Systems in Graphic Design and redraw them by hand with pencil and ruler, margins and gutters measured.',
+             'Build a twelve column grid in Figma or InDesign: define page size, margins, gutter, and a baseline grid that your type sizes snap to.',
+             'Reverse engineer three editorial spreads you admire: overlay lines until you find their column logic.',
+             'Place real content, headline, body, captions, images, onto your grid without breaking a single alignment.'],
+         pass:'Grid built and content placed cleanly in twenty minutes, cold.'},
+        {n:'Name the six color harmonies and build a palette in each', s:0, hrs:8, mat:'m005', matLabel:'Material 005 · Lesson, reference, drill',
+         ex:['Take the Material 005 lesson from the top, it teaches the wheel as a map and each harmony as a shape drawn on it.',
+             'Run the drill in free practice daily, five minutes, until the shapes fire on sight.',
+             'Daily field rep: take one photo from your camera roll and extract a palette, then name which harmony it approximates.',
+             'Do the Albers exercise: make one color read as two different colors by changing only its surroundings.'],
+         pass:'Twenty timed palettes in a row, all correct, in the Material 005 pass test.'},
+        {n:'Read the hue, saturation, and value of any color by eye', s:0, hrs:12,
+         ex:['Calibrate on the model: open a color picker and move one channel at a time until you can predict what each slider does before touching it.',
+             'Daily rep: pick one color from your environment, write your HSV guess, then check it with a picker app and log the error per channel.',
+             'Train value separately, it is the hardest channel: squint scenes to grayscale in your head, then verify with a desaturated photo.',
+             'Graduate to mixing: match a target color from a neutral start in under five moves.'],
+         pass:'Ten colors in a row read within ten percent on every channel.'},
+        {n:'Explain and apply the exposure triangle: aperture, shutter, ISO', s:0, hrs:5,
+         ex:['Learn stops as the unit: each full stop on any of the three doubles or halves the light. Write the standard stop scales for all three from memory.',
+             'Manual mode drills on any camera: shoot the same scene sweeping only aperture, then only shutter, then only ISO, and study what each sweep changed.',
+             'Daily rep: for five described scenes, night street, indoor portrait, sports, landscape, window light, predict full settings before checking against a metered result.',
+             'Practice equivalent exposures: given one correct setting, recite three other combinations that produce the same exposure.'],
+         pass:'Recite equivalent exposures instantly and land a correct manual exposure on the first frame.'},
+        {n:'Identify focal length from an image: wide, normal, telephoto compression', s:0, hrs:6,
+         ex:['Learn the physics tell: focal length changes background compression and facial geometry, not just field of view. Study the same portrait shot at 24, 50, 85, and 200mm.',
+             'Build a reference board of ten images per bracket, wide, normal, short tele, long tele, and study the background behavior in each.',
+             'Daily rep: guess the bracket for ten editorial images, checking EXIF data where available.',
+             'Advanced: explain why fashion campaigns favor 85 to 135 and why skate photography favors fisheye, in terms of compression.'],
+         pass:'Sort ten unfamiliar images into focal brackets with no more than one miss.'}
+      ],
+      reads:[
+        {t:'Thinking with Type, Ellen Lupton', w:'The typography atoms, front to back'},
+        {t:'Interaction of Color, Josef Albers', w:'Trains the eye the color atoms test'},
+        {t:'Grid Systems in Graphic Design, Josef Muller Brockmann', w:'The grid construction atom comes straight from here'},
+        {t:'The Photographer\u2019s Eye, Michael Freeman', w:'Exposure and focal length reps with worked examples'}
+      ],
+      gaps:[] },
+    { id:'object', name:'Object and Space', sub:'Materials and construction', icon:'object',
+      desc:'The cohort demanded this layer. Most of the nineteen think in objects and rooms before images: industrial design, architecture, garment construction. These atoms are that literacy.',
+      nodes:[
+        {n:'Identify fifteen garment construction details on sight: raglan, gusset, bartack, felled seam, placket', s:0, hrs:10,
+         ex:['Build the vocabulary from Fashionpedia: raglan and set in sleeves, gussets, bartacks, felled and French seams, plackets, darts, yokes, welt pockets, facings, bindings, rivets, gauge, coverstitch, blind hem.',
+             'Turn your own closet inside out, literally: find each detail on garments you own and photograph it labeled.',
+             'Daily rep: ten product photos from any retailer, name every construction detail visible.',
+             'Graduate to judgment: for each detail, learn why a maker chooses it, strength, stretch, cost, or look.'],
+         pass:'Fifteen details in a row named from photos, with the reason each exists.'},
+        {n:'Identify ten fabric types by name, hand feel, and property', s:0, hrs:8,
+         ex:['Order a fabric swatch book, they are cheap, and learn the base ten: cotton jersey, fleece, twill, denim, canvas, poplin, wool suiting, silk, ripstop nylon, and a technical shell.',
+             'Blind hand tests: have someone pass you swatches face down, identify by feel alone, and log your misses.',
+             'Learn each fabric\u2019s properties as facts: weight range, stretch, breathability, drape, and what garment category it serves.',
+             'Field rep: in any store, call the fabric of five garments before reading the care label.'],
+         pass:'Ten of twelve swatches identified blind, with properties recited.'},
+        {n:'Read and mark up a garment tech pack', s:0, hrs:10,
+         ex:['Study three real tech packs, sample ones circulate freely from factories and fashion programs, and learn every page: flats, callouts, bill of materials, measurement spec, grading, colorways.',
+             'Redraw the front and back flat of a hoodie with correct proportions and stitch notation.',
+             'Write the full callout set for that hoodie: every seam, stitch type, trim, and label placement specified.',
+             'Take a deliberately flawed pack, or have one made for you, and find the errors a factory would exploit.'],
+         pass:'Produce a complete hoodie tech pack a factory could sample from without a single question.'},
+        {n:'Name the parts of a shoe and its construction methods: last, upper, midsole, outsole', s:0, hrs:6,
+         ex:['Label a full anatomy diagram from memory: last, upper, vamp, quarter, collar, tongue, toe box, heel counter, midsole, outsole, shank, sockliner.',
+             'Learn the four constructions and their tells: cemented, vulcanized, Strobel, and Goodyear welt, and which price tiers use which.',
+             'Daily rep: one sneaker cutaway or product photo per day, name every visible part and call the construction.',
+             'Study one Salehe Bembury design closely and describe it entirely in anatomy terms, no adjectives allowed.'],
+         pass:'Twenty parts labeled cold and construction called correctly from a cutaway.'},
+        {n:'Name the major manufacturing processes and what each produces: injection molding, CNC, vacuum forming, die cutting', s:0, hrs:8,
+         ex:['Work through Making It one process family per session: molding, cutting, forming, joining, finishing.',
+             'Learn the physical evidence each process leaves: parting lines and ejector marks for injection molding, tool paths for CNC, uniform wall thinning for vacuum forming.',
+             'Daily rep: pick up any two objects near you and name the process from the evidence on the object itself.',
+             'For one product you love, write its likely full production sequence from raw material to finish.'],
+         pass:'Fifteen objects called correctly with the physical evidence named for each.'},
+        {n:'Identify common materials by sight and property: metals, polymers, woods, technical textiles', s:0, hrs:10,
+         ex:['Build a materials table from memory: five metals, five polymers, five woods, three technical textiles, with weight, cost tier, and one signature property each.',
+             'Handle everything: hardware stores and fabric stores are free materials libraries, spend two visits touching and naming.',
+             'Learn the sight tells: anodized versus painted aluminum, ABS versus polycarbonate gloss, oak versus walnut grain.',
+             'Daily rep: name the material of five objects around you including the specific alloy or polymer where you can.'],
+         pass:'Fifteen of eighteen materials identified by sight and touch with a property recited.'},
+        {n:'Read a floor plan, section, and elevation', s:0, hrs:8,
+         ex:['Learn the drawing conventions from Architectural Graphics: line weights, wall poche, door swings, stairs, section cut symbols, and what each view can and cannot show.',
+             'Trace three published house plans by hand, tracing forces you to read every line.',
+             'For one building you know physically, find its published drawings and walk the plan while standing in the space.',
+             'Final rep: from an unfamiliar drawing set alone, describe the building, circulation, light, and materials, then check against photos.'],
+         pass:'Describe an unfamiliar building accurately from its drawing set alone.'},
+        {n:'Draw an object to scale with correct dimensions', s:0, hrs:10,
+         ex:['Learn the rules: standard scales, dimension line conventions, where dimensions attach, and datum thinking, everything measured from a common reference.',
+             'Measure and draw five household objects at one to one with calipers or a good ruler: front, top, and side views.',
+             'Redraw two of them at one to five, keeping every proportion true.',
+             'The fabricator test: hand your drawing to someone else and have them describe or mock the object back to you using only the drawing.'],
+         pass:'A stranger could fabricate the object from your drawing alone.'}
+      ],
+      reads:[
+        {t:'Fashionpedia, Fashionary', w:'The garment construction and fabric atoms in one visual dictionary'},
+        {t:'Making It, Chris Lefteri', w:'Manufacturing processes with photos of what each produces'},
+        {t:'Architectural Graphics, Francis Ching', w:'Plans, sections, elevations, and drawing to scale'}
+      ],
+      gaps:[] },
+    { id:'craft', name:'Production Craft', sub:'Tools and specs', icon:'craft',
+      desc:'The hands layer. Tool operations and delivery specs with binary outcomes. Either the file is right or it bounces.',
+      nodes:[
+        {n:'Pen tool fluency: trace any logomark with correct anchor economy', s:0, hrs:15,
+         ex:['Play the Bezier Game at bezier.method.ac to the end, it teaches anchor economy, placing curves with the fewest possible points, which is the entire skill.',
+             'Learn the rule professionals draw by: anchors at extrema, handles at a third, smooth versus corner points chosen deliberately.',
+             'Trace ten canonical logomarks, the Nike swoosh and Apple mark are the classic drills, and compare your anchor count against published source vectors.',
+             'Speed reps: same mark three days running, each pass faster and with fewer corrections.'],
+         pass:'Trace any unfamiliar mark cleanly with anchor count near the published original.'},
+        {n:'Nondestructive Photoshop: masks, adjustment layers, smart objects', s:0, hrs:12,
+         ex:['Learn the principle before the tools: the original pixels are never touched, every change lives on its own removable layer.',
+             'Rebuild five edits you have made destructively in the past using only masks, adjustment layers, and smart objects.',
+             'Masks only week: every selection and erase for seven days happens through a mask, no eraser tool allowed.',
+             'Final drill: full retouch of a product photo where dragging the original layer out at the end shows a completely untouched image.'],
+         pass:'Complete a full retouch where the base layer remains pixel identical to the import.'},
+        {n:'Export correctly for any destination: format, color space, resolution', s:0, hrs:5,
+         ex:['Build the chart from memory: print gets CMYK or spot at 300 dpi in PDF or TIFF, web gets sRGB at 72 to 144 in JPG, PNG, or WebP, video gets Rec 709, cutting machines get vectors.',
+             'Export the same single asset correctly for a business card, a website hero, an Instagram post, and a video edit.',
+             'Learn the two failure modes that catch professionals: RGB files sent to print and wide gamut images posted to the web.',
+             'Verify like a vendor: open each export in its destination context and preflight the print file.'],
+         pass:'Recite the chart cold and produce four destination correct files from one asset.'},
+        {n:'Print spec a document: bleed, trim, safety, Pantone matching', s:0, hrs:8,
+         ex:['Set up a document with the standard geometry: bleed at an eighth inch, trim, and safety margin, and learn what each line protects against.',
+             'Learn the Pantone system: spot versus process, when a brand color must be spot, and how the color bridge shows the CMYK drift.',
+             'Soft proof a colorful design in CMYK preview and note every color that shifts.',
+             'Send one real small job, business cards or a zine, through an actual printer and keep their preflight report.'],
+         pass:'A print file accepted by a commercial printer with zero requested changes.'},
+        {n:'Prepare artwork for screen print and embroidery with correct separations', s:0, hrs:8,
+         ex:['Learn what the processes need: screen print wants one spot color per screen with trapping, embroidery wants a digitized stitch file with density and underlay decisions.',
+             'Separate a three color design into spot channels with correct knockouts and a printable underbase for dark garments.',
+             'Spec a small embroidery mark: stitch type, density, and size minimums, letters below a quarter inch fail.',
+             'Take both files to a local print shop and ask them to tear the files apart. Their notes are the curriculum.'],
+         pass:'A shop accepts both files as production ready without rework.'},
+        {n:'Model a simple object in a 3D tool and export it correctly', s:0, hrs:15,
+         ex:['Work through the official Blender Fundamentals series once, fully, doing every step, it covers navigation, modeling, modifiers, and materials.',
+             'Model the classic progression: a mug, then a bottle, then a simple chair, each from reference images.',
+             'Learn export hygiene: apply scale, check normals, name objects, and export a GLB that opens correctly in any online viewer.',
+             'Final drill: model a product you own from photos in one sitting under two hours.'],
+         pass:'A recognizable product modeled from reference and exported clean in one sitting.'},
+        {n:'Video delivery specs: aspect ratios, frame rates, codecs per platform', s:0, hrs:5,
+         ex:['Build the chart from memory: 16 by 9 versus 9 by 16 versus 1 by 1 and 4 by 5 by platform, 24 versus 30 versus 60 frames and what each communicates, H264 and H265 and ProRes and where each belongs.',
+             'Export one edit at three platform specs and confirm each uploads without recompression warnings.',
+             'Learn the two judgment calls: when 24 frames reads as cinema versus when 30 or 60 reads as content, and delivery codec versus edit codec.',
+             'Quiz rep: for five briefs, name full delivery spec in one breath.'],
+         pass:'Full spec recited instantly for any named platform and use case.'},
+        {n:'Set a lookbook spread: margins, type hierarchy, image placement', s:0, hrs:10,
+         ex:['Study five lookbooks you rate and reverse engineer each: grid, margin logic, type scale, and image rhythm across spreads.',
+             'Define your own system first, page size, grid, two type styles maximum, then set a sixteen page book from any shoot, even borrowed images.',
+             'Print it cheap. Pacing errors that hide on screen are obvious in hand.',
+             'Redline pass: mark every spread like a cruel art director, fix, and reprint once.'],
+         pass:'A printed sixteen page book whose spreads survive a designer\u2019s redline.'}
+      ],
+      reads:[
+        {t:'Blender Fundamentals, Blender Foundation', w:'Free official series covering the 3D atom exactly'},
+        {t:'Pantone color bridge guide', w:'The physical reference the print spec atom is tested against'}
+      ],
+      gaps:[] },
+    { id:'direction', name:'Direction Systems', sub:'Documents produced cold', icon:'direction',
+      desc:'The systems layer. What a director must produce from a blank page with nothing missing, plus the codified method move half the cohort made.',
+      nodes:[
+        {n:'Write a creative brief containing all seven standard components', s:0, hrs:8,
+         ex:['Learn the seven and why each exists: background, objective, audience, insight, single message, deliverables, and constraints with success criteria.',
+             'Study three real briefs, agencies leak them constantly, and grade each against the seven.',
+             'Rewrite one bad brief you find until every section earns its place and the single message is actually single.',
+             'Write a full brief for an imaginary Gethsemane drop and have someone attempt the work from it, logging every question they ask, each question is a brief failure.'],
+         pass:'A brief another person can execute without asking a single clarifying question.'},
+        {n:'Build a treatment deck where every reference has a stated function', s:0, hrs:10,
+         ex:['Collect five director treatments, they circulate in production communities, and note the anatomy: concept statement, visual world, references, technique, tone.',
+             'Learn the discipline that separates treatments from moodboards: every image answers a specific question, framing, palette, casting, movement, or light.',
+             'Build a treatment for a song or product you love, captioning each reference with its function in one line.',
+             'The cut test: remove any image whose function line you cannot write, if the deck survives, it was decoration.'],
+         pass:'A treatment where every single image has a written, defensible job.'},
+        {n:'Produce a shot list and call sheet for a one day shoot', s:0, hrs:8,
+         ex:['Learn the shot list grammar: shot number, framing, lens, subject, action, and setup grouping so the day runs by location not by script order.',
+             'Shot list a fifteen shot day for a lookbook: every frame planned, grouped by setup, with time estimates that sum to a real day.',
+             'Build the call sheet: crew and talent with call times, location and parking, schedule blocks, meals, weather, sunset, and the nearest hospital, the last one is how you spot an amateur sheet.',
+             'Stress test: hand both documents to someone and have them narrate the shoot day back to you hour by hour.'],
+         pass:'A crew could run the entire day from your two documents without you present.'},
+        {n:'Define a full identity system: logo suite, type scale, color system, usage rules', s:0, hrs:20,
+         ex:['Study two published brand guideline documents end to end and outline their table of contents from memory.',
+             'Design a system for a fictional brand: primary mark, secondary mark, and glyph, a type scale with defined roles, a color system with usage ratios, and clear space and minimum size rules.',
+             'Write the usage rules including the misuse page, showing what not to do is what makes a system enforceable.',
+             'The survival test: hand the system to someone else and have them design a poster and a social post, if the results look like the brand, the system works.'],
+         pass:'Someone else applies your system and the output is recognizably the brand.'},
+        {n:'Build a campaign asset matrix: channel by format by dimension', s:0, hrs:6,
+         ex:['Learn current placement specs for the major channels: feed, story, reel, site hero, email header, and out of home basics.',
+             'Build the matrix for one imaginary campaign: rows are channels, columns are formats, every cell holds dimension, duration, and file spec.',
+             'Add the naming convention column: a file name system where any asset can be found by name alone.',
+             'Audit rep: take a real brand campaign you can see in the wild and reconstruct its matrix, noting orphan placements they missed.'],
+         pass:'A matrix covering a full campaign with zero orphan placements and a working naming system.'},
+        {n:'Write a casting spec: look, references, direction notes', s:0, hrs:5,
+         ex:['Study casting boards and learn the vocabulary casting directors actually use: age range, look descriptors, energy, and the reference faces that anchor them.',
+             'Write specs for two roles in an imaginary campaign: physical description, three reference images each, and the direction note that says how they should feel on camera.',
+             'Learn the boundary: specific enough to shortlist from, open enough not to cast a clone.',
+             'Test: give the spec to a friend with a folder of fifty faces and see whether their shortlist matches your intent.'],
+         pass:'Someone else shortlists correctly from your spec alone.'},
+        {n:'Line item a production budget for a shoot under a set ceiling', s:0, hrs:8,
+         ex:['Learn the standard line items: crew day rates by role, talent and usage, location, equipment, styling, post, insurance, and the contingency line, always ten percent.',
+             'Gather real rates: crew rate cards are published by regional production communities, collect current numbers for your market.',
+             'Budget a one day lookbook shoot under ten thousand, every line itemized, totals honest.',
+             'Calibrate: show it to one working producer, or compare against a real quote, and log where you were naive, it is usually post and usage.'],
+         pass:'Your budget lands within fifteen percent of a working producer\u2019s number.'},
+        {n:'Write your own studio code: ten operating rules, the Sachs and Abloh move', s:0, hrs:6,
+         ex:['Watch Ten Bullets and read the Abloh Harvard lecture back to back, noting the difference: Sachs codifies studio behavior, Abloh codifies a design method.',
+             'Draft ten rules from your actual practice, each one earned from a real mistake or a real win, not aspirational.',
+             'Live under them for two weeks and mark every violation without editing the rules yet.',
+             'Revise once: cut what you broke constantly, sharpen what held, and format the survivors as a document you would give a new hire.'],
+         pass:'Ten rules that survived a month of your own practice, written as an enforceable document.'}
+      ],
+      reads:[
+        {t:'Ten Bullets, Tom Sachs', w:'The studio code atom, demonstrated as a film, free online'},
+        {t:'Insert Complicated Title Here, Virgil Abloh', w:'His Harvard lecture: a working method codified in public'}
+      ],
+      gaps:[] },
+    { id:'cohort', name:'Canon and Cohort', sub:'The nineteen as the measure', icon:'cohort',
+      desc:'The memory layer. General canon first, then the cohort itself. Each name passes only when you can recite their origin discipline, career path, working method, and three signature works cold.',
+      nodes:[
+        {n:'Identify ten design movements on sight, Bauhaus through Y2K', s:0, hrs:10,
+         ex:['Build an image deck of ten movements: Bauhaus, Swiss International, Art Deco, Psychedelia, Punk DIY, Memphis, Grunge, Minimalism, Y2K, and Brutalist web, eight images each.',
+             'For each movement learn three facts: the years, the tells that identify it visually, and one canonical designer.',
+             'Daily rep: five shuffled images, name the movement and one tell that gives it away.',
+             'Timeline drill: draw the century from memory with every movement placed in its decade.'],
+         pass:'Ten straight images named with movement, decade, and tell.'},
+        {n:'Name twenty five landmark campaigns and who directed them', s:0, hrs:12,
+         ex:['Build the list from award annuals and advertising histories, spanning print icons through modern brand work, and card each: campaign, brand, year, creative lead.',
+             'For each campaign write one line on why it mattered, what it changed about the craft.',
+             'Run the deck as recall both directions: campaign to maker and maker to campaign.',
+             'Weekly synthesis: pick two campaigns from different decades and explain what one borrowed from the other.'],
+         pass:'All twenty five recited cold with maker, year, and why it mattered.'},
+        {n:'Map the major fashion house lineages: who directed what house and when', s:0, hrs:10,
+         ex:['Build the chart: ten houses across the top, decades down the side, fill every creative director tenure.',
+             'Learn the succession stories, they are the industry\u2019s actual plot: who replaced whom, and which appointments were shocks.',
+             'Daily quiz: given a house and year, name the director, given a director, name every post in order.',
+             'Redraw the full chart from memory weekly until it holds.'],
+         pass:'The full chart drawn from memory, no reference.'},
+        {n:'Identify fifteen canonical image makers from their style alone', s:0, hrs:10,
+         ex:['Assemble a deck of fifteen photographers spanning studio formalists, documentary stylists, and campaign regulars, ten images each, sourced from their published monographs.',
+             'For each, write the style tells in technical terms: light quality, color treatment, distance, casting, not vibes.',
+             'Daily rep: five blind images, call the maker from the tells.',
+             'Hard mode: images from campaigns rather than editorials, where the brand voice partly masks the photographer\u2019s.'],
+         pass:'Twelve of fifteen called blind from unfamiliar images.'},
+        {n:'Name the schools and studios that feed this lane and what each is known for', s:0, hrs:5,
+         ex:['Card the feeder institutions: Central Saint Martins, the Royal College of Art, the Antwerp academy, Design Academy Eindhoven, and the studio systems that function as schools.',
+             'For each, learn its house style and three famous graduates, including which of the nineteen passed through.',
+             'Map your cohort against it: mark which of the nineteen came through schools and which came through apprenticeship instead, the split is instructive.',
+             'Recall rep: given a designer, name their training path.'],
+         pass:'Every institution recited with its style and graduates, and the cohort mapped against them.'},
+        {n:'Name every standard role on a shoot and what each one owns', s:0, hrs:4,
+         ex:['Draw the org chart of a full set: photographer or director, first assistant, digitech, gaffer, stylist and assistants, groomer, producer, production assistant, art department, and who reports to whom.',
+             'For each role write the one sentence of what they own and the one thing you never ask them to do.',
+             'Watch two full behind the scenes films of major shoots and tag every role you can spot working.',
+             'Recall rep: given a problem on set, flag is wrong, model is late, card is full, name whose problem it is.'],
+         pass:'The chart drawn cold and the right owner named for any on set problem.'},
+        {h:'The Nineteen', hs:'Four hours per name, one guided protocol, opened on any name below. Recited cold or it stays unchecked.'},
+        {n:'Virgil Abloh', s:0, hrs:4},
+        {n:'Samuel Ross', s:0, hrs:4},
+        {n:'Grace Wales Bonner', s:0, hrs:4},
+        {n:'Martine Rose', s:0, hrs:4},
+        {n:'Martin Margiela', s:0, hrs:4},
+        {n:'Jonathan Anderson', s:0, hrs:4},
+        {n:'Craig Green', s:0, hrs:4},
+        {n:'Kiko Kostadinov', s:0, hrs:4},
+        {n:'Rei Kawakubo', s:0, hrs:4},
+        {n:'Raf Simons', s:0, hrs:4},
+        {n:'Tremaine Emory', s:0, hrs:4},
+        {n:'Errolson Hugh', s:0, hrs:4},
+        {n:'Willo Perron', s:0, hrs:4},
+        {n:'Es Devlin', s:0, hrs:4},
+        {n:'Tom Sachs', s:0, hrs:4},
+        {n:'Peter Saville', s:0, hrs:4},
+        {n:'Salehe Bembury', s:0, hrs:4},
+        {n:'Jesper Kouthoofd', s:0, hrs:4},
+        {n:'Ole Scheeren', s:0, hrs:4}
+      ],
+      reads:[
+        {t:'Virgil Abloh: Figures of Speech', w:'The MCA Chicago catalog, the fullest single map of one cohort method'},
+        {t:'An Atlas of Es Devlin', w:'Thirty years of spatial thinking, project by project'},
+        {t:'Designed by Peter Saville', w:'The graphic substrate of the cohort in one monograph'},
+        {t:'The Met\u2019s 2017 Kawakubo exhibition catalog', w:'Concept first design, argued garment by garment'}
+      ],
+      gaps:[] }
+  ]
+};
+
+let state = JSON.parse(JSON.stringify(DEFAULT));
+let openNodes = new Set();
+
+async function load(){
+  try{
+    const r = await window.storage.get(STORAGE_KEY);
+    if(r && r.value){
+      const saved = JSON.parse(r.value);
+      if(saved && saved.layers && saved.layers.length === DEFAULT.layers.length){
+        saved.layers.forEach((sl,i)=>{
+          (sl.nodes||[]).forEach((sn,j)=>{
+            if(DEFAULT.layers[i].nodes[j] && !DEFAULT.layers[i].nodes[j].h) state.layers[i].nodes[j].s = sn.s||0;
+          });
+          state.layers[i].gaps = sl.gaps||[];
+        });
+        state.selected = saved.selected||0;
+        state.pace = saved.pace||60;
+      }
+    }
+  }catch(e){}
+  render();
+}
+
+let saveTimer;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async ()=>{
+    try{
+      const slim = {
+        selected: state.selected,
+        pace: state.pace,
+        layers: state.layers.map(l=>({nodes:l.nodes.map(n=>n.h?{h:1}:{s:n.s}), gaps:l.gaps}))
+      };
+      await window.storage.set(STORAGE_KEY, JSON.stringify(slim));
+      const el = document.getElementById('saved');
+      el.classList.add('show');
+      setTimeout(()=>el.classList.remove('show'), 1200);
+    }catch(e){}
+  }, 350);
+}
+
+const atomsOf = l => l.nodes.filter(n=>!n.h);
+const layerPct = l => { const a=atomsOf(l); const k=a.filter(n=>n.s===1).length; return a.length?Math.round(k/a.length*100):0; };
+const layerRem = l => atomsOf(l).filter(n=>n.s===0).reduce((s,n)=>s+(n.hrs||0),0);
+const totalRem = () => state.layers.reduce((s,l)=>s+layerRem(l),0);
+function overallPct(){
+  const all = state.layers.flatMap(atomsOf);
+  const known = all.filter(n=>n.s===1).length;
+  return all.length ? Math.round(known/all.length*100) : 0;
+}
+function projection(){
+  const rem = totalRem();
+  if(rem === 0) return {rem, label:'Complete'};
+  const days = Math.ceil(rem*60/state.pace);
+  const d = new Date(); d.setDate(d.getDate()+days);
+  return {rem, label:d.toLocaleDateString('en-US',{month:'short',year:'numeric'}), days, months:Math.round(days/30.4)};
+}
+function todaysRep(){
+  const d = new Date();
+  const seed = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+  for(const l of state.layers){
+    const unknown = atomsOf(l).filter(n=>n.s===0);
+    if(unknown.length){
+      const pick = unknown[seed % unknown.length];
+      return {layer:l, li:state.layers.indexOf(l), node:pick};
+    }
+  }
+  return null;
+}
+function renderToday(){
+  const t = todaysRep();
+  const el = document.getElementById('today');
+  if(!t){
+    el.innerHTML = '<span class="chip">Done</span><div class="drill">Every atom on the map is marked known. Time to rerun the research pass and deepen the tree.</div>';
+    return;
+  }
+  el.innerHTML = `
+    <span class="chip">Today</span>
+    <div class="drill">${t.node.n}<div class="from">${t.layer.name} · about ${t.node.hrs}h to known · open the layer for the guided exercises</div></div>
+    <button id="todayGo">Open layer</button>`;
+  document.getElementById('todayGo').addEventListener('click', ()=>{
+    state.selected = t.li;
+    openNodes = new Set([state.layers[t.li].nodes.indexOf(t.node)]);
+    render(); save();
+  });
+}
+function renderProj(){
+  const p = projection();
+  document.getElementById('remHrs').textContent = p.rem + 'h';
+  document.getElementById('projDate').innerHTML = p.rem===0 ? 'Complete' : `<em>${p.label}</em> · about ${p.months} months`;
+  document.querySelectorAll('.pace button').forEach(b=>{
+    b.classList.toggle('on', +b.dataset.p === state.pace);
+  });
+}
+function drawerHTML(nd, isName){
+  const ex = isName ? NINETEEN_EX : (nd.ex||[]);
+  const pass = isName ? NINETEEN_PASS : nd.pass;
+  if(!ex.length) return '';
+  let h = `<div class="drawer"><div class="dl">Guided progression</div>`;
+  ex.forEach((e,i)=>{ h += `<div class="ex"><span class="num">${i+1}</span><span class="et">${e}</span></div>`; });
+  if(pass) h += `<div class="passline"><b>Pass when</b>${pass}</div>`;
+  if(nd.mat) h += `<button class="matbtn" data-mat="${nd.mat}">${nd.matLabel||'Open material'}</button>`;
+  else h += `<div class="matpend">Material pending · ships with a bloom pass</div>`;
+  h += `</div>`;
+  return h;
+}
+
+function render(){
+  const stackEl = document.getElementById('stack');
+  const isMobile = window.innerWidth <= 900;
+  const spacing = isMobile ? 142 : 168;
+  const topPad = isMobile ? 100 : 122;
+  const n = state.layers.length;
+
+  let html = '';
+  for(let i=0;i<n-1;i++){
+    const y = topPad + i*spacing + (isMobile?42:50);
+    html += `<div class="riser" style="top:${y}px;height:${spacing-(isMobile?62:74)}px"></div>`;
+  }
+  for(let i=n-1;i>=0;i--){
+    const l = state.layers[i];
+    const y = topPad + (n-1-i)*spacing;
+    const pct = layerPct(l);
+    const rem = layerRem(l);
+    const sel = state.selected===i ? 'sel':'';
+    html += `
+      <div class="layer ${sel}" style="top:${y}px;z-index:${10+(n-i)}" data-i="${i}" role="button" tabindex="0" aria-label="${l.name}, ${pct} percent known, ${rem} hours remaining">
+        <div class="slab-glow" style="opacity:${sel? .32 : .05 + pct/100*.28}"></div>
+        <div class="slab-under"></div>
+        <div class="slab">${ICONS[l.icon]}</div>
+      </div>
+      <div class="conn" style="top:${y}px">
+        <div class="tick"></div>
+        <div>
+          <span class="lnum">0${i+1}</span>
+          <div class="name">${l.name}<br><span class="sublbl">${l.sub}</span></div>
+          <div class="bar"><i style="width:${pct}%"></i></div>
+          <div class="pct">${pct}% known</div>
+          <div class="hrs">${rem>0? rem+'h remaining':'complete'}</div>
+        </div>
+      </div>`;
+  }
+  stackEl.innerHTML = html;
+
+  stackEl.querySelectorAll('.layer').forEach(el=>{
+    const go = ()=>{ state.selected = +el.dataset.i; openNodes = new Set(); render(); save(); };
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
+  });
+
+  const l = state.layers[state.selected];
+  const hIdx = l.nodes.findIndex(x=>x.h);
+  const inNineteen = j => l.id==='cohort' && hIdx>-1 && j > hIdx;
+  const pct = layerPct(l);
+  const rem = layerRem(l);
+  const paceDays = rem>0 ? Math.ceil(rem*60/state.pace) : 0;
+  let p = `
+    <div class="lname"><span>${l.name}</span><span class="lpct">${pct}%</span></div>
+    <div class="ldesc">${l.desc}</div>
+    <div class="ltime">${rem>0? `<em>${rem}h</em> remaining in this layer · about ${paceDays} days at your pace`:'Layer complete'}</div>
+    <div class="lbar"><i style="width:${pct}%"></i></div>`;
+  l.nodes.forEach((nd,j)=>{
+    if(nd.h){
+      p += `<div class="grouphead">${nd.h}</div><div class="groupsub">${nd.hs||''}</div>`;
+      return;
+    }
+    const open = openNodes.has(j);
+    p += `
+    <div class="node ${open?'open':''}" data-s="${nd.s}" data-j="${j}">
+      <div class="nrow" role="button" tabindex="0" aria-expanded="${open}" aria-label="${nd.n}, ${nd.s?'known':'not yet'}, about ${nd.hrs} hours, activate to view exercises">
+        <div class="box" data-flip="${j}" role="checkbox" aria-checked="${nd.s===1}" tabindex="0" aria-label="Mark ${nd.n} as ${nd.s?'not yet':'known'}"></div>
+        <div class="ntext"><div class="nname">${nd.n}</div></div>
+        <div class="nmeta"><span class="nhrs">~${nd.hrs}h</span><span class="chev"></span></div>
+      </div>
+      ${open ? drawerHTML(nd, inNineteen(j)) : ''}
+    </div>`;
+  });
+  p += `<div class="hint">Open an atom for its guided progression · check the box only when you pass cold</div>`;
+  if(l.reads && l.reads.length){
+    p += `<div class="reads"><h3>Readings · this layer</h3>`;
+    l.reads.forEach(r=>{ p += `<div class="read"><span class="rt">${r.t}</span><span class="rw">${r.w}</span></div>`; });
+    p += `</div>`;
+  }
+  p += `<div class="gaps">
+      <h3>Gap log · feeds the next research pass</h3>
+      ${l.gaps.map(g=>`<div class="gap-item">${g}</div>`).join('')}
+      <div class="gap-row">
+        <input id="gapInput" type="text" placeholder="What is this layer missing?" maxlength="200">
+        <button id="gapAdd">Log</button>
+      </div>
+    </div>`;
+  const panel = document.getElementById('panel');
+  panel.innerHTML = p;
+
+  panel.querySelectorAll('.box').forEach(el=>{
+    const flip = e=>{
+      e.stopPropagation();
+      const nd = l.nodes[+el.dataset.flip];
+      nd.s = nd.s ? 0 : 1;
+      render(); save();
+    };
+    el.addEventListener('click', flip);
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();flip(e);} });
+  });
+  panel.querySelectorAll('.nrow').forEach(el=>{
+    const j = +el.parentElement.dataset.j;
+    const tog = e=>{
+      if(e.target.classList.contains('box')) return;
+      openNodes.has(j) ? openNodes.delete(j) : openNodes.add(j);
+      render();
+    };
+    el.addEventListener('click', tog);
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ if(e.target===el){e.preventDefault();tog(e);} } });
+  });
+  panel.querySelectorAll('.matbtn').forEach(el=>{
+    el.addEventListener('click', e=>{ e.stopPropagation(); openMaterial(el.dataset.mat); });
+  });
+  const addGap = ()=>{
+    const inp = document.getElementById('gapInput');
+    const v = inp.value.trim();
+    if(!v) return;
+    l.gaps.push(v);
+    render(); save();
+  };
+  document.getElementById('gapAdd').addEventListener('click', addGap);
+  document.getElementById('gapInput').addEventListener('keydown', e=>{ if(e.key==='Enter') addGap(); });
+
+  document.getElementById('overallPct').textContent = overallPct()+'%';
+  renderToday();
+  renderProj();
+  renderHome();
+}
+
+/* ---------- HOME · TRACK COLLECTION ---------- */
+const PENDING_TRACKS = [
+  {name:'Art Dealer', sub:'Culture and commerce lane · the most tacit heavy track of the three', note:'Model not yet built. Commissioned through a research pass: decomposition, practitioner accounts, cohort paths.'},
+  {name:'Physicist Mode Reasoning', sub:'The reasoning style, not the credential', note:'Model not yet built. Commissioned through a research pass when you call it.'}
+];
+function miniStack(pct, dim){
+  /* five slabs, filled bottom up by progress; dim for pending tracks */
+  const cols = ['#3FA0F0','#9A55D6','#E63A5F','#F07A3C','#F5A24B'];
+  const litFrom = 5 - Math.round((pct||0)/100*5); /* slab index where fill begins (0 top) */
+  let s = '<svg viewBox="0 0 120 110" fill="none" xmlns="http://www.w3.org/2000/svg">';
+  for(let i=0;i<5;i++){
+    const y = 18 + i*19;
+    const lit = !dim && i >= litFrom && pct>0;
+    const fill = lit ? cols[i]+'66' : 'rgba(18,23,41,.9)';
+    const st = dim ? '#5A6488' : cols[i];
+    s += `<path d="M60 ${y-13} L104 ${y} L60 ${y+13} L16 ${y} Z" fill="${fill}" stroke="${st}" stroke-width="1.4"/>`;
+  }
+  s += '</svg>';
+  return `<div class="tstack">${s}</div>`;
+}
+function renderHome(){
+  const p = projection();
+  const pct = overallPct();
+  let h = `
+    <div class="tcard active" id="cdCard" role="button" tabindex="0" aria-label="Open the Creative Director track, ${pct} percent known">
+      ${miniStack(pct,false)}
+      <div class="tk">Active track</div>
+      <h2>Creative Director</h2>
+      <div class="tsub">Transdisciplinary · culture lane · sculpted from the cohort of nineteen</div>
+      <div class="trow">
+        <div class="tpct">${pct}%</div>
+        <div class="tmeta">${p.rem}h remaining<br>${p.rem===0?'complete':'done around ' + p.label + ' at your pace'}</div>
+      </div>
+      <div class="tbar"><i style="width:${pct}%"></i></div>
+    </div>`;
+  PENDING_TRACKS.forEach(t=>{
+    h += `
+    <div class="tcard pending">
+      ${miniStack(0,true)}
+      <div class="tk">Pending track</div>
+      <h2>${t.name}</h2>
+      <div class="tsub">${t.sub}</div>
+      <div class="tpend">${t.note}</div>
+    </div>`;
+  });
+  h += `
+    <div class="tcard pending">
+      ${miniStack(0,true)}
+      <div class="tk">New track</div>
+      <h2>Commission a track</h2>
+      <div class="tsub">Name a destination and the engine runs: decomposition into atoms, cohort modeling, materials, projections.</div>
+      <div class="tpend">Opens as its own stack here with full tracking.</div>
+    </div>`;
+  const el = document.getElementById('trackCards');
+  el.innerHTML = h;
+  const cd = document.getElementById('cdCard');
+  const openCD = ()=>{
+    document.getElementById('homeView').style.display='none';
+    document.getElementById('trackView').style.display='';
+    window.scrollTo(0,0);
+  };
+  cd.addEventListener('click', openCD);
+  cd.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openCD();} });
+}
+document.getElementById('homeBack').addEventListener('click', ()=>{
+  document.getElementById('trackView').style.display='none';
+  document.getElementById('homeView').style.display='';
+  renderHome();
+  window.scrollTo(0,0);
+});
+
+document.querySelectorAll('.pace button').forEach(b=>{
+  b.addEventListener('click', ()=>{ state.pace = +b.dataset.p; renderProj(); render(); save(); });
+});
+document.getElementById('reset').addEventListener('click', async ()=>{
+  state = JSON.parse(JSON.stringify(DEFAULT));
+  openNodes = new Set();
+  try{ await window.storage.delete(STORAGE_KEY); }catch(e){}
+  render(); save();
+});
+window.addEventListener('resize', ()=>render());
+
+/* ==================== MATERIAL 001 ==================== */
+const M_STORE = 'substrate-m001';
+const M_CLASSES = [
+  {id:'humanist',   label:'Humanist sans',      fonts:['Lato','Source Sans 3','Cabin'],
+   why:'Open apertures and calligraphic warmth: the a and e stay open, strokes carry slight modulation.'},
+  {id:'grotesque',  label:'Grotesque',          fonts:['Inter','Archivo','Work Sans'],
+   why:'Uniform strokes, closed apertures, flat horizontal terminals. Engineered neutrality with no written memory.'},
+  {id:'geometric',  label:'Geometric sans',     fonts:['Poppins','Montserrat','Questrial'],
+   why:'Compass circle o and constructed forms. Letters built from geometry, not writing.'},
+  {id:'transitional',label:'Transitional serif',fonts:['Libre Baskerville','Gelasio','PT Serif'],
+   why:'Moderate contrast, near vertical stress, bracketed serifs. The middle of serif history.'},
+  {id:'didone',     label:'Didone',             fonts:['Playfair Display','Bodoni Moda','DM Serif Display'],
+   why:'Extreme thick and thin, vertical stress, hairline unbracketed serifs. The masthead class.'},
+  {id:'slab',       label:'Slab serif',         fonts:['Roboto Slab','Zilla Slab','Bitter'],
+   why:'Heavy rectangular serifs and low contrast. Serifs that could hold weight.'}
+];
+const M_WORDS = ['Meridian','Substrate','Hamburg','Progeny','Atelier','Foundry','Gallery','Register','Monument','Cadence','Vestment','Quarry'];
+
+/* ---------- AUDIO: browser native speech, zero cost ---------- */
+const speechOK = 'speechSynthesis' in window;
+let speaking = false;
+let savedVoice = '';
+const strip = x => (x||'').replace(/<[^>]+>/g,'');
+function engVoices(){
+  return speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));
+}
+function pickVoice(){
+  const vs = engVoices();
+  if(savedVoice){ const m = vs.find(v=>v.name===savedVoice); if(m) return m; }
+  return vs.find(v=>/en[-_]US/i.test(v.lang) && /natural|premium|enhanced|siri|aria|jenny/i.test(v.name))
+      || vs.find(v=>/en[-_]US/i.test(v.lang))
+      || vs[0] || null;
+}
+function fillVoiceSel(){
+  const sel = document.getElementById('voiceSel');
+  if(!sel || !speechOK) return;
+  const build = ()=>{
+    const vs = engVoices();
+    if(!vs.length) return;
+    const current = pickVoice();
+    sel.innerHTML = vs.map(v=>`<option value="${v.name.replace(/"/g,'')}" ${current&&v.name===current.name?'selected':''}>${v.name}</option>`).join('');
+  };
+  build();
+  speechSynthesis.onvoiceschanged = build;
+  sel.addEventListener('change', ()=>{
+    savedVoice = sel.value;
+    mPersist();
+    speakChunks(['This is how I sound. Pick another if I grate.']);
+  });
+}
+let activeListenId = 'listenBtn';
+function speakChunks(chunks, btnId){
+  if(!speechOK || !chunks.length) return;
+  speechSynthesis.cancel();
+  speaking = true;
+  if(btnId) activeListenId = btnId;
+  const btn = document.getElementById(activeListenId);
+  if(btn){ btn.classList.add('playing'); btn.innerHTML = '\u25A0 Stop'; }
+  const voice = pickVoice();
+  chunks.forEach((c,i)=>{
+    const u = new SpeechSynthesisUtterance(c);
+    if(voice) u.voice = voice;
+    u.rate = 0.97; u.pitch = 1;
+    if(i === chunks.length-1) u.onend = ()=>stopSpeech(true);
+    speechSynthesis.speak(u);
+  });
+}
+function speakText(t){
+  speakChunks(strip(t).split(/(?<=[.?!])\s+/).filter(Boolean));
+}
+function speakStep(s, btnId){
+  let parts = [s.k + '.', s.t + '.'].concat(strip(s.b).split(/(?<=[.?!])\s+/));
+  if(s.show) s.show.forEach(x=>{ if(x.c) parts.push(x.c + '.'); });
+  if(s.tl) s.tl.forEach(x=>parts.push(x[0] + '. ' + strip(x[1])));
+  if(s.pal) s.pal.forEach(x=>{ if(x.c) parts.push(x.c + '.'); });
+  if(s.check) parts.push('Check yourself. ' + strip(s.check.q));
+  if(s.checkPal) parts.push('Check yourself. ' + strip(s.checkPal.q));
+  speakChunks(parts.filter(Boolean), btnId);
+}
+function stopSpeech(natural){
+  if(!speechOK) return;
+  if(!natural) speechSynthesis.cancel();
+  speaking = false;
+  const btn = document.getElementById(activeListenId);
+  if(btn){ btn.classList.remove('playing'); btn.innerHTML = '\u25B8 Listen'; }
+}
+if(speechOK) speechSynthesis.onvoiceschanged = ()=>{};
+
+
+/* ---------- LESSON ---------- */
+const LESSON = [
+  {k:'Start here', t:'This is not memorization',
+   b:'You are about to learn to classify typefaces the way a birdwatcher identifies birds: not by memorizing every bird, but by reading a few <b>field marks</b> that never lie. Typefaces have five field marks. Once you can see them, any typeface you ever meet, including ones designed tomorrow, classifies itself. This lesson assumes you know nothing. Each idea gets shown, then you get checked on it before we move on.'},
+  {k:'Field mark 1', t:'Serifs',
+   b:'A <b>serif</b> is the small foot at the end of a letter\u2019s strokes. Some typefaces have them, some do not, and that single yes or no splits all of type into two families. Look at the two specimens: same word, one has feet, one is clean.',
+   show:[{f:'Playfair Display', c:'Has serifs'},{f:'Inter', c:'No serifs, called sans serif'}],
+   check:{q:'Tap the specimen WITH serifs.', a:{f:'Libre Baskerville'}, b:{f:'Work Sans'}, correct:'a',
+     why:'The small feet at the stroke ends are serifs. Sans is French for without, a sans serif has none.'}},
+  {k:'Field mark 2', t:'Stroke contrast',
+   b:'Look inside one letter: is every line the same thickness, or do some parts go <b>fat while others go skinny</b>? That difference is called contrast. It happens because letters were first written with a flat pen: pull it down and it paints a fat line, slide it sideways and it leaves a skinny one. Some typefaces keep that pen feeling. Others erase it so every line matches.',
+   show:[{f:'Bodoni Moda', c:'Extreme contrast, thick and thin'},{f:'Archivo', c:'No contrast, one thickness'}],
+   check:{q:'Tap the specimen with HIGHER stroke contrast.', a:{f:'Montserrat'}, b:{f:'Playfair Display'}, correct:'b',
+     why:'The thins nearly vanish while the thicks stay heavy. That swing is contrast, and the sans has none.'}},
+  {k:'Field mark 3', t:'Stress',
+   b:'Here is a trick. Find the two skinniest spots on a round letter like o, then imagine a line connecting them. That line is called the <b>stress</b>. If the line leans sideways, like natural handwriting leans, the typeface is older and warmer. If the line stands perfectly straight up and down, it was drawn with a ruler mindset, newer and cooler. This one trick splits the serif families apart later.',
+   show:[{f:'Libre Baskerville', c:'Near vertical stress, rational'},{f:'Bodoni Moda', c:'Fully vertical stress, engineered'}]},
+  {k:'Field mark 4', t:'Aperture',
+   b:'<b>Aperture</b> is how open the mouths of letters like c, e, and a are. Wide open apertures read as human and friendly, letters that almost close into circles read as neutral and machined. This is the single best tell for separating the two sans classes that beginners confuse most.',
+   show:[{f:'Lato', c:'Open apertures, see the c and e'},{f:'Inter', c:'Closed apertures, the c curls in'}],
+   check:{q:'Tap the specimen with the MORE OPEN apertures. Look at the c and e.', a:{f:'Source Sans 3'}, b:{f:'Archivo'}, correct:'a',
+     why:'The c and e stay open like a wide mouth. The closed version curls its endings inward toward a circle.'}},
+  {k:'Field mark 5', t:'Terminals',
+   b:'A <b>terminal</b> is how a stroke ends when there is no serif: cut flat, flared, or swelling into a little ball. Ball terminals are the jewelry of the didone class, flat horizontal cuts are the signature of the grotesques. When two faces look similar, the ends of the a, f, and r settle it.',
+   show:[{f:'Playfair Display', c:'Ball terminals on the a'},{f:'Work Sans', c:'Flat cut terminals'}],
+   check:{q:'Tap the specimen with BALL terminals. Study the letter a.', a:{f:'Inter'}, b:{f:'Bodoni Moda'}, correct:'b',
+     why:'The a ends in a small round ball, a didone signature. The other cuts its strokes off flat.'}},
+  {k:'The story', t:'Why six classes exist',
+   b:'The six families are not random bins, they are a <b>story told in order</b>, and stories stick. Letters started as handwriting. Then printers tidied them up. Then fashion made them dramatic. Then factories made them loud, then plain. Then designers rebuilt them with a compass and ruler. Each family is one chapter:',
+   tl:[
+     ['1400s on','Letters still feel handwritten, warm and tilted. That spirit later becomes the <b>humanist</b> family.'],
+     ['1700s','Printers tidy letters up: neater, straighter, calmer. The <b>transitional</b> serifs, Baskerville, Times.'],
+     ['1790s','Fashion pushes letters to the limit: fat strokes against hair thin lines. The <b>didones</b>, Bodoni, Didot. Magazines still live here.'],
+     ['1800s','Posters need to shout across a street, so the little feet become thick bricks. The <b>slabs</b>, Rockwell, Clarendon.'],
+     ['1890s on','Business wants plain and even: no feet, no fuss, nothing extra. The <b>grotesques</b>, Akzidenz through Helvetica.'],
+     ['1920s on','Designers rebuild letters with a compass and ruler, pure circles and lines. The <b>geometrics</b>, Futura. And some put the handwriting warmth back into plain letters: the <b>humanist sans</b>, Gill Sans, Frutiger.']
+   ]},
+  {k:'Class 1 of 6', t:'Transitional serif',
+   b:'The book voice. Serifs with <b>brackets</b>, the little curves easing the serif into the stroke, moderate contrast, near vertical stress. Nothing extreme in any direction, which is exactly its tell: a serif face with no extreme feature is transitional. Canon: Baskerville, Times, Georgia.',
+   show:[{f:'Libre Baskerville', c:'Bracketed serifs, moderate contrast'},{f:'Gelasio', c:'Same class, same calm'}],
+   check:{q:'Which of these is the transitional serif?', a:{f:'PT Serif'}, b:{f:'Poppins'}, correct:'a',
+     why:'Bracketed serifs and moderate contrast with no extremes. The other has no serifs at all, a sans built from circles.'}},
+  {k:'Class 2 of 6', t:'Didone',
+   b:'The fashion masthead. Take a transitional and push everything to the limit: contrast goes <b>extreme</b>, stress goes fully vertical, serifs thin to unbracketed <b>hairlines</b>, terminals swell into balls. If the thin strokes nearly disappear, stop looking, it is a didone. Canon: Bodoni, Didot.',
+   show:[{f:'Bodoni Moda', c:'Hairline serifs, extreme contrast'},{f:'DM Serif Display', c:'Same drama, same class'}],
+   check:{q:'Which of these is the didone?', a:{f:'Gelasio'}, b:{f:'Playfair Display'}, correct:'b',
+     why:'Hairline serifs and near vanishing thins are the didone signature. The other keeps moderate contrast and soft brackets, transitional.'}},
+  {k:'Class 3 of 6', t:'Slab serif',
+   b:'The poster voice. Serifs are not feet here, they are <b>bricks</b>: heavy rectangular blocks with almost no contrast anywhere. Built in the 1800s to shout from walls, kept alive by typewriters. If the serifs look strong enough to stand on, it is a slab. Canon: Rockwell, Clarendon, Courier.',
+   show:[{f:'Roboto Slab', c:'Block serifs, even strokes'},{f:'Zilla Slab', c:'Same construction'}],
+   check:{q:'Which of these is the slab serif?', a:{f:'Bitter'}, b:{f:'Bodoni Moda'}, correct:'a',
+     why:'Thick rectangular serifs with even strokes. The other has hairline serifs and extreme contrast, the opposite move, a didone.'}},
+  {k:'Class 4 of 6', t:'Grotesque',
+   b:'The plain workhorse. Every line the same weight, the letter mouths <b>nearly closed</b>, every ending chopped flat. It is designed to say nothing so the message says everything, which is why it runs half the world\u2019s signs. Canon: Helvetica, Univers, Akzidenz Grotesk.',
+   show:[{f:'Inter', c:'Closed apertures, flat terminals'},{f:'Archivo', c:'Same engineered neutrality'}],
+   check:{q:'Which of these is the grotesque?', a:{f:'Work Sans'}, b:{f:'Libre Baskerville'}, correct:'a',
+     why:'A sans with closed apertures and flat cut terminals. The other has serifs, so it cannot be any sans class.'}},
+  {k:'Class 5 of 6', t:'Geometric sans',
+   b:'The constructed sans. Letters drawn with compass and ruler: the o is a <b>perfect circle</b>, shapes repeat mechanically, and the purest cases use a single story a, the simple loop you write by hand, instead of the two story a of this sentence. Feels designed, not written. Canon: Futura, Avant Garde, DIN.',
+   show:[{f:'Poppins', c:'Compass circle o'},{f:'Questrial', c:'Same geometric bones'}],
+   check:{q:'Which of these is the geometric sans? Study the o.', a:{f:'Lato'}, b:{f:'Montserrat'}, correct:'b',
+     why:'The o is a near perfect circle and the forms repeat like machined parts. The other has warmth and open apertures, humanist.'}},
+  {k:'Class 6 of 6', t:'Humanist sans',
+   b:'The no feet letter that still feels handwritten. The mouths of c and e stay <b>wide open</b> and the lines breathe a little instead of being machine even. If it looks like a friendly person could have written it, it is humanist. This is the trickiest family because it hides between the other two sans. Canon: Gill Sans, Frutiger, Optima.',
+   show:[{f:'Lato', c:'Open, warm, slightly modulated'},{f:'Source Sans 3', c:'Same written feeling'}],
+   check:{q:'Which of these is the humanist sans? The c and e will tell you.', a:{f:'Cabin'}, b:{f:'Inter'}, correct:'a',
+     why:'Open apertures and a written warmth. The closed, even, flat cut version is the grotesque.'}},
+  {k:'Hard pair 1', t:'Humanist versus grotesque',
+   b:'Both are sans with normal proportions, and this pair causes most beginner misses. Run one test: <b>look at the c and e</b>. Open mouths mean humanist. Curled nearly shut means grotesque. Secondary tell: humanist strokes breathe slightly, grotesque strokes are dead even.',
+   show:[{f:'Source Sans 3', c:'Humanist: open c and e'},{f:'Work Sans', c:'Grotesque: closed c and e'}],
+   check:{q:'Tap the HUMANIST sans.', a:{f:'Archivo'}, b:{f:'Lato'}, correct:'b',
+     why:'Open apertures and warmth. The other closes its c and e and evens every stroke, grotesque.'}},
+  {k:'Hard pair 2', t:'Transitional versus didone',
+   b:'Both are serifs with vertical leaning stress. Run one test: <b>how far do the thins fall</b>. Moderate contrast with soft bracketed serifs is transitional. Thins near vanishing with hairline unbracketed serifs is didone. If you hesitate, check for ball terminals, only the didone wears jewelry.',
+   show:[{f:'Gelasio', c:'Transitional: moderate, bracketed'},{f:'Bodoni Moda', c:'Didone: hairlines, extreme'}],
+   check:{q:'Tap the TRANSITIONAL serif.', a:{f:'Libre Baskerville'}, b:{f:'DM Serif Display'}, correct:'a',
+     why:'Moderate contrast and bracketed serifs. The other pushes to hairlines and extreme contrast, didone.'}},
+  {k:'Hard pair 3', t:'Geometric versus grotesque',
+   b:'Both are plain, even letters. Run one test: <b>look at the o</b>. The geometric o is a perfect circle, like tracing a coin. The grotesque o is a slightly squished circle, because a tiny squish is secretly easier to read. Bonus tell: the simple one loop a, the way you write it by hand, almost always means geometric.',
+   show:[{f:'Montserrat', c:'Geometric: circular o'},{f:'Inter', c:'Grotesque: optical oval o'}],
+   check:{q:'Tap the GEOMETRIC sans.', a:{f:'Questrial'}, b:{f:'Archivo'}, correct:'a',
+     why:'The o is a drawn circle and the letterforms repeat like parts. The optically corrected oval belongs to the grotesque.'}},
+  {k:'Graduation', t:'You now have the eye',
+   b:'You know the five field marks, the story that produced the six classes, and the three tests that settle the hard pairs. That is the whole method, there is nothing else hidden. From here it is reps: the drill shows you specimens and you call them, every answer explains itself, and when free practice feels automatic you take the pass test, twenty specimens, ten seconds each, twenty for twenty. Then, and only then, the atom gets checked on the map.'}
+];
+
+let mMode='free', mCurrent=null, mLastFont='', mScore=0, mStreak=0, mRound=0, mTestCorrect=0, mLocked=false, mTimerId=null, mTimerStart=0;
+const M_ROUNDS=20, M_MS=10000;
+let mBest=0, mPassed=false, lStep=0, lDone=false, lCheckPassed=false, lFlip=false;
+
+(async ()=>{
+  try{
+    const r = await window.storage.get(M_STORE);
+    if(r && r.value){ const d=JSON.parse(r.value); mBest=d.best||0; mPassed=!!d.passed; lStep=Math.min(d.lStep||0, LESSON.length-1); lDone=!!d.lDone; savedVoice=d.voice||''; }
+  }catch(e){}
+  document.getElementById('best').textContent = mBest;
+  if(mPassed) document.getElementById('passnote').textContent += '  ·  PASSED ON RECORD';
+  renderLesson();
+  updateGate();
+})();
+async function mPersist(){ try{ await window.storage.set(M_STORE, JSON.stringify({best:mBest, passed:mPassed, lStep, lDone, voice:savedVoice})); }catch(e){} }
+
+function openMaterial(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.add('on');
+  document.body.style.overflow='hidden';
+  if(id==='m005') cRenderLesson();
+}
+document.getElementById('m001back').addEventListener('click', ()=>{
+  document.getElementById('m001').classList.remove('on');
+  document.body.style.overflow='';
+  mStopTimer();
+  stopSpeech();
+});
+document.getElementById('m005back').addEventListener('click', ()=>{
+  document.getElementById('m005').classList.remove('on');
+  document.body.style.overflow='';
+  cStopTimer();
+  stopSpeech();
+});
+
+function showTab(t){
+  stopSpeech();
+  document.querySelectorAll('#m001 .tabs button').forEach(x=>x.classList.toggle('on', x.dataset.t===t));
+  document.querySelectorAll('#m001 .msec').forEach(x=>x.classList.remove('on'));
+  document.getElementById(t).classList.add('on');
+}
+document.querySelectorAll('#m001 .tabs button').forEach(b=>{
+  b.addEventListener('click', ()=>showTab(b.dataset.t));
+});
+
+function updateGate(){
+  document.getElementById('gate').classList.toggle('on', !lDone);
+  document.getElementById('lessonDoneMark').textContent = lDone ? '· done' : '';
+}
+document.getElementById('gateGo').addEventListener('click', ()=>showTab('mlearn'));
+
+function specCard(f,c,word){
+  return `<div class="lspec"><div class="big" style="font-family:'${f}'">${word||'Meridian'}<div style="font-size:.55em;color:var(--muted);margin-top:4px">a g e R c o</div></div><div class="cap">${c||''}</div></div>`;
+}
+
+function renderLesson(){
+  stopSpeech();
+  const s = LESSON[lStep];
+  lCheckPassed = !s.check;
+  lFlip = Math.random() < .5;
+  document.getElementById('lprogBar').style.width = ((lStep+1)/LESSON.length*100)+'%';
+  document.getElementById('lprogCt').textContent = `Step ${lStep+1} of ${LESSON.length}`;
+  let h = `<div class="lkicker">${s.k}</div><div class="ltitle">${s.t}</div>`;
+  if(speechOK) h += `<span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><button class="listen" id="listenBtn" style="margin:0" aria-label="Listen to this step">\u25B8 Listen</button><select id="voiceSel" aria-label="Choose a voice" style="background:#0B101F;border:1px solid #2A3355;color:#7C8B99;border-radius:8px;padding:7px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;max-width:220px"></select></span><div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:#4A5866;letter-spacing:.06em;margin-bottom:12px;line-height:1.5">Voices sound bad? Download better ones free in your device settings under Accessibility, Spoken Content. Downloaded voices appear in this list.</div>`;
+  h += `<div class="lbody">${s.b}</div>`;
+  if(s.show){
+    h += `<div class="lshow">${s.show.map(x=>specCard(x.f,x.c)).join('')}</div>`;
+  }
+  if(s.tl){
+    h += `<div class="timeline">${s.tl.map(x=>`<div class="tstep"><span class="ty">${x[0]}</span><span class="tx">${x[1]}</span></div>`).join('')}</div>`;
+  }
+  if(s.check){
+    const first = lFlip ? 'b' : 'a';
+    const second = lFlip ? 'a' : 'b';
+    h += `<div class="lcheck"><div class="lq">${s.check.q}</div>
+      <div class="lopts">
+        <div class="lopt" data-key="${first}"><div class="big" style="font-family:'${s.check[first].f}'">Meridian<div style="font-size:.55em;color:var(--muted);margin-top:4px">a g e c o</div></div></div>
+        <div class="lopt" data-key="${second}"><div class="big" style="font-family:'${s.check[second].f}'">Meridian<div style="font-size:.55em;color:var(--muted);margin-top:4px">a g e c o</div></div></div>
+      </div>
+      <div class="lfb" id="lfb"></div></div>`;
+  }
+  document.getElementById('lcard').innerHTML = h;
+  document.getElementById('lback').style.visibility = lStep===0 ? 'hidden' : 'visible';
+  const nextBtn = document.getElementById('lnext');
+  nextBtn.disabled = !lCheckPassed;
+  nextBtn.textContent = lStep===LESSON.length-1 ? 'Open the drill' : 'Continue';
+
+  const lb = document.getElementById('listenBtn');
+  if(lb) lb.addEventListener('click', ()=>{ speaking ? stopSpeech() : speakStep(s); });
+  fillVoiceSel();
+
+  document.querySelectorAll('.lopt').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      if(lCheckPassed) return;
+      const key = el.dataset.key;
+      const right = key === s.check.correct;
+      const fb = document.getElementById('lfb');
+      if(right){
+        el.classList.add('right');
+        fb.innerHTML = `<span class="ok">Right.</span><span class="why">${s.check.why}</span>`;
+        lCheckPassed = true;
+        document.getElementById('lnext').disabled = false;
+        if(speaking) speakText(s.check.why);
+      }else{
+        el.classList.add('wrong');
+        fb.innerHTML = `<span class="no">Not that one.</span><span class="why">Look again. ${s.check.why}</span>`;
+        setTimeout(()=>el.classList.remove('wrong'), 900);
+      }
+    });
+  });
+}
+
+
+
+document.getElementById('lnext').addEventListener('click', ()=>{
+  if(lStep === LESSON.length-1){
+    lDone = true; mPersist(); updateGate(); showTab('mdrill');
+    return;
+  }
+  lStep++; mPersist(); renderLesson();
+  document.getElementById('mlearn').scrollIntoView({block:'start'});
+});
+document.getElementById('lback').addEventListener('click', ()=>{
+  if(lStep>0){ lStep--; mPersist(); renderLesson(); }
+});
+
+/* ---------- DRILL ---------- */
+const mAns = document.getElementById('answers');
+M_CLASSES.forEach(c=>{
+  const b=document.createElement('button');
+  b.textContent=c.label; b.dataset.id=c.id;
+  b.addEventListener('click', ()=>mAnswer(c.id));
+  mAns.appendChild(b);
+});
+function mPick(){
+  let cls, font;
+  do{
+    cls = M_CLASSES[Math.floor(Math.random()*M_CLASSES.length)];
+    font = cls.fonts[Math.floor(Math.random()*cls.fonts.length)];
+  }while(font===mLastFont);
+  mLastFont=font; mCurrent=cls;
+  const word = M_WORDS[Math.floor(Math.random()*M_WORDS.length)];
+  const sp=document.getElementById('specimen'), sr=document.getElementById('specrow');
+  sp.style.fontFamily=`'${font}', sans-serif`; sr.style.fontFamily=`'${font}', sans-serif`;
+  sp.textContent=word; sr.textContent='a g e R c o';
+}
+function mFb(h){ document.getElementById('fb').innerHTML=h; }
+function mBar(){
+  document.getElementById('round').textContent = mMode==='test' ? `${mRound} / ${M_ROUNDS}` : mRound;
+  document.getElementById('score').textContent = mMode==='test' ? mTestCorrect : mScore;
+  document.getElementById('streak').textContent = mStreak;
+  document.getElementById('best').textContent = mBest;
+}
+function mStartTimer(){
+  const bar=document.getElementById('timer');
+  mTimerStart=Date.now();
+  clearInterval(mTimerId);
+  mTimerId=setInterval(()=>{
+    const el=Date.now()-mTimerStart;
+    bar.style.width=Math.min(100, el/M_MS*100)+'%';
+    if(el>=M_MS) mTimeUp();
+  },100);
+}
+function mStopTimer(){ clearInterval(mTimerId); const t=document.getElementById('timer'); if(t) t.style.width='0'; }
+function mNext(){
+  mLocked=false;
+  document.getElementById('nextBtn').classList.remove('show');
+  mAns.querySelectorAll('button').forEach(b=>b.disabled=false);
+  mRound++;
+  mPick();
+  mFb(mMode==='test' ? 'Ten seconds.' : 'Which class is this? The lowercase row is your evidence.');
+  mBar();
+  if(mMode==='test') mStartTimer();
+}
+function mTimeUp(){
+  mStopTimer();
+  if(mLocked) return;
+  mLocked=true;
+  mAns.querySelectorAll('button').forEach(b=>b.disabled=true);
+  mStreak=0;
+  mFb(`<span class="no">Time.</span><span class="why">It was ${mCurrent.label}. ${mCurrent.why}</span>`);
+  mEnd(false);
+}
+function mAnswer(id){
+  if(mLocked) return;
+  mLocked=true; mStopTimer();
+  mAns.querySelectorAll('button').forEach(b=>b.disabled=true);
+  const right = id===mCurrent.id;
+  if(right){
+    mStreak++; if(mStreak>mBest){mBest=mStreak; mPersist();}
+    if(mMode==='test') mTestCorrect++; else mScore++;
+    mFb(`<span class="ok">Correct: ${mCurrent.label}.</span><span class="why">${mCurrent.why}</span>`);
+  }else{
+    mStreak=0;
+    const g=M_CLASSES.find(c=>c.id===id);
+    mFb(`<span class="no">Not ${g.label}.</span><span class="why">It was ${mCurrent.label}. ${mCurrent.why}</span>`);
+  }
+  mEnd(right);
+}
+function mEnd(right){
+  mBar();
+  if(mMode==='test' && mRound>=M_ROUNDS){ mFinish(); return; }
+  if(mMode==='test'){ setTimeout(mNext, right?700:1800); }
+  else{ document.getElementById('nextBtn').classList.add('show'); }
+}
+function mFinish(){
+  mStopTimer();
+  const ok = mTestCorrect===M_ROUNDS;
+  const big=document.getElementById('resBig'), txt=document.getElementById('resTxt');
+  big.textContent = ok?'PASS':`${mTestCorrect} / ${M_ROUNDS}`;
+  big.className='big '+(ok?'pass':'fail');
+  txt.textContent = ok
+    ? 'Twenty for twenty under time. Mark this atom known on the map, it is earned.'
+    : 'The standard is twenty for twenty. Revisit the lesson\u2019s hard pairs, run free practice, then test again.';
+  if(ok){ mPassed=true; mPersist(); }
+  document.getElementById('stage').style.display='none';
+  mAns.style.display='none';
+  document.getElementById('nextBtn').classList.remove('show');
+  document.getElementById('result').classList.add('show');
+}
+document.getElementById('resBtn').addEventListener('click', ()=>{
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('stage').style.display='';
+  mAns.style.display='';
+  mStart(mMode);
+});
+function mStart(m){
+  mMode=m; mScore=0; mStreak=0; mRound=0; mTestCorrect=0;
+  document.getElementById('modeBtn').textContent = m==='test' ? 'Switch to free practice' : 'Start pass test · 20 timed';
+  mNext();
+}
+document.getElementById('modeBtn').addEventListener('click', ()=>{ mStart(mMode==='test'?'free':'test'); });
+document.getElementById('nextBtn').addEventListener('click', mNext);
+
+mStart('free');
+
+/* ==================== MATERIAL 005 · COLOR HARMONIES ==================== */
+const C_STORE = 'substrate-m005';
+const C_HARM = [
+  {id:'comp',   label:'Complementary',       f:'Base plus 180',            gen:h=>[h,(h+180)%360],
+   why:'Two hues sit directly opposite on the wheel: maximum tension, maximum pop.'},
+  {id:'split',  label:'Split complementary', f:'Base plus 150 and 210',    gen:h=>[h,(h+150)%360,(h+210)%360],
+   why:'A base plus the two neighbors of its opposite: complementary tension, softened. The far pair sits close together.'},
+  {id:'analog', label:'Analogous',           f:'Base plus 30 and minus 30',gen:h=>[h,(h+30)%360,(h+330)%360],
+   why:'Neighbors on the wheel: different hues, low tension, one mood.'},
+  {id:'triad',  label:'Triadic',             f:'Base plus 120 and 240',    gen:h=>[h,(h+120)%360,(h+240)%360],
+   why:'Three hues spaced evenly at 120 degrees: a balanced triangle, loud but stable.'},
+  {id:'tetrad', label:'Tetradic',            f:'Base plus 60, 180, 240',   gen:h=>[h,(h+60)%360,(h+180)%360,(h+240)%360],
+   why:'Two complementary pairs forming a rectangle: the richest set and the hardest to balance.'},
+  {id:'mono',   label:'Monochromatic',       f:'One hue, stepped light to dark', gen:null,
+   why:'A single hue stepped through lightness: same address on the wheel, quiet and cohesive.'}
+];
+function cPaletteFor(id, h){
+  const H = C_HARM.find(x=>x.id===id);
+  if(id==='mono') return [28,45,62,78].map(l=>`hsl(${h} 62% ${l}%)`);
+  return H.gen(h).map(x=>`hsl(${x} 68% 55%)`);
+}
+function cSwatches(cols, big){
+  const s = big? 84 : 54;
+  return `<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">${cols.map(c=>`<span style="width:${s}px;height:${s}px;border-radius:10px;background:${c};display:inline-block;border:1px solid rgba(255,255,255,.08)"></span>`).join('')}</div>`;
+}
+function cWheel(marks){
+  const stops = Array.from({length:13},(_,i)=>`hsl(${i*30} 70% 55%) ${i*30}deg`).join(',');
+  let dots = '';
+  (marks||[]).forEach(h=>{
+    const r = 62, rad = h*Math.PI/180;
+    const x = 75 + r*Math.sin(rad), y = 75 - r*Math.cos(rad);
+    dots += `<span style="position:absolute;left:${x-7}px;top:${y-7}px;width:14px;height:14px;border-radius:50%;background:hsl(${h} 70% 55%);border:2.5px solid #E8EEF2;box-shadow:0 0 8px rgba(0,0,0,.5)"></span>`;
+  });
+  return `<div style="display:flex;justify-content:center;margin:16px 0"><div style="position:relative;width:150px;height:150px;border-radius:50%;background:conic-gradient(${stops});box-shadow:inset 0 0 0 34px #0B101F, 0 0 24px rgba(0,0,0,.4)">${dots}</div></div>`;
+}
+const C_LESSON = [
+  {k:'Start here', t:'The wheel is a map, not a mood board',
+   b:'You are not going to memorize color combinations, there are infinitely many and that road is endless. You are going to learn <b>six shapes drawn on one wheel</b>. Every harmony is a geometric relationship between positions on the color wheel, and once you can see the shape, you can read any palette and build one from any starting color. Six shapes. That is the entire atom.',
+   wheel:[]},
+  {k:'The map itself', t:'Hue is an address in degrees',
+   b:'The wheel arranges every hue in a circle, 360 degrees around, red at the top by convention, moving through orange, yellow, green, cyan, blue, and violet back to red. That means every hue has an <b>address in degrees</b>, and every harmony is just arithmetic on those addresses: opposite means plus 180, neighbor means plus or minus 30. The three dots marked here sit at 0, 120, and 240, evenly spaced, remember that spacing, it returns later.',
+   wheel:[0,120,240]},
+  {k:'Shape 1 of 6', t:'Complementary',
+   b:'The straight line through the center: a base hue and the hue <b>directly opposite</b>, 180 degrees away. Opposites amplify each other, which is why this is the loudest harmony, sports teams and warning design live here. On the wheel below, the two dots face each other exactly.',
+   wheel:[210,30], pal:[{h:'comp', c:'A complementary pair'}],
+   checkPal:{q:'Tap the COMPLEMENTARY palette, the one built on opposites.', a:'comp', b:'analog', correct:'a',
+    why:'Two hues that fight from across the wheel. The other palette\u2019s hues are neighbors, that is analogous.'}},
+  {k:'Shape 2 of 6', t:'Analogous',
+   b:'The short arc: a base and its <b>neighbors</b>, 30 degrees to each side. Because neighboring hues share undertones, this harmony has almost no tension, it reads as one mood, which is why nature scenes and calm brands live here. Different hues, same family.',
+   wheel:[90,120,60], pal:[{h:'analog', c:'An analogous run of neighbors'}],
+   checkPal:{q:'Tap the ANALOGOUS palette, the neighbors.', a:'comp', b:'analog', correct:'b',
+    why:'Hues sitting shoulder to shoulder on the wheel, one mood. The other pair faces off from opposite sides, complementary.'}},
+  {k:'Shape 3 of 6', t:'Monochromatic',
+   b:'The single point: <b>one hue only</b>, stepped through lightness from deep to pale. This is the trap class for beginners because it can resemble analogous. The test is hue count: monochromatic is one hue wearing different amounts of light, analogous is genuinely different hues. If the swatches would all point to the same spot on the wheel, it is mono.',
+   wheel:[210], pal:[{h:'mono', c:'One hue, stepped in lightness'}],
+   checkPal:{q:'Tap the MONOCHROMATIC palette, one hue only.', a:'mono', b:'analog', correct:'a',
+    why:'Every swatch is the same hue at a different lightness. The other palette shifts hue as it moves, those are neighbors, analogous.'}},
+  {k:'Shape 4 of 6', t:'Triadic',
+   b:'The equilateral triangle: three hues at perfect <b>120 degree spacing</b>, the spacing you saw on the map step. Nothing dominates because nothing is closer to anything else, so triads read balanced but energetic, comics and toy brands and Bauhaus primaries live here.',
+   wheel:[0,120,240], pal:[{h:'triad', c:'A triad, evenly spaced'}],
+   checkPal:{q:'Tap the TRIADIC palette, three hues evenly spaced.', a:'triad', b:'comp', correct:'a',
+    why:'Three hues pulling equally from three directions. The other has only two positions, a complementary pair.'}},
+  {k:'Shape 5 of 6', t:'Split complementary',
+   b:'Take complementary and soften it: keep the base, but instead of its exact opposite, take the <b>two neighbors of the opposite</b>, at 150 and 210 degrees. You keep most of the tension while gaining a third color to work with. The tell against triadic: a split\u2019s far pair sits close together, a triad\u2019s three points are all equally far apart.',
+   wheel:[0,150,210], pal:[{h:'split', c:'A split: base plus the opposite\u2019s neighbors'}],
+   checkPal:{q:'Tap the SPLIT COMPLEMENTARY palette. Look for two hues sitting close, far from the base.', a:'split', b:'triad', correct:'a',
+    why:'Two of its hues huddle together opposite the base. The evenly spread triangle is the triad.'}},
+  {k:'Shape 6 of 6', t:'Tetradic',
+   b:'The rectangle: <b>two complementary pairs</b> at once, four hues. It offers the richest range and punishes the most, because four competing hues need one to lead and the rest to follow. Designers who use tetrads well usually let one hue dominate at eighty percent and use the other three as accents.',
+   wheel:[0,60,180,240], pal:[{h:'tetrad', c:'A tetrad, two opposing pairs'}],
+   checkPal:{q:'Tap the TETRADIC palette, four hues, two opposing pairs.', a:'tetrad', b:'analog', correct:'a',
+    why:'Four positions forming a rectangle across the wheel. The other stays in one small neighborhood, analogous.'}},
+  {k:'The hard pairs', t:'The two confusions that matter',
+   b:'Nearly every miss in this atom is one of two confusions, and each has a one look test. <b>Mono versus analogous</b>: count the hues, one hue in different light is mono, genuinely different neighboring hues is analogous. <b>Split versus triad</b>: check the spacing, if two hues huddle together far from the base it is a split, if all three keep equal distance it is a triad. Run those two tests and the drill has no traps left.',
+   pal:[{h:'mono', c:'Mono: one hue, stepped'},{h:'analog', c:'Analogous: true neighbors'}]},
+  {k:'Graduation', t:'Six shapes, one wheel',
+   b:'You can now name the shape behind any palette and build any harmony from a starting hue by arithmetic: opposite is 180, neighbors are 30, triangle is 120, split is 150 and 210, rectangle adds 60. The drill generates endless fresh palettes from these exact formulas, so every rep is new colors wearing one of six shapes you know. Free practice explains every answer. The pass test is twenty for twenty, ten seconds each. Then the atom gets its check on the map.'}
+];
+
+let cStep=0, cDone=false, cCheckPassed=false, cFlip=false, cBest=0, cPassed=false;
+let cMode='free', cCur=null, cScore=0, cStreak=0, cRound=0, cTestCorrect=0, cLocked=false, cTimerId=null, cTimerStart=0, cLastId='';
+const C_ROUNDS=20, C_MS=10000;
+
+(async ()=>{
+  try{
+    const r = await window.storage.get(C_STORE);
+    if(r && r.value){ const d=JSON.parse(r.value); cBest=d.best||0; cPassed=!!d.passed; cStep=Math.min(d.cStep||0, C_LESSON.length-1); cDone=!!d.cDone; }
+  }catch(e){}
+  document.getElementById('c_best').textContent = cBest;
+  if(cPassed) document.getElementById('cPassnote').textContent += '  ·  PASSED ON RECORD';
+  cUpdateGate();
+})();
+async function cPersist(){ try{ await window.storage.set(C_STORE, JSON.stringify({best:cBest, passed:cPassed, cStep, cDone})); }catch(e){} }
+
+function cShowTab(t){
+  stopSpeech();
+  document.querySelectorAll('#m005 .tabs button').forEach(x=>x.classList.toggle('on', x.dataset.t===t));
+  document.querySelectorAll('#m005 .msec').forEach(x=>x.classList.remove('on'));
+  document.getElementById(t).classList.add('on');
+  if(t==='c_ref') cRenderRef();
+}
+document.querySelectorAll('#m005 .tabs button').forEach(b=>{
+  b.addEventListener('click', ()=>cShowTab(b.dataset.t));
+});
+function cUpdateGate(){
+  document.getElementById('cGate').classList.toggle('on', !cDone);
+  document.getElementById('cLessonDoneMark').textContent = cDone ? '· done' : '';
+}
+document.getElementById('cGateGo').addEventListener('click', ()=>cShowTab('c_learn'));
+
+function cRenderRef(){
+  const h0 = Math.floor(Math.random()*360);
+  document.getElementById('cRefCards').innerHTML = C_HARM.map(H=>`
+    <div class="cls" style="grid-template-columns:1fr 1.2fr">
+      <div>${cSwatches(cPaletteFor(H.id,(h0+137*C_HARM.indexOf(H))%360))}</div>
+      <div class="info"><b>${H.label}</b><div class="canon">${H.f}</div><span>${H.why}</span></div>
+    </div>`).join('');
+}
+
+function cRenderLesson(){
+  stopSpeech();
+  const s = C_LESSON[cStep];
+  cCheckPassed = !s.checkPal;
+  cFlip = Math.random() < .5;
+  const baseH = Math.floor(Math.random()*360);
+  document.getElementById('cProgBar').style.width = ((cStep+1)/C_LESSON.length*100)+'%';
+  document.getElementById('cProgCt').textContent = `Step ${cStep+1} of ${C_LESSON.length}`;
+  let h = `<div class="lkicker">${s.k}</div><div class="ltitle">${s.t}</div>`;
+  if(speechOK) h += `<button class="listen" id="cListenBtn" aria-label="Listen to this step">\u25B8 Listen</button>`;
+  h += `<div class="lbody">${s.b}</div>`;
+  if(s.wheel) h += cWheel(s.wheel);
+  if(s.pal) h += `<div class="lshow">${s.pal.map(x=>`<div class="lspec">${cSwatches(cPaletteFor(x.h, baseH))}<div class="cap">${x.c||''}</div></div>`).join('')}</div>`;
+  if(s.checkPal){
+    const first = cFlip ? 'b' : 'a';
+    const second = cFlip ? 'a' : 'b';
+    h += `<div class="lcheck"><div class="lq">${s.checkPal.q}</div>
+      <div class="lopts">
+        <div class="lopt" data-key="${first}">${cSwatches(cPaletteFor(s.checkPal[first], Math.floor(Math.random()*360)))}</div>
+        <div class="lopt" data-key="${second}">${cSwatches(cPaletteFor(s.checkPal[second], Math.floor(Math.random()*360)))}</div>
+      </div>
+      <div class="lfb" id="cLfb"></div></div>`;
+  }
+  document.getElementById('cCard').innerHTML = h;
+  document.getElementById('cBack').style.visibility = cStep===0 ? 'hidden' : 'visible';
+  const nx = document.getElementById('cNext');
+  nx.disabled = !cCheckPassed;
+  nx.textContent = cStep===C_LESSON.length-1 ? 'Open the drill' : 'Continue';
+  const lb = document.getElementById('cListenBtn');
+  if(lb) lb.addEventListener('click', ()=>{ speaking ? stopSpeech() : speakStep(s, 'cListenBtn'); });
+  document.querySelectorAll('#m005 .lopt').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      if(cCheckPassed) return;
+      const right = el.dataset.key === s.checkPal.correct;
+      const fb = document.getElementById('cLfb');
+      if(right){
+        el.classList.add('right');
+        fb.innerHTML = `<span class="ok">Right.</span><span class="why">${s.checkPal.why}</span>`;
+        cCheckPassed = true;
+        document.getElementById('cNext').disabled = false;
+        if(speaking) speakText(s.checkPal.why);
+      }else{
+        el.classList.add('wrong');
+        fb.innerHTML = `<span class="no">Not that one.</span><span class="why">Look again. ${s.checkPal.why}</span>`;
+        setTimeout(()=>el.classList.remove('wrong'), 900);
+      }
+    });
+  });
+}
+document.getElementById('cNext').addEventListener('click', ()=>{
+  if(cStep === C_LESSON.length-1){
+    cDone = true; cPersist(); cUpdateGate(); cShowTab('c_drill');
+    return;
+  }
+  cStep++; cPersist(); cRenderLesson();
+  document.getElementById('c_learn').scrollIntoView({block:'start'});
+});
+document.getElementById('cBack').addEventListener('click', ()=>{
+  if(cStep>0){ cStep--; cPersist(); cRenderLesson(); }
+});
+
+/* m005 drill */
+const cAns = document.getElementById('cAnswers');
+C_HARM.forEach(H=>{
+  const b=document.createElement('button');
+  b.textContent=H.label; b.dataset.id=H.id;
+  b.addEventListener('click', ()=>cAnswer(H.id));
+  cAns.appendChild(b);
+});
+function cPick(){
+  let H;
+  do{ H = C_HARM[Math.floor(Math.random()*C_HARM.length)]; }while(H.id===cLastId);
+  cLastId = H.id; cCur = H;
+  document.getElementById('cPalette').innerHTML = cSwatches(cPaletteFor(H.id, Math.floor(Math.random()*360)), true);
+}
+function cFbSet(h){ document.getElementById('cFb').innerHTML = h; }
+function cBar(){
+  document.getElementById('c_round').textContent = cMode==='test' ? `${cRound} / ${C_ROUNDS}` : cRound;
+  document.getElementById('c_score').textContent = cMode==='test' ? cTestCorrect : cScore;
+  document.getElementById('c_streak').textContent = cStreak;
+  document.getElementById('c_best').textContent = cBest;
+}
+function cStartTimer(){
+  const bar=document.getElementById('cTimer');
+  cTimerStart=Date.now();
+  clearInterval(cTimerId);
+  cTimerId=setInterval(()=>{
+    const el=Date.now()-cTimerStart;
+    bar.style.width=Math.min(100, el/C_MS*100)+'%';
+    if(el>=C_MS) cTimeUp();
+  },100);
+}
+function cStopTimer(){ clearInterval(cTimerId); const t=document.getElementById('cTimer'); if(t) t.style.width='0'; }
+function cNextRound(){
+  cLocked=false;
+  document.getElementById('cNextBtn').classList.remove('show');
+  cAns.querySelectorAll('button').forEach(b=>b.disabled=false);
+  cRound++;
+  cPick();
+  cFbSet(cMode==='test' ? 'Ten seconds.' : 'Which harmony is this palette built on?');
+  cBar();
+  if(cMode==='test') cStartTimer();
+}
+function cTimeUp(){
+  cStopTimer();
+  if(cLocked) return;
+  cLocked=true;
+  cAns.querySelectorAll('button').forEach(b=>b.disabled=true);
+  cStreak=0;
+  cFbSet(`<span class="no">Time.</span><span class="why">It was ${cCur.label}. ${cCur.why}</span>`);
+  cEndRound(false);
+}
+function cAnswer(id){
+  if(cLocked) return;
+  cLocked=true; cStopTimer();
+  cAns.querySelectorAll('button').forEach(b=>b.disabled=true);
+  const right = id===cCur.id;
+  if(right){
+    cStreak++; if(cStreak>cBest){cBest=cStreak; cPersist();}
+    if(cMode==='test') cTestCorrect++; else cScore++;
+    cFbSet(`<span class="ok">Correct: ${cCur.label}.</span><span class="why">${cCur.why}</span>`);
+  }else{
+    cStreak=0;
+    const g=C_HARM.find(x=>x.id===id);
+    cFbSet(`<span class="no">Not ${g.label}.</span><span class="why">It was ${cCur.label}. ${cCur.why}</span>`);
+  }
+  cEndRound(right);
+}
+function cEndRound(right){
+  cBar();
+  if(cMode==='test' && cRound>=C_ROUNDS){ cFinish(); return; }
+  if(cMode==='test'){ setTimeout(cNextRound, right?700:1800); }
+  else{ document.getElementById('cNextBtn').classList.add('show'); }
+}
+function cFinish(){
+  cStopTimer();
+  const ok = cTestCorrect===C_ROUNDS;
+  const big=document.getElementById('cResBig'), txt=document.getElementById('cResTxt');
+  big.textContent = ok?'PASS':`${cTestCorrect} / ${C_ROUNDS}`;
+  big.className='big '+(ok?'pass':'fail');
+  txt.textContent = ok
+    ? 'Twenty for twenty under time. Mark this atom known on the map, it is earned.'
+    : 'The standard is twenty for twenty. Revisit the hard pairs step, run free practice, then test again.';
+  if(ok){ cPassed=true; cPersist(); }
+  document.getElementById('cStage').style.display='none';
+  cAns.style.display='none';
+  document.getElementById('cNextBtn').classList.remove('show');
+  document.getElementById('cResult').classList.add('show');
+}
+document.getElementById('cResBtn').addEventListener('click', ()=>{
+  document.getElementById('cResult').classList.remove('show');
+  document.getElementById('cStage').style.display='';
+  cAns.style.display='';
+  cStartMode(cMode);
+});
+function cStartMode(m){
+  cMode=m; cScore=0; cStreak=0; cRound=0; cTestCorrect=0;
+  document.getElementById('cModeBtn').textContent = m==='test' ? 'Switch to free practice' : 'Start pass test · 20 timed';
+  cNextRound();
+}
+document.getElementById('cModeBtn').addEventListener('click', ()=>{ cStartMode(cMode==='test'?'free':'test'); });
+document.getElementById('cNextBtn').addEventListener('click', cNextRound);
+cStartMode('free');
+cRenderLesson();
+
+load();
+</script>
+</body>
+</html>
