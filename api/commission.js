@@ -11,6 +11,7 @@ Hard rules:
 4. Layers stack bottom up: perception and foundation skills at the bottom, production craft in the middle, systems and judgment above, canon and cohort at the top. 4 or 5 layers, 5 to 8 atoms each.
 5. The top layer always includes studying the specific best practitioners who ever did this (the cohort): recall atoms about real named people, their moves, their methods.
 6. Include a one line lane description of the domain.
+7. SPEED CONTRACT: exactly 4 layers, 4 to 6 atoms each, exactly 3 exercises per atom. Atom names under 90 characters, exercises under 120, pass conditions under 120. This is a first pass, depth arrives in later passes.
 
 Respond with ONLY valid JSON, no markdown fences, no preamble, exactly this shape:
 {"lane":"...","layers":[{"name":"...","sub":"...","atoms":[{"n":"...","hrs":6,"ex":["...","...","..."],"pass":"..."}]}]}
@@ -40,8 +41,8 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 6000,
+        model: 'claude-haiku-4-5',
+        max_tokens: 3200,
         system: METHODOLOGY,
         messages: [{
           role: 'user',
