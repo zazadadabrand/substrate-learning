@@ -406,7 +406,7 @@
   <div class="bloom">
     <h3>Bloom protocol</h3>
     <p>This map is a living model, not a fixed syllabus. It grows on a loop: research passes on the cohort of nineteen surface new discoveries, discoveries become new atoms and modules, materials and readings refresh as better methods are found, and every gap you log below a layer becomes an input to the next pass. Hour estimates are recalibrated as your actual pace data comes in. Each pass increments the version. And every material holds one standard above all: written so simply a kid could learn from it, because a concept you cannot explain to a kid is a concept you do not understand.</p>
-    <div class="ver">Model v10 · self serve engine live: commissioned stacks build themselves · per stack ombre identities · Creative Director: 49 atoms, Materials 001 and 005</div>
+    <div class="ver">Model v11 · engine pass tuned for speed with retry · progress persists in this browser · Creative Director: 49 atoms, Materials 001 and 005</div>
   </div>
 
   <div class="footer">
@@ -634,8 +634,20 @@
 </div>
 
 <script>
-/* storage fallback: keeps the app booting in environments without the storage API */
-if(!window.storage){ window.storage = { async get(){return null}, async set(){return null}, async delete(){return null}, async list(){return {keys:[]}} }; }
+/* storage fallback: on the open web, persist via localStorage; boot safely even without that */
+if(!window.storage){
+  try{
+    localStorage.setItem('substrate-probe','1'); localStorage.removeItem('substrate-probe');
+    window.storage = {
+      async get(k){ const v = localStorage.getItem(k); return v==null ? null : {key:k, value:v}; },
+      async set(k,v){ localStorage.setItem(k, v); return {key:k, value:v}; },
+      async delete(k){ localStorage.removeItem(k); return {key:k, deleted:true}; },
+      async list(p){ const keys=[]; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(!p||k.startsWith(p)) keys.push(k); } return {keys}; }
+    };
+  }catch(e){
+    window.storage = { async get(){return null}, async set(){return null}, async delete(){return null}, async list(){return {keys:[]}} };
+  }
+}
 
 /* ==================== MAP (unchanged from v5.1 except version copy) ==================== */
 const STORAGE_KEY = 'substrate-cd-v5';
@@ -1287,7 +1299,8 @@ function renderHome(){
       <div class="tk" style="color:${th.stops[0]}">Commissioned</div>
       <h2 style="${grad}">${t.name}</h2>
       <div class="tbrief">"${t.outcome}"</div>
-      <div class="tpend">The engine could not be reached from here${t.err?' ('+t.err+')':''}. On the live site it builds itself. Or say build the ${t.name} track and it ships as the next version.</div>
+      <div class="tpend">The engine pass did not finish${t.err?' ('+t.err+')':''}.</div>
+      <button class="wizgo" data-retry="${t.id}" style="margin-top:14px;padding:11px 18px;font-size:11px">Run the engine again</button>
     </div>`;
     }
   });
@@ -1317,6 +1330,15 @@ function renderHome(){
     const go = ()=>openGTrack(c.dataset.gid);
     c.addEventListener('click', go);
     c.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
+  });
+  el.querySelectorAll('[data-retry]').forEach(b=>{
+    b.addEventListener('click', e=>{
+      e.stopPropagation();
+      const t = shell.tracks.find(x=>x.id===b.dataset.retry);
+      if(!t) return;
+      t.status='running'; t.err=null;
+      saveShell(); renderHome(); engineRun(t);
+    });
   });
 }
 document.getElementById('homeBack').addEventListener('click', ()=>{
@@ -1380,14 +1402,17 @@ async function engineRun(t){
       signal: ctrl.signal
     });
     clearTimeout(timer);
-    const data = await r.json();
+    let data = null;
+    try{ data = await r.json(); }catch(e){}
     if(data && data.ok && data.model && data.model.layers){
       t.status='ready'; t.model=data.model;
+    }else if(r.status===504){
+      t.status='commissioned'; t.err='engine timeout, tap to retry';
     }else{
-      t.status='commissioned'; t.err=(data && data.error) || 'engine error';
+      t.status='commissioned'; t.err=(data && data.error) || ('engine error ' + r.status);
     }
   }catch(e){
-    t.status='commissioned'; t.err='engine unreachable';
+    t.status='commissioned'; t.err = e && e.name==='AbortError' ? 'engine timeout, tap to retry' : 'engine unreachable';
   }
   saveShell();
   renderHome();
