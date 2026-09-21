@@ -1,0 +1,8 @@
+{
+  "name": "substrate-learning",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test lib/parse-model.test.js"
+  }
+}

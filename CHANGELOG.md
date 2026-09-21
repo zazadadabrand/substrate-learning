@@ -1,5 +1,8 @@
 # Changelog
 
+## v12
+Commission engine: structured tool_use, 8192 max tokens, JSON extract/repair/salvage so a truncated or messy first pass still populates layers instead of dying on ENGINE_PARSE. Client opens the generated track when a commission succeeds. Quote/stack overlap pad on commissioned cards stays.
+
 ## v8
 Runtime hardening: storage API fallback shim, load order fix for the audio engine, mini stack variable fix. Simulated browser boot test added to the ship process.
 
