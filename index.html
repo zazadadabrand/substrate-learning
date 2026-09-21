@@ -152,9 +152,9 @@
   .tcard .tk{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--mint);text-transform:uppercase;margin-bottom:8px}
   .tcard h2{font-size:21px;font-weight:600;margin:0 0 4px}
   .tcard .tsub{color:var(--muted);font-size:12.5px;line-height:1.5}
-  .tcard .trow{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px}
+  .tcard .trow{display:flex;justify-content:space-between;align-items:baseline;margin-top:0}
   .tcard .tpct{font-size:26px;font-weight:600;color:var(--mint);font-variant-numeric:tabular-nums}
-  .tcard .tmeta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-align:right;line-height:1.6}
+  .tcard .tmeta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-align:right;line-height:1.6;min-height:3.2em}
   .tcard .tbar{height:3px;background:#1A2138;border-radius:3px;margin-top:12px;overflow:hidden}
   .tcard .tbar i{display:block;height:100%;background:var(--mint);transition:width .5s}
   .tcard.pending{cursor:default;opacity:.75}
@@ -306,6 +306,12 @@
   .tcard .tstack{position:absolute;right:14px;top:14px;width:96px;height:86px;opacity:.9;pointer-events:none;z-index:0}
   .tcard.pending .tstack{opacity:.35}
   .tcard h2, .tcard .tsub, .tcard .tbrief, .tcard .tpend{position:relative;z-index:1;padding-right:112px}
+  #trackCards > .tcard{display:flex;flex-direction:column}
+  .tstat{margin-top:auto;padding-top:16px}
+  #trackView.shell .conn .name{white-space:normal;max-width:210px}
+  @media (max-width:900px){
+    #trackView.shell .conn .name{max-width:126px}
+  }
   .today{background:linear-gradient(90deg,rgba(240,122,60,.13),transparent 70%);border-color:rgba(230,58,95,.28)}
 
   /* marquee ticker, the site signature: letterspaced caps with orange dots */
@@ -363,8 +369,7 @@
       <div class="sub">Every discipline you are building toward, one substrate stack each. Open a track to work it. New tracks get commissioned through a research pass.</div>
     </div>
   </header>
-  <div class="marquee"><span class="mq">Create<b>·</b>Curate<b>·</b>Connect<b>·</b>Substrate Learning<b>·</b>Original Work<b>·</b>Visibility is the Product<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>Substrate Learning<b>·</b>Original Work<b>·</b>Visibility is the Product<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>Substrate Learning<b>·</b>Original Work<b>·</b>Visibility is the Product<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>Substrate Learning<b>·</b>Original Work<b>·</b>Visibility is the Product<b>·</b></span></div>
-  <div id="trackCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:10px"></div>
+  <div id="trackCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:22px;align-items:stretch"></div>
 </div>
 
 <!-- ============ TRACK · CREATIVE DIRECTOR ============ -->
@@ -372,16 +377,16 @@
   <header>
     <div>
       <button class="backbtn" id="homeBack" style="margin-bottom:14px">&#9666; All tracks</button>
-      <div class="eyebrow">Substrate Learning · Track 01</div>
-      <h1><span class="jw">Creative</span> <span class="jg">Director</span></h1>
-      <div class="sub">Transdisciplinary track · sculpted from the cohort of nineteen · every atom is taught, timed, and tested inside the system</div>
+      <div class="eyebrow" id="trackEyebrow">Substrate Learning · Track 01</div>
+      <h1 id="trackTitle"><span class="jw">Creative</span> <span class="jg">Director</span></h1>
+      <div class="sub" id="trackSub">Transdisciplinary track · sculpted from the cohort of nineteen · every atom is taught, timed, and tested inside the system</div>
     </div>
     <div class="overall">
       <div class="num" id="overallPct">0%</div>
       <div class="lbl">Known</div>
     </div>
   </header>
-  <div class="marquee"><span class="mq">The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b></span></div>
+  <div class="marquee"><span class="mq" id="trackMq">The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>The Cohort of Nineteen<b>·</b>Taught, Timed, Tested<b>·</b>Culture Lane<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b></span></div>
 
   <div class="projbar">
     <div class="stat">
@@ -405,8 +410,8 @@
 
   <div class="bloom">
     <h3>Bloom protocol</h3>
-    <p>This map is a living model, not a fixed syllabus. It grows on a loop: research passes on the cohort of nineteen surface new discoveries, discoveries become new atoms and modules, materials and readings refresh as better methods are found, and every gap you log below a layer becomes an input to the next pass. Hour estimates are recalibrated as your actual pace data comes in. Each pass increments the version. And every material holds one standard above all: written so simply a kid could learn from it, because a concept you cannot explain to a kid is a concept you do not understand.</p>
-    <div class="ver">Model v11 · engine pass tuned for speed with retry · progress persists in this browser · Creative Director: 49 atoms, Materials 001 and 005</div>
+    <p id="bloomCopy">This map is a living model, not a fixed syllabus. It grows on a loop: research passes on the cohort of nineteen surface new discoveries, discoveries become new atoms and modules, materials and readings refresh as better methods are found, and every gap you log below a layer becomes an input to the next pass. Hour estimates are recalibrated as your actual pace data comes in. Each pass increments the version. And every material holds one standard above all: written so simply a kid could learn from it, because a concept you cannot explain to a kid is a concept you do not understand.</p>
+    <div class="ver" id="bloomVer">Model v11 · engine pass tuned for speed with retry · progress persists in this browser · Creative Director: 49 atoms, Materials 001 and 005</div>
   </div>
 
   <div class="footer">
@@ -511,35 +516,6 @@
   </div>
 </div>
 
-<!-- ============ GENERATED TRACK VIEW ============ -->
-<div class="wrap" id="gtrackView" style="display:none">
-  <header>
-    <div>
-      <button class="backbtn" id="gBack" style="margin-bottom:14px">&#9666; All tracks</button>
-      <div class="eyebrow" id="gEyebrow">Substrate Learning · Track</div>
-      <h1 id="gTitle"></h1>
-      <div class="sub" id="gSub"></div>
-    </div>
-    <div class="overall">
-      <div class="num" id="gPct">0%</div>
-      <div class="lbl">Known</div>
-    </div>
-  </header>
-  <div class="marquee"><span class="mq" id="gMq"></span></div>
-  <div class="projbar">
-    <div class="stat">
-      <div><span class="k">Remaining</span><span class="v" id="gRem">·</span></div>
-      <div><span class="k">Atoms</span><span class="v" id="gAtomsCt">·</span></div>
-      <div><span class="k">Engine</span><span class="v">Pass 1</span></div>
-    </div>
-  </div>
-  <div id="gLayers" style="margin-top:6px"></div>
-  <div class="bloom" style="margin-top:30px">
-    <h3>Bloom Protocol</h3>
-    <p>This substrate is the engine's first pass, generated the moment it was commissioned. Later passes deepen it the way Creative Director's did: cohort research, interactive materials with lessons and drills, hour recalibration from your real pace. Handcrafted materials ship by version.</p>
-  </div>
-</div>
-
 <!-- ============ COMMISSION WIZARD ============ -->
 <div class="mview" id="wizard">
   <div class="mwrap" style="max-width:760px">
@@ -633,6 +609,7 @@
   </div>
 </div>
 
+<script src="lib/shell-view.js"></script>
 <script>
 /* storage fallback: on the open web, persist via localStorage; boot safely even without that */
 if(!window.storage){
@@ -974,7 +951,20 @@ const DEFAULT = {
 };
 
 let state = JSON.parse(JSON.stringify(DEFAULT));
-let openNodes = new Set();
+let cdOpen = new Set();
+let shellView = null;
+
+function openSet(){
+  if(shellView){
+    if(!shellView.open) shellView.open = new Set();
+    return shellView.open;
+  }
+  return cdOpen;
+}
+function activeModel(){ return shellView ? shellView.model : state; }
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
 async function load(){
   try{
@@ -997,19 +987,42 @@ async function load(){
 }
 
 let saveTimer;
+function flashSaved(){
+  const el = document.getElementById('saved');
+  if(!el) return;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 1200);
+}
+function syncShellTrack(){
+  if(!shellView || !window.ShellView) return;
+  const prog = ShellView.captureShellProgress(shellView.model);
+  const t = shellView.track;
+  t.done = prog.done;
+  t.gaps = prog.gaps;
+  t.pace = prog.pace;
+  t.selected = prog.selected;
+}
 function save(){
   clearTimeout(saveTimer);
+  if(shellView){
+    syncShellTrack();
+    saveTimer = setTimeout(async ()=>{
+      try{
+        await window.storage.set(SHELL_KEY, JSON.stringify(shell));
+        flashSaved();
+      }catch(e){}
+    }, 350);
+    return;
+  }
+  const slim = {
+    selected: state.selected,
+    pace: state.pace,
+    layers: state.layers.map(l=>({nodes:l.nodes.map(n=>n.h?{h:1}:{s:n.s}), gaps:l.gaps}))
+  };
   saveTimer = setTimeout(async ()=>{
     try{
-      const slim = {
-        selected: state.selected,
-        pace: state.pace,
-        layers: state.layers.map(l=>({nodes:l.nodes.map(n=>n.h?{h:1}:{s:n.s}), gaps:l.gaps}))
-      };
       await window.storage.set(STORAGE_KEY, JSON.stringify(slim));
-      const el = document.getElementById('saved');
-      el.classList.add('show');
-      setTimeout(()=>el.classList.remove('show'), 1200);
+      flashSaved();
     }catch(e){}
   }, 350);
 }
@@ -1017,33 +1030,36 @@ function save(){
 const atomsOf = l => l.nodes.filter(n=>!n.h);
 const layerPct = l => { const a=atomsOf(l); const k=a.filter(n=>n.s===1).length; return a.length?Math.round(k/a.length*100):0; };
 const layerRem = l => atomsOf(l).filter(n=>n.s===0).reduce((s,n)=>s+(n.hrs||0),0);
-const totalRem = () => state.layers.reduce((s,l)=>s+layerRem(l),0);
-function overallPct(){
-  const all = state.layers.flatMap(atomsOf);
+const totalRem = (m) => (m||state).layers.reduce((s,l)=>s+layerRem(l),0);
+function overallPct(m){
+  const all = (m||state).layers.flatMap(atomsOf);
   const known = all.filter(n=>n.s===1).length;
   return all.length ? Math.round(known/all.length*100) : 0;
 }
-function projection(){
-  const rem = totalRem();
+function projection(m){
+  const model = m || state;
+  const rem = totalRem(model);
   if(rem === 0) return {rem, label:'Complete'};
-  const days = Math.ceil(rem*60/state.pace);
+  const days = Math.ceil(rem*60/(model.pace||60));
   const d = new Date(); d.setDate(d.getDate()+days);
   return {rem, label:d.toLocaleDateString('en-US',{month:'short',year:'numeric'}), days, months:Math.round(days/30.4)};
 }
-function todaysRep(){
+function todaysRep(m){
+  const model = m || state;
   const d = new Date();
   const seed = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
-  for(const l of state.layers){
+  for(const l of model.layers){
     const unknown = atomsOf(l).filter(n=>n.s===0);
     if(unknown.length){
       const pick = unknown[seed % unknown.length];
-      return {layer:l, li:state.layers.indexOf(l), node:pick};
+      return {layer:l, li:model.layers.indexOf(l), node:pick};
     }
   }
   return null;
 }
 function renderToday(){
-  const t = todaysRep();
+  const model = activeModel();
+  const t = todaysRep(model);
   const el = document.getElementById('today');
   if(!t){
     el.innerHTML = '<span class="chip">Done</span><div class="drill">Every atom on the map is marked known. Time to rerun the research pass and deepen the tree.</div>';
@@ -1051,41 +1067,62 @@ function renderToday(){
   }
   el.innerHTML = `
     <span class="chip">Today</span>
-    <div class="drill">${t.node.n}<div class="from">${t.layer.name} · about ${t.node.hrs}h to known · open the layer for the guided exercises</div></div>
+    <div class="drill">${esc(t.node.n)}<div class="from">${esc(t.layer.name)} · about ${t.node.hrs}h to known · open the layer for the guided exercises</div></div>
     <button id="todayGo">Open layer</button>`;
   document.getElementById('todayGo').addEventListener('click', ()=>{
-    state.selected = t.li;
-    openNodes = new Set([state.layers[t.li].nodes.indexOf(t.node)]);
+    model.selected = t.li;
+    const set = openSet();
+    set.clear();
+    set.add(model.layers[t.li].nodes.indexOf(t.node));
     render(); save();
   });
 }
 function renderProj(){
-  const p = projection();
+  const model = activeModel();
+  const p = projection(model);
   document.getElementById('remHrs').textContent = p.rem + 'h';
   document.getElementById('projDate').innerHTML = p.rem===0 ? 'Complete' : `<em>${p.label}</em> · about ${p.months} months`;
-  document.querySelectorAll('.pace button').forEach(b=>{
-    b.classList.toggle('on', +b.dataset.p === state.pace);
+  document.querySelectorAll('#trackView .pace button').forEach(b=>{
+    b.classList.toggle('on', +b.dataset.p === model.pace);
   });
 }
 function drawerHTML(nd, isName){
   const ex = isName ? NINETEEN_EX : (nd.ex||[]);
   const pass = isName ? NINETEEN_PASS : nd.pass;
-  if(!ex.length) return '';
-  let h = `<div class="drawer"><div class="dl">Guided progression</div>`;
-  ex.forEach((e,i)=>{ h += `<div class="ex"><span class="num">${i+1}</span><span class="et">${e}</span></div>`; });
-  if(pass) h += `<div class="passline"><b>Pass when</b>${pass}</div>`;
-  if(nd.mat) h += `<button class="matbtn" data-mat="${nd.mat}">${nd.matLabel||'Open material'}</button>`;
+  if(!ex.length && isName) return '';
+  if(!ex.length && !pass && !nd.mat){
+    return `<div class="drawer"><div class="matpend">Material pending · ships with a bloom pass</div></div>`;
+  }
+  let h = `<div class="drawer">`;
+  if(ex.length){
+    h += `<div class="dl">Guided progression</div>`;
+    ex.forEach((e,i)=>{ h += `<div class="ex"><span class="num">${i+1}</span><span class="et">${esc(e)}</span></div>`; });
+  }
+  if(pass) h += `<div class="passline"><b>Pass when</b>${esc(pass)}</div>`;
+  if(nd.mat) h += `<button class="matbtn" data-mat="${esc(nd.mat)}">${esc(nd.matLabel||'Open material')}</button>`;
   else h += `<div class="matpend">Material pending · ships with a bloom pass</div>`;
   h += `</div>`;
   return h;
 }
 
 function render(){
+  if(shellView) syncShellTrack();
+  const model = activeModel();
+  const openNodes = openSet();
   const stackEl = document.getElementById('stack');
   const isMobile = window.innerWidth <= 900;
   const spacing = isMobile ? 142 : 168;
   const topPad = isMobile ? 100 : 122;
-  const n = state.layers.length;
+  const n = model.layers.length;
+  if(!n) return;
+  if(model.selected < 0 || model.selected >= n) model.selected = 0;
+  const col = stackEl.parentElement;
+  if(shellView && col){
+    const extra = isMobile ? 210 : 240;
+    col.style.height = (topPad + (n - 1) * spacing + extra) + 'px';
+  }else if(col){
+    col.style.height = '';
+  }
 
   let html = '';
   for(let i=0;i<n-1;i++){
@@ -1093,22 +1130,23 @@ function render(){
     html += `<div class="riser" style="top:${y}px;height:${spacing-(isMobile?62:74)}px"></div>`;
   }
   for(let i=n-1;i>=0;i--){
-    const l = state.layers[i];
+    const l = model.layers[i];
     const y = topPad + (n-1-i)*spacing;
     const pct = layerPct(l);
     const rem = layerRem(l);
-    const sel = state.selected===i ? 'sel':'';
+    const sel = model.selected===i ? 'sel':'';
+    const num = String(i+1).padStart(2,'0');
     html += `
-      <div class="layer ${sel}" style="top:${y}px;z-index:${10+(n-i)}" data-i="${i}" role="button" tabindex="0" aria-label="${l.name}, ${pct} percent known, ${rem} hours remaining">
+      <div class="layer ${sel}" style="top:${y}px;z-index:${10+(n-i)}" data-i="${i}" role="button" tabindex="0" aria-label="${esc(l.name)}, ${pct} percent known, ${rem} hours remaining">
         <div class="slab-glow" style="opacity:${sel? .32 : .05 + pct/100*.28}"></div>
         <div class="slab-under"></div>
-        <div class="slab">${ICONS[l.icon]}</div>
+        <div class="slab">${ICONS[l.icon]||''}</div>
       </div>
       <div class="conn" style="top:${y}px">
         <div class="tick"></div>
         <div>
-          <span class="lnum">0${i+1}</span>
-          <div class="name">${l.name}<br><span class="sublbl">${l.sub}</span></div>
+          <span class="lnum">${num}</span>
+          <div class="name">${esc(l.name)}<br><span class="sublbl">${esc(l.sub)}</span></div>
           <div class="bar"><i style="width:${pct}%"></i></div>
           <div class="pct">${pct}% known</div>
           <div class="hrs">${rem>0? rem+'h remaining':'complete'}</div>
@@ -1118,33 +1156,33 @@ function render(){
   stackEl.innerHTML = html;
 
   stackEl.querySelectorAll('.layer').forEach(el=>{
-    const go = ()=>{ state.selected = +el.dataset.i; openNodes = new Set(); render(); save(); };
+    const go = ()=>{ model.selected = +el.dataset.i; openNodes.clear(); render(); save(); };
     el.addEventListener('click', go);
     el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
   });
 
-  const l = state.layers[state.selected];
+  const l = model.layers[model.selected];
   const hIdx = l.nodes.findIndex(x=>x.h);
   const inNineteen = j => l.id==='cohort' && hIdx>-1 && j > hIdx;
   const pct = layerPct(l);
   const rem = layerRem(l);
-  const paceDays = rem>0 ? Math.ceil(rem*60/state.pace) : 0;
+  const paceDays = rem>0 ? Math.ceil(rem*60/(model.pace||60)) : 0;
   let p = `
-    <div class="lname"><span>${l.name}</span><span class="lpct">${pct}%</span></div>
-    <div class="ldesc">${l.desc}</div>
+    <div class="lname"><span>${esc(l.name)}</span><span class="lpct">${pct}%</span></div>
+    <div class="ldesc">${esc(l.desc||'')}</div>
     <div class="ltime">${rem>0? `<em>${rem}h</em> remaining in this layer · about ${paceDays} days at your pace`:'Layer complete'}</div>
     <div class="lbar"><i style="width:${pct}%"></i></div>`;
   l.nodes.forEach((nd,j)=>{
     if(nd.h){
-      p += `<div class="grouphead">${nd.h}</div><div class="groupsub">${nd.hs||''}</div>`;
+      p += `<div class="grouphead">${esc(nd.h)}</div><div class="groupsub">${esc(nd.hs||'')}</div>`;
       return;
     }
     const open = openNodes.has(j);
     p += `
     <div class="node ${open?'open':''}" data-s="${nd.s}" data-j="${j}">
-      <div class="nrow" role="button" tabindex="0" aria-expanded="${open}" aria-label="${nd.n}, ${nd.s?'known':'not yet'}, about ${nd.hrs} hours, activate to view exercises">
-        <div class="box" data-flip="${j}" role="checkbox" aria-checked="${nd.s===1}" tabindex="0" aria-label="Mark ${nd.n} as ${nd.s?'not yet':'known'}"></div>
-        <div class="ntext"><div class="nname">${nd.n}</div></div>
+      <div class="nrow" role="button" tabindex="0" aria-expanded="${open}" aria-label="${esc(nd.n)}, ${nd.s?'known':'not yet'}, about ${nd.hrs} hours, activate to view exercises">
+        <div class="box" data-flip="${j}" role="checkbox" aria-checked="${nd.s===1}" tabindex="0" aria-label="Mark ${esc(nd.n)} as ${nd.s?'not yet':'known'}"></div>
+        <div class="ntext"><div class="nname">${esc(nd.n)}</div></div>
         <div class="nmeta"><span class="nhrs">~${nd.hrs}h</span><span class="chev"></span></div>
       </div>
       ${open ? drawerHTML(nd, inNineteen(j)) : ''}
@@ -1153,12 +1191,12 @@ function render(){
   p += `<div class="hint">Open an atom for its guided progression · check the box only when you pass cold</div>`;
   if(l.reads && l.reads.length){
     p += `<div class="reads"><h3>Readings · this layer</h3>`;
-    l.reads.forEach(r=>{ p += `<div class="read"><span class="rt">${r.t}</span><span class="rw">${r.w}</span></div>`; });
+    l.reads.forEach(r=>{ p += `<div class="read"><span class="rt">${esc(r.t)}</span><span class="rw">${esc(r.w)}</span></div>`; });
     p += `</div>`;
   }
   p += `<div class="gaps">
       <h3>Gap log · feeds the next research pass</h3>
-      ${l.gaps.map(g=>`<div class="gap-item">${g}</div>`).join('')}
+      ${(l.gaps||[]).map(g=>`<div class="gap-item">${esc(g)}</div>`).join('')}
       <div class="gap-row">
         <input id="gapInput" type="text" placeholder="What is this layer missing?" maxlength="200">
         <button id="gapAdd">Log</button>
@@ -1194,13 +1232,14 @@ function render(){
     const inp = document.getElementById('gapInput');
     const v = inp.value.trim();
     if(!v) return;
+    if(!Array.isArray(l.gaps)) l.gaps = [];
     l.gaps.push(v);
     render(); save();
   };
   document.getElementById('gapAdd').addEventListener('click', addGap);
   document.getElementById('gapInput').addEventListener('keydown', e=>{ if(e.key==='Enter') addGap(); });
 
-  document.getElementById('overallPct').textContent = overallPct()+'%';
+  document.getElementById('overallPct').textContent = overallPct(model)+'%';
   renderToday();
   renderProj();
   renderHome();
@@ -1252,19 +1291,21 @@ function miniStack(pct, dim, theme){
   return `<div class="tstack">${s}</div>`;
 }
 function renderHome(){
-  const p = projection();
-  const pct = overallPct();
+  const p = projection(state);
+  const pct = overallPct(state);
   let h = `
     <div class="tcard active" id="cdCard" role="button" tabindex="0" aria-label="Open the Creative Director track, ${pct} percent known">
       ${miniStack(pct,false,themeById('brand'))}
       <div class="tk">Active track</div>
       <h2>Creative Director</h2>
       <div class="tsub">Transdisciplinary · culture lane · sculpted from the cohort of nineteen</div>
-      <div class="trow">
-        <div class="tpct">${pct}%</div>
-        <div class="tmeta">${p.rem}h remaining<br>${p.rem===0?'complete':'done around ' + p.label + ' at your pace'}</div>
+      <div class="tstat">
+        <div class="trow">
+          <div class="tpct">${pct}%</div>
+          <div class="tmeta">${p.rem}h remaining<br>${p.rem===0?'complete':'done around ' + p.label + ' at your pace'}</div>
+        </div>
+        <div class="tbar"><i style="width:${pct}%"></i></div>
       </div>
-      <div class="tbar"><i style="width:${pct}%"></i></div>
     </div>`;
   shell.tracks.forEach(t=>{
     const th = themeById(t.theme);
@@ -1281,16 +1322,18 @@ function renderHome(){
     } else if(t.status==='ready' && t.model){
       const st = gStats(t);
       h += `
-    <div class="tcard active" data-gid="${t.id}" role="button" tabindex="0" aria-label="Open the ${t.name} track">
+    <div class="tcard active" data-gid="${esc(t.id)}" role="button" tabindex="0" aria-label="Open the ${esc(t.name)} track">
       ${miniStack(st.pct,false,th)}
       <div class="tk" style="color:${th.stops[0]}">Active track</div>
-      <h2 style="${grad}">${t.name}</h2>
-      <div class="tsub">${t.model.lane || ''}</div>
-      <div class="trow">
-        <div class="tpct" style="${grad}">${st.pct}%</div>
-        <div class="tmeta">${st.rem}h remaining<br>${st.done} of ${st.total} atoms known</div>
+      <h2 style="${grad}">${esc(t.name)}</h2>
+      <div class="tsub">${esc(t.model.lane || '')}</div>
+      <div class="tstat">
+        <div class="trow">
+          <div class="tpct" style="${grad}">${st.pct}%</div>
+          <div class="tmeta">${st.rem}h remaining<br>${st.done} of ${st.total} atoms known</div>
+        </div>
+        <div class="tbar"><i style="width:${st.pct}%;background:${themeGrad(th)}"></i></div>
       </div>
-      <div class="tbar"><i style="width:${st.pct}%;background:${themeGrad(th)}"></i></div>
     </div>`;
     } else {
       h += `
@@ -1316,9 +1359,12 @@ function renderHome(){
   el.innerHTML = h;
   const cd = document.getElementById('cdCard');
   const openCD = ()=>{
+    shellView = null;
     setTheme(themeById('brand'));
+    applyChrome(null);
     document.getElementById('homeView').style.display='none';
     document.getElementById('trackView').style.display='';
+    render();
     window.scrollTo(0,0);
   };
   cd.addEventListener('click', openCD);
@@ -1327,7 +1373,7 @@ function renderHome(){
   ns.addEventListener('click', openWizard);
   ns.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openWizard();} });
   el.querySelectorAll('[data-gid]').forEach(c=>{
-    const go = ()=>openGTrack(c.dataset.gid);
+    const go = ()=>openShellTrack(c.dataset.gid);
     c.addEventListener('click', go);
     c.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();go();} });
   });
@@ -1342,7 +1388,9 @@ function renderHome(){
   });
 }
 document.getElementById('homeBack').addEventListener('click', ()=>{
+  shellView = null;
   setTheme(themeById('brand'));
+  applyChrome(null);
   document.getElementById('trackView').style.display='none';
   document.getElementById('homeView').style.display='';
   renderHome();
@@ -1417,11 +1465,17 @@ async function engineRun(t){
   saveShell();
   renderHome();
   if(t.status==='ready' && t.model && t.model.layers && t.model.layers.length){
-    openGTrack(t.id);
+    openShellTrack(t.id);
   }
 }
-/* ---------- GENERATED TRACK VIEW ---------- */
+/* ---------- COMMISSIONED TRACK ON THE CD SHELL ---------- */
 function gStats(t){
+  if(window.ShellView){
+    const vm = ShellView.buildShellView(t);
+    const all = vm.layers.flatMap(atomsOf);
+    const done = all.filter(n=>n.s===1).length;
+    return { total: all.length, done, rem: totalRem(vm), pct: overallPct(vm) };
+  }
   let total=0, done=0, rem=0;
   (t.model && t.model.layers || []).forEach((l,li)=>(l.atoms||[]).forEach((a,ai)=>{
     total++;
@@ -1430,85 +1484,83 @@ function gStats(t){
   }));
   return {total, done, rem, pct: total? Math.round(done/total*100) : 0};
 }
-let gCur = null;
-function openGTrack(id){
+const CD_CHROME = {};
+function captureCdChrome(){
+  CD_CHROME.eyebrow = document.getElementById('trackEyebrow').textContent;
+  CD_CHROME.title = document.getElementById('trackTitle').innerHTML;
+  CD_CHROME.sub = document.getElementById('trackSub').textContent;
+  CD_CHROME.mq = document.getElementById('trackMq').innerHTML;
+  CD_CHROME.bloom = document.getElementById('bloomCopy').textContent;
+  CD_CHROME.ver = document.getElementById('bloomVer').textContent;
+}
+function applyChrome(track){
+  const eye = document.getElementById('trackEyebrow');
+  const title = document.getElementById('trackTitle');
+  const sub = document.getElementById('trackSub');
+  const mq = document.getElementById('trackMq');
+  const bloom = document.getElementById('bloomCopy');
+  const ver = document.getElementById('bloomVer');
+  const view = document.getElementById('trackView');
+  if(!track){
+    eye.textContent = CD_CHROME.eyebrow;
+    title.innerHTML = CD_CHROME.title;
+    sub.textContent = CD_CHROME.sub;
+    mq.innerHTML = CD_CHROME.mq;
+    bloom.textContent = CD_CHROME.bloom;
+    ver.textContent = CD_CHROME.ver;
+    view.classList.remove('shell');
+    return;
+  }
+  const name = track.name || 'Track';
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  const lane = (track.model && track.model.lane) || '';
+  eye.textContent = 'Substrate Learning · ' + name;
+  title.innerHTML = words.length > 1
+    ? `<span class="jw">${esc(words[0])}</span> <span class="jg">${esc(words.slice(1).join(' '))}</span>`
+    : `<span class="jg">${esc(name)}</span>`;
+  sub.textContent = [lane, track.outcome || ''].filter(Boolean).join(' · ');
+  const mqBits = `${esc(name)}<b>·</b>${esc(lane || 'Engine Pass 1')}<b>·</b>Taught, Timed, Tested<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>`;
+  mq.innerHTML = mqBits.repeat(4);
+  bloom.textContent = 'This substrate is the engine\'s first pass, generated the moment it was commissioned. Later passes deepen it the way Creative Director\'s did: cohort research, interactive materials with lessons and drills, hour recalibration from your real pace. Handcrafted materials ship by version.';
+  const layers = (track.model.layers || []).length;
+  const atoms = (track.model.layers || []).reduce((s,l)=>s+((l.atoms && l.atoms.length) || 0), 0);
+  ver.textContent = `Engine pass 1 · progress persists in this browser · ${layers} layers, ${atoms} atoms`;
+  view.classList.add('shell');
+}
+function openShellTrack(id){
   const t = shell.tracks.find(x=>x.id===id);
-  if(!t || !t.model) return;
-  gCur = t;
+  if(!t || !t.model || !Array.isArray(t.model.layers) || !t.model.layers.length || !window.ShellView) return;
+  if(!t.done || typeof t.done !== 'object' || Array.isArray(t.done)) t.done = {};
+  shellView = { track: t, model: ShellView.buildShellView(t), open: new Set() };
   setTheme(themeById(t.theme));
+  applyChrome(t);
   document.getElementById('homeView').style.display='none';
-  document.getElementById('gtrackView').style.display='';
-  const words = t.name.split(' ');
-  document.getElementById('gTitle').innerHTML = words.length>1
-    ? `<span class="jw">${words[0]}</span> <span class="jg">${words.slice(1).join(' ')}</span>`
-    : `<span class="jg">${t.name}</span>`;
-  document.getElementById('gSub').textContent = t.outcome;
-  const mqBits = `${t.name}<b>·</b>${(t.model.lane||'Engine Pass 1')}<b>·</b>Taught, Timed, Tested<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>`;
-  document.getElementById('gMq').innerHTML = mqBits.repeat(4);
-  renderGTrack();
+  document.getElementById('trackView').style.display='';
+  render();
   window.scrollTo(0,0);
 }
-function renderGTrack(){
-  const t = gCur; if(!t) return;
-  const st = gStats(t);
-  document.getElementById('gPct').textContent = st.pct+'%';
-  document.getElementById('gRem').textContent = st.rem+'h';
-  document.getElementById('gAtomsCt').textContent = st.done+' / '+st.total;
-  let h='';
-  t.model.layers.forEach((l,li)=>{
-    const atoms = l.atoms || [];
-    let ldone=0;
-    atoms.forEach((a,ai)=>{ if(t.done[li+'-'+ai]) ldone++; });
-    const lpct = atoms.length ? Math.round(ldone/atoms.length*100) : 0;
-    h += `<div class="glayerhead"><span class="lnum2">0${li+1}</span>${l.name}<span class="gpctl">${lpct}%</span></div>
-          <div class="glayersub">${l.sub||''}</div>`;
-    atoms.forEach((a,ai)=>{
-      const k = li+'-'+ai;
-      const on = !!t.done[k];
-      const open = t._open===k;
-      h += `<div class="gAtom ${on?'on':''}" data-k="${k}">
-              <div class="gbox" data-box="${k}"></div>
-              <div class="gn">${a.n}</div>
-              <div class="ghrs">~${a.hrs||4}h</div>
-            </div>
-            <div class="gdrawer ${open?'open':''}">
-              <ol>${(a.ex||[]).map(x=>`<li>${x}</li>`).join('')}</ol>
-              <div class="gpass">PASS WHEN · ${a.pass||''}</div>
-            </div>`;
-    });
-  });
-  const el = document.getElementById('gLayers');
-  el.innerHTML = h;
-  el.querySelectorAll('.gbox').forEach(b=>{
-    b.addEventListener('click', e=>{
-      e.stopPropagation();
-      const k = b.dataset.box;
-      if(gCur.done[k]) delete gCur.done[k]; else gCur.done[k]=1;
-      saveShell();
-      renderGTrack();
-    });
-  });
-  el.querySelectorAll('.gAtom').forEach(row=>{
-    row.addEventListener('click', ()=>{
-      gCur._open = gCur._open===row.dataset.k ? null : row.dataset.k;
-      renderGTrack();
-    });
-  });
-}
-document.getElementById('gBack').addEventListener('click', ()=>{
-  setTheme(themeById('brand'));
-  document.getElementById('gtrackView').style.display='none';
-  document.getElementById('homeView').style.display='';
-  renderHome();
-  window.scrollTo(0,0);
-});
 
-document.querySelectorAll('.pace button').forEach(b=>{
-  b.addEventListener('click', ()=>{ state.pace = +b.dataset.p; renderProj(); render(); save(); });
+document.querySelectorAll('#trackView .pace button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const model = activeModel();
+    model.pace = +b.dataset.p;
+    if(shellView) shellView.track.pace = model.pace;
+    render(); save();
+  });
 });
 document.getElementById('reset').addEventListener('click', async ()=>{
+  if(shellView){
+    clearTimeout(saveTimer);
+    const t = shellView.track;
+    t.done = {};
+    shellView.model = ShellView.buildShellView(t);
+    if(shellView.open) shellView.open.clear();
+    try{ await saveShell(); }catch(e){}
+    render();
+    return;
+  }
   state = JSON.parse(JSON.stringify(DEFAULT));
-  openNodes = new Set();
+  cdOpen.clear();
   try{ await window.storage.delete(STORAGE_KEY); }catch(e){}
   render(); save();
 });
@@ -2210,6 +2262,7 @@ document.getElementById('cNextBtn').addEventListener('click', cNextRound);
 cStartMode('free');
 cRenderLesson();
 
+captureCdChrome();
 load();
 loadShell();
 </script>

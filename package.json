@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test lib/parse-model.test.js"
+    "test": "node --test lib/parse-model.test.js lib/shell-view.test.js"
   }
 }
