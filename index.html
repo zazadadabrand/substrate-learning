@@ -303,9 +303,9 @@
   .node[data-s="1"] .box, .lk.full{background:var(--ombre-v);border-color:var(--mint)}
   .layer.sel .slab{box-shadow:0 0 40px rgba(240,122,60,.28)}
   .tcard{overflow:hidden}
-  .tcard .tstack{position:absolute;right:14px;top:14px;width:96px;height:86px;opacity:.9}
+  .tcard .tstack{position:absolute;right:14px;top:14px;width:96px;height:86px;opacity:.9;pointer-events:none;z-index:0}
   .tcard.pending .tstack{opacity:.35}
-  .tcard h2, .tcard .tsub{padding-right:100px}
+  .tcard h2, .tcard .tsub, .tcard .tbrief, .tcard .tpend{position:relative;z-index:1;padding-right:112px}
   .today{background:linear-gradient(90deg,rgba(240,122,60,.13),transparent 70%);border-color:rgba(230,58,95,.28)}
 
   /* marquee ticker, the site signature: letterspaced caps with orange dots */
@@ -329,7 +329,7 @@
   .wizgo:disabled{opacity:.4;cursor:default}
   .tcard.commissioned{cursor:default}
   .tcard.commissioned .tk{color:var(--amber)}
-  .tcard .tbrief{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:10px;line-height:1.5}
+  .tcard .tbrief{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:10px;line-height:1.5;overflow-wrap:anywhere}
   .tcard .tpend{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.1em;margin-top:12px;line-height:1.7}
   .tcard.running .tk{animation:enginepulse 1.4s ease-in-out infinite}
   @keyframes enginepulse{0%,100%{opacity:1}50%{opacity:.35}}
