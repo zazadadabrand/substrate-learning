@@ -152,10 +152,11 @@
   .tcard .tk{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--mint);text-transform:uppercase;margin-bottom:8px}
   .tcard h2{font-size:21px;font-weight:600;margin:0 0 4px}
   .tcard .tsub{color:var(--muted);font-size:12.5px;line-height:1.5}
-  .tcard .trow{display:flex;justify-content:space-between;align-items:baseline;margin-top:0}
-  .tcard .tpct{font-size:26px;font-weight:600;color:var(--mint);font-variant-numeric:tabular-nums}
-  .tcard .tmeta{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-align:right;line-height:1.6;min-height:3.2em}
-  .tcard .tbar{height:3px;background:#1A2138;border-radius:3px;margin-top:12px;overflow:hidden}
+  /* percent + meta share one row; the bar is the next row, same on every card */
+  .tcard .trow{display:grid;grid-template-columns:max-content minmax(0,1fr);grid-template-areas:"pct meta" "bar bar";align-items:end;column-gap:16px;row-gap:12px;margin-top:auto;padding-top:16px}
+  .tcard .tpct{grid-area:pct;font-size:26px;font-weight:600;color:var(--mint);font-variant-numeric:tabular-nums;line-height:1}
+  .tcard .tmeta{grid-area:meta;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);text-align:right;line-height:1.6;align-self:end}
+  .tcard .tbar{grid-area:bar;height:3px;background:#1A2138;border-radius:3px;margin:0;overflow:hidden;width:100%}
   .tcard .tbar i{display:block;height:100%;background:var(--mint);transition:width .5s}
   .tcard.pending{cursor:default;opacity:.75}
   .tcard.pending .tk{color:var(--faint)}
@@ -303,11 +304,12 @@
   .node[data-s="1"] .box, .lk.full{background:var(--ombre-v);border-color:var(--mint)}
   .layer.sel .slab{box-shadow:0 0 40px rgba(240,122,60,.28)}
   .tcard{overflow:hidden}
+  #trackCards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:8px;align-items:stretch}
+  #trackCards > .tcard.active{display:flex;flex-direction:column}
+  #trackCards > .tcard.active > .tsub{flex:1 1 auto}
   .tcard .tstack{position:absolute;right:14px;top:14px;width:96px;height:86px;opacity:.9;pointer-events:none;z-index:0}
   .tcard.pending .tstack{opacity:.35}
   .tcard h2, .tcard .tsub, .tcard .tbrief, .tcard .tpend{position:relative;z-index:1;padding-right:112px}
-  #trackCards > .tcard{display:flex;flex-direction:column}
-  .tstat{margin-top:auto;padding-top:16px}
   #trackView.shell .conn .name{white-space:normal;max-width:210px}
   @media (max-width:900px){
     #trackView.shell .conn .name{max-width:126px}
@@ -369,7 +371,7 @@
       <div class="sub">Every discipline you are building toward, one substrate stack each. Open a track to work it. New tracks get commissioned through a research pass.</div>
     </div>
   </header>
-  <div id="trackCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:22px;align-items:stretch"></div>
+  <div id="trackCards"></div>
 </div>
 
 <!-- ============ TRACK · CREATIVE DIRECTOR ============ -->
@@ -1299,11 +1301,9 @@ function renderHome(){
       <div class="tk">Active track</div>
       <h2>Creative Director</h2>
       <div class="tsub">Transdisciplinary · culture lane · sculpted from the cohort of nineteen</div>
-      <div class="tstat">
-        <div class="trow">
-          <div class="tpct">${pct}%</div>
-          <div class="tmeta">${p.rem}h remaining<br>${p.rem===0?'complete':'done around ' + p.label + ' at your pace'}</div>
-        </div>
+      <div class="trow">
+        <div class="tpct">${pct}%</div>
+        <div class="tmeta">${p.rem}h remaining<br>${p.rem===0?'complete':'done around ' + p.label + ' at your pace'}</div>
         <div class="tbar"><i style="width:${pct}%"></i></div>
       </div>
     </div>`;
@@ -1327,11 +1327,9 @@ function renderHome(){
       <div class="tk" style="color:${th.stops[0]}">Active track</div>
       <h2 style="${grad}">${esc(t.name)}</h2>
       <div class="tsub">${esc(t.model.lane || '')}</div>
-      <div class="tstat">
-        <div class="trow">
-          <div class="tpct" style="${grad}">${st.pct}%</div>
-          <div class="tmeta">${st.rem}h remaining<br>${st.done} of ${st.total} atoms known</div>
-        </div>
+      <div class="trow">
+        <div class="tpct" style="${grad}">${st.pct}%</div>
+        <div class="tmeta">${st.rem}h remaining<br>${st.done} of ${st.total} atoms known</div>
         <div class="tbar"><i style="width:${st.pct}%;background:${themeGrad(th)}"></i></div>
       </div>
     </div>`;
