@@ -2,6 +2,9 @@
   "functions": {
     "api/commission.js": {
       "maxDuration": 60
+    },
+    "api/materials.js": {
+      "maxDuration": 60
     }
   }
 }

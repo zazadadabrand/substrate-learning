@@ -1,5 +1,7 @@
 // Substrate Learning · Commission Engine
 // POST { name, outcome } -> { ok, model: { lane, layers: [ { name, sub, atoms: [ { n, hrs, ex[], pass } ] } ] } }
+// Curriculum only. Interactive modules (lesson, reference, drill) are a required
+// second pass: POST /api/materials, one layer at a time, attached before the track opens.
 // Requires ANTHROPIC_API_KEY set in Vercel environment variables.
 
 import { parseModel, modelStats } from '../lib/parse-model.js';
@@ -13,7 +15,8 @@ Hard rules:
 4. Layers stack bottom up: perception and foundation skills at the bottom, production craft in the middle, systems and judgment above, canon and cohort at the top.
 5. The top layer always includes studying the specific best practitioners who ever did this (the cohort): recall atoms about real named people, their moves, their methods.
 6. Include a one line lane description of the domain.
-7. SPEED CONTRACT: exactly 4 layers, exactly 4 atoms each, exactly 3 exercises per atom. Atom names under 70 characters, exercises under 90, pass conditions under 90. Finish the JSON. Do not stop mid-object.
+7. Do not write lesson modules in this pass. Modules are required, but they ship in the next pass: a from-zero lesson, a reference sheet, and a drill on every atom, generated the moment the stack is commissioned. This pass is the curriculum skeleton only.
+8. SPEED CONTRACT: exactly 4 layers, exactly 4 atoms each, exactly 3 exercises per atom. Atom names under 70 characters, exercises under 90, pass conditions under 90. Finish the JSON. Do not stop mid-object.
 
 Return the curriculum by calling submit_substrate. Do not write markdown. Do not write a preamble.`;
 
@@ -23,7 +26,8 @@ Hard rules:
 1. Every atom is a deterministic hard skill, written so simply a kid could learn from it.
 2. EMERGENCY COMPACT: exactly 4 layers, exactly 3 atoms each, exactly 2 exercises per atom. Names under 60 characters, exercises under 70, pass conditions under 70.
 3. Layers bottom up. Top layer names real practitioners in this field.
-4. Finish the entire JSON. Never truncate a string or an array.
+4. Curriculum skeleton only. Do not write lesson, reference, or drill modules here. Those are written in the materials pass that runs before the track is opened.
+5. Finish the entire JSON. Never truncate a string or an array.
 
 Return the curriculum by calling submit_substrate. No markdown. No preamble.`;
 

@@ -353,6 +353,13 @@
   .gdrawer li{font-size:13.5px;color:var(--muted);line-height:1.6;margin:7px 0}
   .gdrawer ol{padding-left:18px}
   .gpass{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--mint);margin-top:10px;line-height:1.7}
+  .gmodbanner{position:relative;z-index:2;margin:0 0 18px;background:rgba(224,199,127,.08);border:1px solid rgba(224,199,127,.35);border-radius:12px;padding:14px 16px;color:var(--amber);font-size:13.5px;line-height:1.55}
+  .gmodbanner .matbtn{display:block;width:fit-content;margin:12px 0 0}
+  .qstem{font-family:'Fraunces',serif;font-size:clamp(20px,3.2vw,30px);line-height:1.35;font-weight:600}
+  .lopt.plain{text-align:left;padding:16px 16px}
+  .lopt.plain .ans{font-family:'Hanken Grotesk',sans-serif;font-size:15px;line-height:1.45}
+  .answers button.right{border-color:var(--mint)}
+  .answers button.wrong{border-color:var(--red)}
 </style>
 </head>
 <body>
@@ -364,7 +371,7 @@
     <div>
       <div class="eyebrow">Substrate Learning</div>
       <h1><span class="jg">Tracks</span></h1>
-      <div class="sub">Every discipline you are building toward, one substrate stack each. Open a track to work it. New tracks get commissioned through a research pass.</div>
+      <div class="sub">Every discipline you are building toward, one substrate stack each. Open a track to work it. Commission a track and every atom arrives with a lesson, a reference, and a drill.</div>
     </div>
   </header>
   <div id="trackCards"></div>
@@ -409,7 +416,7 @@
   <div class="bloom">
     <h3>Bloom protocol</h3>
     <p>This map is a living model, not a fixed syllabus. It grows on a loop: research passes on the cohort of nineteen surface new discoveries, discoveries become new atoms and modules, materials and readings refresh as better methods are found, and every gap you log below a layer becomes an input to the next pass. Hour estimates are recalibrated as your actual pace data comes in. Each pass increments the version. And every material holds one standard above all: written so simply a kid could learn from it, because a concept you cannot explain to a kid is a concept you do not understand.</p>
-    <div class="ver">Model v11 · engine pass tuned for speed with retry · progress persists in this browser · Creative Director: 49 atoms, Materials 001 and 005</div>
+    <div class="ver">Model v13 · Creative Director materials stay handcrafted · commissioned tracks ship a module on every atom at spin-up · progress persists in this browser · Creative Director: 49 atoms, Materials 001 and 005</div>
   </div>
 
   <div class="footer">
@@ -533,13 +540,15 @@
     <div class="stat">
       <div><span class="k">Remaining</span><span class="v" id="gRem">·</span></div>
       <div><span class="k">Atoms</span><span class="v" id="gAtomsCt">·</span></div>
-      <div><span class="k">Engine</span><span class="v">Pass 1</span></div>
+      <div><span class="k">Modules</span><span class="v" id="gMods">·</span></div>
     </div>
   </div>
+  <div class="gmodbanner" id="gMatBanner" style="display:none"></div>
   <div id="gLayers" style="margin-top:6px"></div>
   <div class="bloom" style="margin-top:30px">
     <h3>Bloom Protocol</h3>
-    <p>This substrate is the engine's first pass, generated the moment it was commissioned. Later passes deepen it the way Creative Director's did: cohort research, interactive materials with lessons and drills, hour recalibration from your real pace. Handcrafted materials ship by version.</p>
+    <p>Every atom on this track shipped with a module the moment the stack was commissioned: a from-zero lesson, a reference sheet, and a drill with a pass. That is the protocol, not a later favor. Bloom passes still deepen it. Cohort research, sharper materials, and hour recalibration from your real pace. The first module is not waiting on a bloom pass.</p>
+    <div class="ver">Model v13 · modules on spin-up · lesson, reference, drill · progress stays on this track</div>
   </div>
 </div>
 
@@ -553,7 +562,7 @@
       </div>
       <button class="backbtn" id="wizBack">Cancel</button>
     </div>
-    <div class="msub">Name a destination and the engine builds the rest: the outcome gets decomposed into deterministic atoms, a cohort of the best gets modeled, materials get written so simply a kid could learn from them, and the stack lands here with full tracking.</div>
+    <div class="msub">Name a destination and the engine builds the rest. The outcome becomes deterministic atoms. The best who ever did it get modeled. Every atom ships with a lesson, a reference sheet, and a drill, written so a kid could learn it. Then the stack lands here with full tracking.</div>
     <div class="wizfield">
       <label>The destination</label>
       <input id="wizName" maxlength="40" placeholder="Art Dealer, Theoretical Physicist Mode, Master Perfumer..." autocomplete="off">
@@ -632,6 +641,60 @@
         <button id="cResBtn">Run it again</button>
       </div>
       <div class="passnote" id="cPassnote">PASS CONDITION · Twenty timed palettes, ten seconds each, twenty correct. Anything less is practice. Free practice mode is untimed and explains every answer.</div>
+    </section>
+  </div>
+</div>
+
+<!-- ============ GENERATED MODULE ============ -->
+<div class="mview" id="gmod">
+  <div class="mwrap">
+    <div class="mtop">
+      <div>
+        <div class="eyebrow" id="gmEye">Material</div>
+        <div class="mh1" id="gmTitle">Module</div>
+      </div>
+      <button class="backbtn" id="gmBack" type="button">Back to map</button>
+    </div>
+    <div class="msub" id="gmSub"></div>
+    <div class="tabs">
+      <button class="on" data-t="gmLearn" type="button">Lesson <span class="done" id="gmDoneMark"></span></button>
+      <button data-t="gmRef" type="button">Reference</button>
+      <button data-t="gmDrill" type="button">Drill</button>
+    </div>
+    <section id="gmLearn" class="msec on">
+      <div class="lprog">
+        <div class="lbar2"><i id="gmProgBar" style="width:0"></i></div>
+        <div class="lct" id="gmProgCt">Step 1</div>
+      </div>
+      <div class="lcard" id="gmCard"></div>
+      <div class="lnav">
+        <button class="lback" id="gmBackStep" type="button">Back</button>
+        <button class="lnext" id="gmNext" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="gmRef" class="msec"></section>
+    <section id="gmDrill" class="msec">
+      <div class="gate" id="gmGate">The lesson comes first. Drilling before the concepts is exactly the crude memorization this system refuses to be.<button id="gmGateGo" type="button">Open the lesson</button></div>
+      <div class="scorebar">
+        <div><span class="k">Round</span><span class="v" id="gmRound">·</span></div>
+        <div><span class="k">Correct</span><span class="v m" id="gmScore">0</span></div>
+        <div><span class="k">Streak</span><span class="v" id="gmStreak">0</span></div>
+        <div><span class="k">Best streak</span><span class="v" id="gmBest">0</span></div>
+        <button class="modebtn" id="gmModeBtn" type="button">Start pass test</button>
+      </div>
+      <div class="stage" id="gmStage">
+        <div class="timer" id="gmTimer" style="width:0"></div>
+        <div class="qstem" id="gmQ"></div>
+        <div class="fb" id="gmFb"></div>
+      </div>
+      <div class="answers" id="gmAnswers"></div>
+      <button class="nextbtn" id="gmNextBtn" type="button">Next question</button>
+      <div class="result" id="gmResult">
+        <div class="big" id="gmResBig"></div>
+        <p id="gmResTxt"></p>
+        <button id="gmResBtn" type="button">Run it again</button>
+      </div>
+      <div class="passnote" id="gmPassnote"></div>
     </section>
   </div>
 </div>
@@ -1235,8 +1298,55 @@ async function loadShell(){
   }catch(e){}
   if(!shell.tracks) shell.tracks = [];
   renderHome();
+  shell.tracks.forEach(t => {
+    if(t && t.status === 'running') engineRun(t);
+  });
 }
 async function saveShell(){ try{ await window.storage.set(SHELL_KEY, JSON.stringify(shell)); }catch(e){} }
+
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function rich(s){
+  return esc(s).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+}
+function plainErr(detail){
+  const d = String(detail || 'The engine did not finish.');
+  if (/KEY_MISSING/i.test(d)) return 'The engine key is not on the server yet.';
+  if (/PARSE/i.test(d)) return 'The pass did not finish. Tap to try again.';
+  if (/timeout/i.test(d)) return 'The engine timed out. Tap to try again.';
+  if (/unreachable/i.test(d)) return 'The engine could not be reached. Tap to try again.';
+  if (/local file/i.test(d)) return 'Open this in the browser, not as a saved file, so the engine can run.';
+  if (/UPSTREAM|engine error|501|404|405|502/i.test(d)) return 'The engine did not answer. Tap to try again.';
+  return d;
+}
+function modOk(m){
+  if(!m || !Array.isArray(m.ls) || m.ls.length < 3) return false;
+  if(!m.ls.some(s => s && s.q && s.yes && s.no)) return false;
+  if(!Array.isArray(m.rf) || m.rf.length < 3 || !m.rf[0] || !m.rf[0].t) return false;
+  if(!Array.isArray(m.dr) || m.dr.length < 4) return false;
+  const d = m.dr[0];
+  return !!(d && d.q && Array.isArray(d.c) && d.c.length >= 2);
+}
+function eachAtom(t, fn){
+  ((t && t.model && t.model.layers) || []).forEach((l, li) => (l.atoms || []).forEach((a, ai) => fn(a, li, ai, l)));
+}
+function missingMods(t){
+  let n = 0;
+  eachAtom(t, a => { if(!modOk(a.mod)) n++; });
+  return n;
+}
+function moduleCount(t){
+  let atoms = 0, modules = 0;
+  eachAtom(t, a => { atoms++; if(modOk(a.mod)) modules++; });
+  return { atoms, modules, missing: atoms - modules };
+}
+const inflight = new Set();
+function paintEngine(t){
+  saveShell();
+  renderHome();
+  if(gCur && t && gCur.id === t.id && document.getElementById('gtrackView').style.display !== 'none') renderGTrack();
+}
 
 function miniStack(pct, dim, theme){
   /* five slabs, filled bottom up by progress; each slab strokes its own ombre stop */
@@ -1272,38 +1382,43 @@ function renderHome(){
   shell.tracks.forEach(t=>{
     const th = themeById(t.theme);
     const grad = `background:${themeGrad(th)};-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent`;
+    const hasModel = t.model && Array.isArray(t.model.layers) && t.model.layers.length;
     if(t.status==='running'){
+      const openAttr = hasModel ? ` data-gid="${esc(t.id)}" role="button" tabindex="0" aria-label="Open the ${esc(t.name)} track"` : '';
       h += `
-    <div class="tcard commissioned running">
+    <div class="tcard commissioned running${hasModel?' active':''}"${openAttr}>
       ${miniStack(0,false,th)}
       <div class="tk" style="color:${th.stops[0]}">Engine running</div>
-      <h2 style="${grad}">${t.name}</h2>
-      <div class="tbrief">"${t.outcome}"</div>
-      <div class="tpend">Decomposing the destination into atoms. About a minute. This card wakes up on its own.</div>
+      <h2 style="${grad}">${esc(t.name)}</h2>
+      <div class="tbrief">"${esc(t.outcome)}"</div>
+      <div class="tpend">${esc(t.note || 'Decomposing the destination into atoms. Then every atom gets a lesson, a reference, and a drill.')}</div>
     </div>`;
-    } else if(t.status==='ready' && t.model){
+    } else if(hasModel){
       const st = gStats(t);
+      const gap = missingMods(t);
       h += `
-    <div class="tcard active" data-gid="${t.id}" role="button" tabindex="0" aria-label="Open the ${t.name} track">
+    <div class="tcard active" data-gid="${esc(t.id)}" role="button" tabindex="0" aria-label="Open the ${esc(t.name)} track">
       ${miniStack(st.pct,false,th)}
-      <div class="tk" style="color:${th.stops[0]}">Active track</div>
-      <h2 style="${grad}">${t.name}</h2>
-      <div class="tsub">${t.model.lane || ''}</div>
+      <div class="tk" style="color:${th.stops[0]}">${gap ? 'Needs materials' : 'Active track'}</div>
+      <h2 style="${grad}">${esc(t.name)}</h2>
+      <div class="tsub">${esc(t.model.lane || '')}</div>
       <div class="trow">
         <div class="tpct" style="${grad}">${st.pct}%</div>
         <div class="tmeta">${st.rem}h remaining<br>${st.done} of ${st.total} atoms known</div>
         <div class="tbar"><i style="width:${st.pct}%;background:${themeGrad(th)}"></i></div>
       </div>
+      ${gap ? `<div class="tpend">${gap} ${gap===1?'atom still needs a module':'atoms still need modules'}. Open the track and it writes them in place. Your checks stay.</div>` : ''}
+      ${t.status!=='ready' ? `<button class="wizgo" data-retry="${esc(t.id)}" style="margin-top:14px;padding:11px 18px;font-size:11px">Write the materials</button>` : ''}
     </div>`;
     } else {
       h += `
     <div class="tcard commissioned">
       ${miniStack(0,false,th)}
       <div class="tk" style="color:${th.stops[0]}">Commissioned</div>
-      <h2 style="${grad}">${t.name}</h2>
-      <div class="tbrief">"${t.outcome}"</div>
-      <div class="tpend">The engine pass did not finish${t.err?' ('+t.err+')':''}.</div>
-      <button class="wizgo" data-retry="${t.id}" style="margin-top:14px;padding:11px 18px;font-size:11px">Run the engine again</button>
+      <h2 style="${grad}">${esc(t.name)}</h2>
+      <div class="tbrief">"${esc(t.outcome)}"</div>
+      <div class="tpend">The engine pass did not finish${t.err?' ('+esc(t.err)+')':''}.</div>
+      <button class="wizgo" data-retry="${esc(t.id)}" style="margin-top:14px;padding:11px 18px;font-size:11px">Run the engine again</button>
     </div>`;
     }
   });
@@ -1312,7 +1427,7 @@ function renderHome(){
       ${miniStack(0,true)}
       <div class="tk">New stack</div>
       <h2>Commission a stack</h2>
-      <div class="tsub">Name any destination. The engine decomposes it into atoms, models the best who ever did it, and writes the materials.</div>
+      <div class="tsub">Name any destination. The engine decomposes it into atoms, models the best who ever did it, and writes a lesson, a reference, and a drill for every atom.</div>
       <div class="tpend">Opens the commission console.</div>
     </div>`;
   const el = document.getElementById('trackCards');
@@ -1339,8 +1454,7 @@ function renderHome(){
       e.stopPropagation();
       const t = shell.tracks.find(x=>x.id===b.dataset.retry);
       if(!t) return;
-      t.status='running'; t.err=null;
-      saveShell(); renderHome(); engineRun(t);
+      engineRun(t);
     });
   });
 }
@@ -1385,7 +1499,7 @@ document.getElementById('wizGo').addEventListener('click', ()=>{
   const name = document.getElementById('wizName').value.trim();
   if(!name || !wizTheme) return;
   const outcome = document.getElementById('wizOutcome').value.trim() || 'Definition pending, the engine will sharpen it.';
-  const t = {id:'t'+Date.now(), name, outcome, theme:wizTheme, status:'running', done:{}};
+  const t = {id:'t'+Date.now(), name, outcome, theme:wizTheme, status:'running', done:{}, note:'Decomposing the destination into atoms.'};
   shell.tracks.push(t);
   saveShell();
   document.getElementById('wizard').classList.remove('on');
@@ -1393,34 +1507,106 @@ document.getElementById('wizGo').addEventListener('click', ()=>{
   renderHome();
   engineRun(t);
 });
-async function engineRun(t){
-  if(location.protocol === 'file:'){ t.status='commissioned'; t.err='local file, no engine'; saveShell(); renderHome(); return; }
+async function postJson(url, body, ms){
+  const ctrl = new AbortController();
+  const timer = setTimeout(()=>ctrl.abort(), ms || 90000);
   try{
-    const ctrl = new AbortController();
-    const timer = setTimeout(()=>ctrl.abort(), 90000);
-    const r = await fetch('/api/commission', {
+    const r = await fetch(url, {
       method:'POST',
       headers:{'content-type':'application/json'},
-      body: JSON.stringify({name:t.name, outcome:t.outcome}),
+      body: JSON.stringify(body),
       signal: ctrl.signal
     });
-    clearTimeout(timer);
     let data = null;
     try{ data = await r.json(); }catch(e){}
-    if(data && data.ok && data.model && Array.isArray(data.model.layers) && data.model.layers.length){
-      t.status='ready'; t.model=data.model; t.err=null;
-    }else if(r.status===504){
-      t.status='commissioned'; t.err='engine timeout, tap to retry';
+    return { status: r.status, data };
+  }finally{
+    clearTimeout(timer);
+  }
+}
+async function pullModules(t, layer, items){
+  const atoms = items.map(x => ({ n: x.a.n, hrs: x.a.hrs, ex: x.a.ex || [], pass: x.a.pass || '' }));
+  const { status, data } = await postJson('/api/materials', {
+    name: t.name,
+    outcome: t.outcome,
+    layer: { name: layer.name || '', sub: layer.sub || '' },
+    atoms
+  }, 90000);
+  if(data && data.ok && Array.isArray(data.modules)){
+    items.forEach((x, i) => { if(modOk(data.modules[i])) x.a.mod = data.modules[i]; });
+    return;
+  }
+  if(data && data.error === 'ENGINE_PARSE') return;
+  const err = new Error('materials stopped');
+  err.stop = true;
+  err.detail = (data && data.error) || ('engine error ' + status);
+  throw err;
+}
+async function fillLayer(t, layer, li){
+  const missing = () => (layer.atoms||[]).map((a, ai) => ({ai, a})).filter(x => !modOk(x.a.mod));
+  for(const size of [4, 2, 1]){
+    const todo = missing();
+    if(!todo.length) return;
+    for(let i=0; i<todo.length; i+=size){
+      const chunk = todo.slice(i, i+size);
+      t.note = `Writing materials · layer ${li+1} of ${t.model.layers.length}`;
+      paintEngine(t);
+      await pullModules(t, layer, chunk);
+    }
+  }
+}
+async function engineRun(t, opts){
+  if(!t || inflight.has(t.id)) return;
+  inflight.add(t.id);
+  const stay = !!(opts && opts.stay);
+  t.status = 'running';
+  t.err = null;
+  try{
+    if(location.protocol === 'file:'){
+      t.status = 'commissioned';
+      t.err = plainErr('local file, no engine');
+      t.note = '';
+      return;
+    }
+    if(!t.model || !Array.isArray(t.model.layers) || !t.model.layers.length){
+      t.note = 'Decomposing the destination into atoms.';
+      paintEngine(t);
+      const { status, data } = await postJson('/api/commission', { name: t.name, outcome: t.outcome }, 90000);
+      if(!(data && data.ok && data.model && Array.isArray(data.model.layers) && data.model.layers.length)){
+        t.status = 'commissioned';
+        t.note = '';
+        t.err = plainErr(status===504 ? 'engine timeout, tap to retry' : ((data && data.error) || ('engine error ' + status)));
+        return;
+      }
+      t.model = data.model;
+      if(!t.done) t.done = {};
+      saveShell();
+    }
+    t.note = 'Writing a lesson, a reference, and a drill for every atom.';
+    paintEngine(t);
+    for(let li=0; li<t.model.layers.length; li++){
+      await fillLayer(t, t.model.layers[li], li);
+    }
+    const gap = missingMods(t);
+    t.note = '';
+    if(gap === 0){
+      t.status = 'ready';
+      t.err = null;
     }else{
-      t.status='commissioned'; t.err=(data && data.error) || ('engine error ' + r.status);
+      t.status = 'commissioned';
+      t.err = plainErr(gap + (gap===1 ? ' atom still needs a module. Tap to finish.' : ' atoms still need modules. Tap to finish.'));
     }
   }catch(e){
-    t.status='commissioned'; t.err = e && e.name==='AbortError' ? 'engine timeout, tap to retry' : 'engine unreachable';
-  }
-  saveShell();
-  renderHome();
-  if(t.status==='ready' && t.model && t.model.layers && t.model.layers.length){
-    openGTrack(t.id);
+    t.status = 'commissioned';
+    t.note = '';
+    t.err = plainErr(e && e.stop ? (e.detail || 'engine error') : (e && e.name==='AbortError' ? 'engine timeout, tap to retry' : 'engine unreachable'));
+  }finally{
+    inflight.delete(t.id);
+    paintEngine(t);
+    const opened = document.getElementById('gtrackView').style.display !== 'none' && gCur && gCur.id === t.id;
+    if(!stay && !opened && t.model && t.model.layers && t.model.layers.length && (t.status==='ready' || moduleCount(t).modules>0)){
+      openGTrack(t.id, {skipMaterials:true});
+    }
   }
 }
 /* ---------- GENERATED TRACK VIEW ---------- */
@@ -1434,49 +1620,80 @@ function gStats(t){
   return {total, done, rem, pct: total? Math.round(done/total*100) : 0};
 }
 let gCur = null;
-function openGTrack(id){
+function openGTrack(id, opts){
   const t = shell.tracks.find(x=>x.id===id);
   if(!t || !t.model) return;
+  if(!t.done) t.done = {};
   gCur = t;
   setTheme(themeById(t.theme));
   document.getElementById('homeView').style.display='none';
   document.getElementById('gtrackView').style.display='';
-  const words = t.name.split(' ');
+  const words = String(t.name||'').split(' ');
   document.getElementById('gTitle').innerHTML = words.length>1
-    ? `<span class="jw">${words[0]}</span> <span class="jg">${words.slice(1).join(' ')}</span>`
-    : `<span class="jg">${t.name}</span>`;
-  document.getElementById('gSub').textContent = t.outcome;
-  const mqBits = `${t.name}<b>·</b>${(t.model.lane||'Engine Pass 1')}<b>·</b>Taught, Timed, Tested<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>`;
+    ? `<span class="jw">${esc(words[0])}</span> <span class="jg">${esc(words.slice(1).join(' '))}</span>`
+    : `<span class="jg">${esc(t.name)}</span>`;
+  document.getElementById('gSub').textContent = t.outcome || '';
+  const mqBits = `${esc(t.name)}<b>·</b>${esc(t.model.lane||'Modules on')}<b>·</b>Taught, Timed, Tested<b>·</b>Create<b>·</b>Curate<b>·</b>Connect<b>·</b>`;
   document.getElementById('gMq').innerHTML = mqBits.repeat(4);
   renderGTrack();
   window.scrollTo(0,0);
+  if(!(opts && opts.skipMaterials) && missingMods(t) > 0) engineRun(t, {stay:true});
+}
+function renderMatBanner(t){
+  const banner = document.getElementById('gMatBanner');
+  if(!banner) return;
+  const gap = missingMods(t);
+  if(!gap){
+    banner.style.display = 'none';
+    banner.innerHTML = '';
+    return;
+  }
+  banner.style.display = 'block';
+  if(inflight.has(t.id)){
+    banner.textContent = t.note || 'Writing a lesson, a reference, and a drill for every atom that does not have one.';
+    return;
+  }
+  const lead = 'This track still has atoms without a module. The map and your checks stay.';
+  const msg = t.err ? `${lead} ${t.err}` : `${lead} Write the materials and each atom gets a lesson, a reference, and a drill.`;
+  banner.innerHTML = `${esc(msg)} <button class="matbtn" id="gMatGo" type="button">Write the materials</button>`;
+  const btn = document.getElementById('gMatGo');
+  if(btn) btn.addEventListener('click', () => engineRun(t, {stay:true}));
 }
 function renderGTrack(){
   const t = gCur; if(!t) return;
+  if(!t.done) t.done = {};
   const st = gStats(t);
+  const mods = moduleCount(t);
   document.getElementById('gPct').textContent = st.pct+'%';
   document.getElementById('gRem').textContent = st.rem+'h';
   document.getElementById('gAtomsCt').textContent = st.done+' / '+st.total;
+  const gMods = document.getElementById('gMods');
+  if(gMods) gMods.textContent = mods.modules+' / '+mods.atoms;
+  renderMatBanner(t);
   let h='';
   t.model.layers.forEach((l,li)=>{
     const atoms = l.atoms || [];
     let ldone=0;
     atoms.forEach((a,ai)=>{ if(t.done[li+'-'+ai]) ldone++; });
     const lpct = atoms.length ? Math.round(ldone/atoms.length*100) : 0;
-    h += `<div class="glayerhead"><span class="lnum2">0${li+1}</span>${l.name}<span class="gpctl">${lpct}%</span></div>
-          <div class="glayersub">${l.sub||''}</div>`;
+    h += `<div class="glayerhead"><span class="lnum2">0${li+1}</span>${esc(l.name)}<span class="gpctl">${lpct}%</span></div>
+          <div class="glayersub">${esc(l.sub||'')}</div>`;
     atoms.forEach((a,ai)=>{
       const k = li+'-'+ai;
       const on = !!t.done[k];
       const open = t._open===k;
+      const material = modOk(a.mod)
+        ? `<button class="matbtn" data-gmod="${k}" type="button">Open material · Lesson, reference, drill</button>`
+        : `<div class="matpend">Module not on this atom yet.</div>`;
       h += `<div class="gAtom ${on?'on':''}" data-k="${k}">
               <div class="gbox" data-box="${k}"></div>
-              <div class="gn">${a.n}</div>
+              <div class="gn">${esc(a.n)}</div>
               <div class="ghrs">~${a.hrs||4}h</div>
             </div>
             <div class="gdrawer ${open?'open':''}">
-              <ol>${(a.ex||[]).map(x=>`<li>${x}</li>`).join('')}</ol>
-              <div class="gpass">PASS WHEN · ${a.pass||''}</div>
+              <ol>${(a.ex||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>
+              <div class="gpass">PASS WHEN · ${esc(a.pass||'')}</div>
+              ${material}
             </div>`;
     });
   });
@@ -1495,6 +1712,12 @@ function renderGTrack(){
     row.addEventListener('click', ()=>{
       gCur._open = gCur._open===row.dataset.k ? null : row.dataset.k;
       renderGTrack();
+    });
+  });
+  el.querySelectorAll('[data-gmod]').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      e.stopPropagation();
+      openGeneratedModule(btn.dataset.gmod);
     });
   });
 }
@@ -2212,6 +2435,314 @@ document.getElementById('cModeBtn').addEventListener('click', ()=>{ cStartMode(c
 document.getElementById('cNextBtn').addEventListener('click', cNextRound);
 cStartMode('free');
 cRenderLesson();
+
+/* ==================== GENERATED MODULE PLAYER ==================== */
+let gmTrack = null, gmKey = null, gmMod = null, gmStep = 0, gmCheckPassed = false, gmFlip = false;
+let gmMode = 'free', gmScore = 0, gmStreak = 0, gmRound = 0, gmTestCorrect = 0, gmLocked = false;
+let gmTimerId = null, gmTimerStart = 0, gmCursor = null, gmQueue = [], gmLastQ = -1;
+const GM_MS = 12000;
+
+function studyOf(t, key){
+  if(!t.study || typeof t.study !== 'object') t.study = {};
+  if(!t.study[key]) t.study[key] = { step:0, done:false, best:0, passed:false };
+  return t.study[key];
+}
+function gmStopTimer(){
+  clearInterval(gmTimerId);
+  const bar = document.getElementById('gmTimer');
+  if(bar) bar.style.width = '0';
+}
+function gmShowTab(name){
+  stopSpeech();
+  gmStopTimer();
+  document.querySelectorAll('#gmod .tabs button').forEach(x => x.classList.toggle('on', x.dataset.t===name));
+  document.querySelectorAll('#gmod .msec').forEach(x => x.classList.remove('on'));
+  const sec = document.getElementById(name);
+  if(sec) sec.classList.add('on');
+  if(name==='gmRef') gmRenderRef();
+}
+function gmUpdateGate(){
+  const study = gmTrack && gmKey ? studyOf(gmTrack, gmKey) : { done:false };
+  const gate = document.getElementById('gmGate');
+  if(gate) gate.classList.toggle('on', !study.done);
+  const mark = document.getElementById('gmDoneMark');
+  if(mark) mark.textContent = study.done ? '· done' : '';
+}
+function gmRenderRef(){
+  if(!gmMod) return;
+  document.getElementById('gmRef').innerHTML =
+    `<h2>Keep this next to you</h2>
+     <p class="body">The lesson taught the idea. This is the short sheet you look at when you forget a piece.</p>
+     <div class="tells">${gmMod.rf.map(card => `<div class="tell"><b>${esc(card.t)}</b><span>${rich(card.b)}</span></div>`).join('')}</div>`;
+}
+function gmRenderLesson(){
+  if(!gmMod) return;
+  stopSpeech();
+  const steps = gmMod.ls;
+  const s = steps[gmStep];
+  gmCheckPassed = !s.q;
+  gmFlip = Math.random() < .5;
+  document.getElementById('gmProgBar').style.width = ((gmStep+1)/steps.length*100)+'%';
+  document.getElementById('gmProgCt').textContent = `Step ${gmStep+1} of ${steps.length}`;
+  let h = `<div class="lkicker">${esc(s.k||'Lesson')}</div><div class="ltitle">${esc(s.t)}</div>`;
+  if(speechOK) h += `<button class="listen" id="gmListen" type="button" aria-label="Listen to this step">\u25B8 Listen</button>`;
+  h += `<div class="lbody">${rich(s.b)}</div>`;
+  if(s.q){
+    const first = gmFlip ? 'no' : 'yes';
+    const second = gmFlip ? 'yes' : 'no';
+    h += `<div class="lcheck"><div class="lq">${esc(s.q)}</div>
+      <div class="lopts">
+        <div class="lopt plain" data-key="${first}"><div class="ans">${esc(s[first])}</div></div>
+        <div class="lopt plain" data-key="${second}"><div class="ans">${esc(s[second])}</div></div>
+      </div>
+      <div class="lfb" id="gmLfb"></div></div>`;
+  }
+  document.getElementById('gmCard').innerHTML = h;
+  document.getElementById('gmBackStep').style.visibility = gmStep===0 ? 'hidden' : 'visible';
+  const nextBtn = document.getElementById('gmNext');
+  nextBtn.disabled = !gmCheckPassed;
+  nextBtn.textContent = gmStep===steps.length-1 ? 'Open the drill' : 'Continue';
+  const listen = document.getElementById('gmListen');
+  if(listen) listen.addEventListener('click', ()=>{
+    if(speaking){ stopSpeech(); return; }
+    speakStep({ k:s.k, t:s.t, b:String(s.b||'').replace(/\*\*/g,''), check: s.q ? { q:s.q } : null }, 'gmListen');
+  });
+  document.querySelectorAll('#gmCard .lopt').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      if(gmCheckPassed) return;
+      const right = el.dataset.key === 'yes';
+      const fb = document.getElementById('gmLfb');
+      if(right){
+        el.classList.add('right');
+        fb.innerHTML = `<span class="ok">Right.</span><span class="why">${esc(s.why||'')}</span>`;
+        gmCheckPassed = true;
+        document.getElementById('gmNext').disabled = false;
+        if(speaking) speakText(s.why||'');
+      }else{
+        el.classList.add('wrong');
+        fb.innerHTML = `<span class="no">Not that one.</span><span class="why">Look again. ${esc(s.why||'')}</span>`;
+        setTimeout(()=>el.classList.remove('wrong'), 900);
+      }
+    });
+  });
+}
+function gmBar(){
+  const total = gmMod ? gmMod.dr.length : 0;
+  document.getElementById('gmRound').textContent = gmMode==='test' ? `${gmRound} / ${total}` : (gmRound || '·');
+  document.getElementById('gmScore').textContent = gmMode==='test' ? gmTestCorrect : gmScore;
+  document.getElementById('gmStreak').textContent = gmStreak;
+  const study = gmTrack && gmKey ? studyOf(gmTrack, gmKey) : { best:0 };
+  document.getElementById('gmBest').textContent = study.best || 0;
+}
+function gmStartTimer(){
+  const bar = document.getElementById('gmTimer');
+  gmTimerStart = Date.now();
+  clearInterval(gmTimerId);
+  gmTimerId = setInterval(()=>{
+    const el = Date.now()-gmTimerStart;
+    if(bar) bar.style.width = Math.min(100, el/GM_MS*100)+'%';
+    if(el>=GM_MS) gmTimeUp();
+  }, 100);
+}
+function gmShuffle(item){
+  const order = item.c.map((text, i) => ({ text, correct: i === item.i }));
+  for(let i=order.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    const tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+  }
+  return order;
+}
+function gmNextQ(){
+  if(!gmMod) return;
+  gmLocked = false;
+  gmStopTimer();
+  document.getElementById('gmNextBtn').classList.remove('show');
+  gmRound++;
+  let item;
+  if(gmMode==='test'){
+    item = gmQueue[gmRound-1];
+  }else{
+    const bank = gmMod.dr;
+    let idx = 0;
+    if(bank.length < 2) idx = 0;
+    else { do { idx = Math.floor(Math.random()*bank.length); } while(idx===gmLastQ); }
+    gmLastQ = idx;
+    item = bank[idx];
+  }
+  if(!item){ gmFinish(); return; }
+  const order = gmShuffle(item);
+  gmCursor = { item, order };
+  document.getElementById('gmQ').textContent = item.q;
+  document.getElementById('gmFb').textContent = gmMode==='test' ? 'Twelve seconds.' : 'One right answer. The lesson already taught it.';
+  const box = document.getElementById('gmAnswers');
+  box.innerHTML = '';
+  order.forEach(choice => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = choice.text;
+    if(choice.correct) b.dataset.correct = '1';
+    b.addEventListener('click', () => gmAnswer(choice, b));
+    box.appendChild(b);
+  });
+  gmBar();
+  if(gmMode==='test') gmStartTimer();
+}
+function gmAnswer(choice, btn){
+  if(gmLocked || !gmCursor) return;
+  gmLocked = true;
+  gmStopTimer();
+  const buttons = document.querySelectorAll('#gmAnswers button');
+  buttons.forEach(b => { b.disabled = true; });
+  const right = !!choice.correct;
+  const correct = gmCursor.order.find(x => x.correct);
+  if(right){
+    gmStreak++;
+    if(gmTrack){
+      const study = studyOf(gmTrack, gmKey);
+      if(gmStreak > (study.best||0)){ study.best = gmStreak; saveShell(); }
+    }
+    if(gmMode==='test') gmTestCorrect++; else gmScore++;
+    document.getElementById('gmFb').innerHTML = `<span class="ok">Correct.</span><span class="why">${esc(gmCursor.item.y||'')}</span>`;
+  }else{
+    gmStreak = 0;
+    document.getElementById('gmFb').innerHTML = `<span class="no">Not ${esc(choice.text)}.</span><span class="why">It was ${esc(correct?correct.text:'')}. ${esc(gmCursor.item.y||'')}</span>`;
+  }
+  buttons.forEach(b => {
+    if(b.dataset.correct==='1') b.classList.add('right');
+    else if(b===btn && !right) b.classList.add('wrong');
+  });
+  gmBar();
+  const total = gmMod.dr.length;
+  if(gmMode==='test' && gmRound>=total){ gmFinish(); return; }
+  if(gmMode==='test') setTimeout(()=>{ if(document.getElementById('gmod').classList.contains('on')) gmNextQ(); }, right?700:1600);
+  else document.getElementById('gmNextBtn').classList.add('show');
+}
+function gmTimeUp(){
+  gmStopTimer();
+  if(gmLocked || !gmCursor) return;
+  gmLocked = true;
+  gmStreak = 0;
+  const correct = gmCursor.order.find(x => x.correct);
+  document.querySelectorAll('#gmAnswers button').forEach(b => {
+    b.disabled = true;
+    if(b.dataset.correct==='1') b.classList.add('right');
+  });
+  document.getElementById('gmFb').innerHTML = `<span class="no">Time.</span><span class="why">It was ${esc(correct?correct.text:'')}. ${esc(gmCursor.item.y||'')}</span>`;
+  gmBar();
+  const total = gmMod.dr.length;
+  if(gmMode==='test' && gmRound>=total){ gmFinish(); return; }
+  if(gmMode==='test') setTimeout(()=>{ if(document.getElementById('gmod').classList.contains('on')) gmNextQ(); }, 1600);
+}
+function gmFinish(){
+  gmStopTimer();
+  if(!gmMod) return;
+  const total = gmMod.dr.length;
+  const ok = gmTestCorrect===total;
+  const big = document.getElementById('gmResBig');
+  big.textContent = ok ? 'PASS' : `${gmTestCorrect} / ${total}`;
+  big.className = 'big '+(ok?'pass':'fail');
+  document.getElementById('gmResTxt').textContent = ok
+    ? 'All of them, under time. Mark this atom known on the map. That check is earned.'
+    : 'The standard is every question, under time. Reread the lesson, run free practice, then test again.';
+  if(ok && gmTrack){
+    const study = studyOf(gmTrack, gmKey);
+    study.passed = true;
+    saveShell();
+  }
+  document.getElementById('gmStage').style.display = 'none';
+  document.getElementById('gmAnswers').style.display = 'none';
+  document.getElementById('gmNextBtn').classList.remove('show');
+  document.getElementById('gmResult').classList.add('show');
+  const study = gmTrack ? studyOf(gmTrack, gmKey) : { passed:false };
+  document.getElementById('gmPassnote').textContent =
+    `PASS CONDITION · ${total} questions, twelve seconds each, all correct. Anything less is practice.` +
+    (study.passed ? '  ·  PASSED ON RECORD' : '');
+}
+function gmStart(mode){
+  if(!gmMod) return;
+  gmMode = mode;
+  gmScore = 0; gmStreak = 0; gmRound = 0; gmTestCorrect = 0; gmLocked = false; gmLastQ = -1;
+  gmQueue = gmMod.dr.slice();
+  if(mode==='test'){
+    for(let i=gmQueue.length-1; i>0; i--){
+      const j = Math.floor(Math.random()*(i+1));
+      const tmp = gmQueue[i]; gmQueue[i] = gmQueue[j]; gmQueue[j] = tmp;
+    }
+  }
+  document.getElementById('gmResult').classList.remove('show');
+  document.getElementById('gmStage').style.display = '';
+  document.getElementById('gmAnswers').style.display = '';
+  document.getElementById('gmNextBtn').classList.remove('show');
+  const n = gmMod.dr.length;
+  document.getElementById('gmModeBtn').textContent = mode==='test' ? 'Switch to free practice' : `Start pass test · ${n} timed`;
+  const study = gmTrack && gmKey ? studyOf(gmTrack, gmKey) : { best:0, passed:false };
+  document.getElementById('gmBest').textContent = study.best || 0;
+  document.getElementById('gmPassnote').textContent =
+    `PASS CONDITION · ${n} questions, twelve seconds each, all correct. Anything less is practice. Free practice explains every answer.` +
+    (study.passed ? '  ·  PASSED ON RECORD' : '');
+  gmNextQ();
+}
+function openGeneratedModule(key){
+  const t = gCur;
+  if(!t || !t.model) return;
+  const parts = String(key).split('-');
+  const li = +parts[0], ai = +parts[1];
+  const layer = t.model.layers[li];
+  const atom = layer && layer.atoms && layer.atoms[ai];
+  if(!atom || !modOk(atom.mod)) return;
+  gmTrack = t;
+  gmKey = key;
+  gmMod = atom.mod;
+  const study = studyOf(t, key);
+  gmStep = Math.min(study.step||0, gmMod.ls.length-1);
+  document.getElementById('gmEye').textContent = `${t.name} · ${layer.name || 'Layer'}`;
+  document.getElementById('gmTitle').textContent = atom.n;
+  document.getElementById('gmSub').textContent = 'Start with the lesson. It assumes you know nothing. The reference is the sheet you keep. The drill decides whether you know it.';
+  document.getElementById('gmod').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  gmUpdateGate();
+  gmShowTab('gmLearn');
+  gmRenderLesson();
+  gmStart('free');
+}
+document.getElementById('gmBack').addEventListener('click', ()=>{
+  document.getElementById('gmod').classList.remove('on');
+  document.body.style.overflow = '';
+  gmStopTimer();
+  stopSpeech();
+  gmCursor = null;
+});
+document.querySelectorAll('#gmod .tabs button').forEach(b=>{
+  b.addEventListener('click', ()=>gmShowTab(b.dataset.t));
+});
+document.getElementById('gmGateGo').addEventListener('click', ()=>gmShowTab('gmLearn'));
+document.getElementById('gmNext').addEventListener('click', ()=>{
+  if(!gmMod || !gmTrack) return;
+  if(!gmCheckPassed) return;
+  const study = studyOf(gmTrack, gmKey);
+  if(gmStep === gmMod.ls.length-1){
+    study.done = true;
+    study.step = gmStep;
+    saveShell();
+    gmUpdateGate();
+    gmShowTab('gmDrill');
+    return;
+  }
+  gmStep++;
+  study.step = gmStep;
+  saveShell();
+  gmRenderLesson();
+  document.getElementById('gmLearn').scrollIntoView({block:'start'});
+});
+document.getElementById('gmBackStep').addEventListener('click', ()=>{
+  if(!gmMod || gmStep<=0) return;
+  gmStep--;
+  if(gmTrack){ const study = studyOf(gmTrack, gmKey); study.step = gmStep; saveShell(); }
+  gmRenderLesson();
+});
+document.getElementById('gmModeBtn').addEventListener('click', ()=>{ gmStart(gmMode==='test'?'free':'test'); });
+document.getElementById('gmNextBtn').addEventListener('click', gmNextQ);
+document.getElementById('gmResBtn').addEventListener('click', ()=>gmStart(gmMode));
 
 load();
 loadShell();
