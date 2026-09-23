@@ -312,6 +312,7 @@
   .tcard h2, .tcard .tsub, .tcard .tbrief, .tcard .tpend{position:relative;z-index:1;padding-right:112px}
   #trackView.shell .conn .name{white-space:normal;max-width:210px}
   @media (max-width:900px){
+    #trackView.shell .conn{left:calc(38% + 86px)}
     #trackView.shell .conn .name{max-width:126px}
   }
   .today{background:linear-gradient(90deg,rgba(240,122,60,.13),transparent 70%);border-color:rgba(230,58,95,.28)}
@@ -359,6 +360,11 @@
   .gpass{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--mint);margin-top:10px;line-height:1.7}
   .gmodbanner{position:relative;z-index:2;margin:0 0 18px;background:rgba(224,199,127,.08);border:1px solid rgba(224,199,127,.35);border-radius:12px;padding:14px 16px;color:var(--amber);font-size:13.5px;line-height:1.55}
   .gmodbanner .matbtn{display:block;width:fit-content;margin:12px 0 0}
+  #gmod .mtop{flex-wrap:wrap;align-items:flex-start}
+  #gmod .mh1, #gmod .qstem, #gmod .msub, #gmod .lbody, #gmod .passnote{overflow-wrap:anywhere}
+  @media (max-width:900px){
+    #gmod .mwrap{padding-left:16px;padding-right:16px}
+  }
   .qstem{font-family:'Fraunces',serif;font-size:clamp(20px,3.2vw,30px);line-height:1.35;font-weight:600}
   .lopt.plain{text-align:left;padding:16px 16px}
   .lopt.plain .ans{font-family:'Hanken Grotesk',sans-serif;font-size:15px;line-height:1.45}
@@ -2519,8 +2525,9 @@ let gmTimerId = null, gmTimerStart = 0, gmCursor = null, gmQueue = [], gmLastQ =
 const GM_MS = 12000;
 
 function persistStudy(){
-  if(shellView && gmTrack && shellView.track === gmTrack) save();
-  else saveShell();
+  if(shellView && gmTrack && shellView.track === gmTrack) syncShellTrack();
+  clearTimeout(saveTimer);
+  saveShell();
 }
 function studyOf(t, key){
   if(!t.study || typeof t.study !== 'object') t.study = {};
