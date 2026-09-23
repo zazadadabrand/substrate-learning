@@ -5,7 +5,7 @@ Reverse engineering specific outcomes into deterministic curricula that compound
 One substrate stack per discipline. Every atom is taught, timed, and tested inside the system: a from zero lesson, a reference sheet, and a drill with a pass condition. Creative Director is the handcrafted track, sculpted from a cohort of nineteen reference practitioners, with Materials 001 and 005 written by hand. Every commissioned track ships the same three-part module on every atom at the moment the engine spins the stack up.
 
 ## Stack
-Single file static app: index.html. No build step, no dependencies beyond Google Fonts. Progress persists via the host storage API where available and degrades gracefully where not.
+Single file static app: index.html. No build step, no dependencies beyond Google Fonts. Progress persists via the host storage API where available and degrades gracefully where not. Creative Director progress stays in `substrate-cd-v5`. Commissioned tracks stay in `substrate-shell` and open in the same shell. A module button appears on an atom once that atom already has a lesson, a reference, and a drill.
 
 ## Protocol
 1. Every version is committed to this repository. Version verifiability is a mandate, not a habit.
