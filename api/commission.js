@@ -1,7 +1,7 @@
 // Substrate Learning · Commission Engine
 // POST { name, outcome } -> { ok, model: { lane, layers: [ { name, sub, atoms: [ { n, hrs, ex[], pass } ] } ] } }
 // Curriculum only. Interactive modules (lesson, reference, drill) are a required
-// second pass: POST /api/materials, one layer at a time, attached before the track opens.
+// second pass: POST /api/materials, one atom per call, attached before the track opens.
 // Requires ANTHROPIC_API_KEY set in Vercel environment variables.
 
 import { parseModel, modelStats } from '../lib/parse-model.js';

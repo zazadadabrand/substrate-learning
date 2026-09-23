@@ -10,7 +10,7 @@ Single file static app: index.html. No build step, no dependencies beyond Google
 ## Protocol
 1. Every version is committed to this repository. Version verifiability is a mandate, not a habit.
 2. The repository is connected to Vercel. Every push to main deploys automatically. Committed equals live.
-3. Commission is two passes and both finish before the track opens. Pass one is the curriculum skeleton: layers and deterministic atoms. Pass two writes a module on every atom, one layer at a time, so the model can finish JSON instead of truncating. A module is a from-zero lesson, a reference sheet, and a drill with a pass condition.
+3. Commission is two passes and both finish before the track opens. Pass one is the curriculum skeleton: layers and deterministic atoms. Pass two writes a module on every atom, one atom per request, so each Vercel call finishes inside its time limit. A miss is retried once. The other atoms keep going. A module is a from-zero lesson, a reference sheet, and a drill with a pass condition. Commissioned tracks open in the Creative Director shell.
 4. Versions increment through Bloom passes: research on the cohort, deeper materials, gap log input, and pace recalibration. Bloom deepens a stack. It is not the first time a module exists.
 5. Every material holds one standard: written so simply a kid could learn from it. Creative Director materials stay handcrafted. Commissioned modules are generated, then held to the same standard.
 

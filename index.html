@@ -1619,6 +1619,7 @@ function paintEngine(t){
   renderHome();
   const view = document.getElementById('trackView');
   if(shellView && t && shellView.track.id === t.id && view && view.style.display !== 'none'){
+    applyChrome(t);
     refreshOpenShell(t);
   }
 }
@@ -1641,32 +1642,43 @@ async function postJson(url, body, ms){
 }
 async function pullModules(t, layer, items){
   const atoms = items.map(x => ({ n: x.a.n, hrs: x.a.hrs, ex: x.a.ex || [], pass: x.a.pass || '' }));
-  const { status, data } = await postJson('/api/materials', {
-    name: t.name,
-    outcome: t.outcome,
-    layer: { name: layer.name || '', sub: layer.sub || '' },
-    atoms
-  }, 90000);
+  let data = null;
+  try{
+    const res = await postJson('/api/materials', {
+      name: t.name,
+      outcome: t.outcome,
+      layer: { name: layer.name || '', sub: layer.sub || '' },
+      atoms
+    }, 55000);
+    data = res.data;
+  }catch(e){
+    if(e && e.stop) throw e;
+    return;
+  }
   if(data && data.ok && Array.isArray(data.modules)){
     items.forEach((x, i) => { if(modOk(data.modules[i])) x.a.mod = data.modules[i]; });
     return;
   }
-  if(data && data.error === 'ENGINE_PARSE') return;
-  const err = new Error('materials stopped');
-  err.stop = true;
-  err.detail = (data && data.error) || ('engine error ' + status);
-  throw err;
+  if(data && /KEY_MISSING/i.test(data.error || '')){
+    const err = new Error('materials stopped');
+    err.stop = true;
+    err.detail = data.error;
+    throw err;
+  }
 }
 async function fillLayer(t, layer, li){
   const missing = () => (layer.atoms||[]).map((a, ai) => ({ai, a})).filter(x => !modOk(x.a.mod));
-  for(const size of [4, 2, 1]){
+  for(let pass = 0; pass < 2; pass++){
     const todo = missing();
     if(!todo.length) return;
-    for(let i=0; i<todo.length; i+=size){
-      const chunk = todo.slice(i, i+size);
-      t.note = `Writing materials · layer ${li+1} of ${t.model.layers.length}`;
+    for(const item of todo){
+      const stats = moduleCount(t);
+      const n = Math.min(stats.atoms, stats.modules + 1);
+      t.note = pass
+        ? `Retrying materials · ${n} of ${stats.atoms}`
+        : `Writing materials · ${n} of ${stats.atoms}`;
       paintEngine(t);
-      await pullModules(t, layer, chunk);
+      await pullModules(t, layer, [item]);
     }
   }
 }

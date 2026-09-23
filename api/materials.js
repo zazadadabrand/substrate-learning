@@ -1,33 +1,28 @@
 // Substrate Learning · Materials pass
 // POST { name, outcome, layer: { name, sub }, atoms: [{ n, hrs, ex, pass }] }
-//  -> { ok, modules: [mod|null], via, covered }
-// One batch is 1 to 4 atoms. The client runs this after the curriculum pass,
-// then again for any atom that came back empty. Modules are required at commission.
+//  -> { ok, modules: [mod|null], via, covered, expected }
+// One atom per call. A full track is many short calls, not one long one.
+// The function must return before Vercel's 60s limit, so the upstream call
+// is compact, capped at 2048 tokens, and aborted at 45s with a JSON body.
 
 import { parseModules } from '../lib/module.js';
 
-const MATERIALS_RULES = `You are the Substrate Learning materials writer. A curriculum atom already exists. You write the interactive module that ships with it: a from-zero lesson, a reference sheet, and a drill.
+const MAX_ATOMS = 1;
+const MAX_TOKENS = 2048;
+const UPSTREAM_MS = 45000;
+
+const MATERIALS_RULES = `You are the Substrate Learning materials writer. A curriculum atom already exists. Write its module: a from-zero lesson, a reference sheet, and a drill.
 
 Hard rules:
 1. Write so a smart kid could learn it. Short sentences. When you use a real term, mark it with **double asterisks** once, then say what it means in plain words.
-2. Deterministic only. Every check and every drill item has one right answer a careful reader can defend from the lesson. No taste questions. No "which feels better".
-3. Do not invent statistics, quotes, dates, or citations. Do not fake a study. Teach the move. If the atom names a person, only keep the name when you are sure; otherwise teach the skill without a name.
-4. Teach from zero. The first lesson step assumes nothing. The last lesson step says how the drill is passed.
-5. Lesson checks: q is the question, yes is the right short answer, no is a plausible wrong answer, why explains in one or two sentences.
-6. Drill: each item has q, c (three or four short choices), i (the index of the one correct choice), and y (why). Wrong choices must be actually wrong.
-7. SPEED CONTRACT: exactly 4 lesson steps. Steps 1, 2, and 3 include q, yes, no, and why. Step 4 has no check. Exactly 4 reference cards. Exactly 6 drill items. Lesson body under 240 characters. Reference body under 110. Drill question under 90. Each choice under 40 characters. why under 90.
-8. Return one module per atom, in the same order. Do not skip an atom. Finish the JSON. Do not stop mid-object.
+2. Deterministic only. Every check and every drill item has one right answer a careful reader can defend from the lesson. No taste questions. No invented statistics, quotes, dates, or citations.
+3. Teach from zero. The first lesson step assumes nothing. The last lesson step says how the drill is passed.
+4. Lesson checks: q is the question, yes is the right short answer, no is a plausible wrong answer, why explains in one or two sentences.
+5. Drill: each item has q, c (three short choices), i (the index of the one correct choice), and y (why). Wrong choices must be actually wrong.
+6. SPEED CONTRACT: exactly 3 lesson steps. Steps 1 and 2 include q, yes, no, and why. Step 3 has no check. Exactly 3 reference cards. Exactly 4 drill items. Lesson body under 140 characters. Reference body under 70. Drill question under 60. Each choice under 24 characters. why under 80.
+7. One module, finished JSON. Do not stop mid-object.
 
-Return the modules by calling submit_modules. No markdown. No preamble.`;
-
-const COMPACT_RULES = `You are the Substrate Learning materials writer. Write a compact module for each atom: lesson, reference, drill.
-
-Hard rules:
-1. Kid-simple. Deterministic right answers only. No invented statistics, quotes, or citations.
-2. EMERGENCY COMPACT: exactly 3 lesson steps (steps 1 and 2 have q, yes, no, why). Exactly 3 reference cards. Exactly 4 drill items. Lesson body under 140 characters. Reference body under 70. Drill question under 60. Choices under 24 characters.
-3. One module per atom, same order. Finish the entire JSON. Never truncate a string or an array.
-
-Return the modules by calling submit_modules. No markdown. No preamble.`;
+Return the module by calling submit_modules. No markdown. No preamble.`;
 
 const SUBMIT_MODULES = {
   name: 'submit_modules',
@@ -138,13 +133,15 @@ function atomLine(atom, index) {
   ].filter(Boolean).join('\n');
 }
 
-async function callAnthropic(key, { name, outcome, layer, atoms, compact }) {
+async function callAnthropic(key, { name, outcome, layer, atoms }) {
   const layerName = layer && layer.name ? String(layer.name) : 'Layer';
   const layerSub = layer && layer.sub ? String(layer.sub) : '';
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), UPSTREAM_MS);
   const body = {
     model: 'claude-haiku-4-5',
-    max_tokens: 8192,
-    system: compact ? COMPACT_RULES : MATERIALS_RULES,
+    max_tokens: MAX_TOKENS,
+    system: MATERIALS_RULES,
     tools: [SUBMIT_MODULES],
     tool_choice: { type: 'tool', name: 'submit_modules' },
     messages: [{
@@ -153,25 +150,30 @@ async function callAnthropic(key, { name, outcome, layer, atoms, compact }) {
         `Destination: ${name}`,
         `What done looks like: ${outcome}`,
         `Layer: ${layerName}${layerSub ? ' — ' + layerSub : ''}`,
-        `Write ${atoms.length} module${atoms.length === 1 ? '' : 's'}, in this order.`,
+        'Write exactly 1 module for this atom.',
         '',
         atoms.map(atomLine).join('\n\n'),
         '',
-        'Call submit_modules with the finished modules array.'
+        'Call submit_modules with a modules array of length 1.'
       ].join('\n')
     }]
   };
-  const r = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01'
-    },
-    body: JSON.stringify(body)
-  });
-  const data = await r.json();
-  return { ok: r.ok, status: r.status, data };
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify(body),
+      signal: ctrl.signal
+    });
+    const data = await r.json();
+    return { ok: r.ok, status: r.status, data };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function salvageFromResponse(data, expected) {
@@ -205,7 +207,7 @@ function cleanAtoms(raw) {
       };
     })
     .filter(Boolean)
-    .slice(0, 4);
+    .slice(0, MAX_ATOMS);
 }
 
 export default async function handler(req, res) {
@@ -224,6 +226,11 @@ export default async function handler(req, res) {
     res.status(400).json({ ok: false, error: 'NAME_REQUIRED' });
     return;
   }
+  const rawAtoms = Array.isArray(body.atoms) ? body.atoms : [];
+  if (rawAtoms.length > MAX_ATOMS) {
+    res.status(400).json({ ok: false, error: 'BATCH_TOO_BIG', detail: 'Send one atom per request.' });
+    return;
+  }
   const atoms = cleanAtoms(body.atoms);
   if (!atoms.length) {
     res.status(400).json({ ok: false, error: 'ATOMS_REQUIRED' });
@@ -234,23 +241,26 @@ export default async function handler(req, res) {
     ? { name: String(body.layer.name || '').slice(0, 80), sub: String(body.layer.sub || '').slice(0, 120) }
     : { name: '', sub: '' };
 
+  const empty = () => atoms.map(() => null);
   try {
-    const first = await callAnthropic(key, { name, outcome, layer, atoms, compact: false });
+    const first = await callAnthropic(key, { name, outcome, layer, atoms });
     if (!first.ok) {
       logMaterials('upstream', {
         status: first.status,
         stop_reason: first.data && first.data.stop_reason,
         usage: usageOf(first.data)
       });
-      res.status(502).json({
-        ok: false,
-        error: 'ENGINE_UPSTREAM',
-        detail: first.data && first.data.error && first.data.error.message
+      res.status(200).json({
+        ok: true,
+        modules: empty(),
+        via: 'upstream',
+        covered: 0,
+        expected: atoms.length
       });
       return;
     }
 
-    let result = salvageFromResponse(first.data, atoms.length);
+    const result = salvageFromResponse(first.data, atoms.length);
     logMaterials('pass1', {
       stop_reason: result.stopReason,
       usage: result.usage,
@@ -261,44 +271,22 @@ export default async function handler(req, res) {
       expected: atoms.length
     });
 
-    if (!result.modules) {
-      const retry = await callAnthropic(key, { name, outcome, layer, atoms, compact: true });
-      if (!retry.ok) {
-        logMaterials('retry_upstream', { status: retry.status, usage: usageOf(retry.data) });
-      } else {
-        result = salvageFromResponse(retry.data, atoms.length);
-        logMaterials('pass2', {
-          stop_reason: result.stopReason,
-          usage: result.usage,
-          textLen: result.textLen,
-          kind: result.payloadKind,
-          via: result.via,
-          covered: result.covered || 0,
-          expected: atoms.length
-        });
-      }
-    }
-
-    if (!result.modules) {
-      res.status(500).json({
-        ok: false,
-        error: 'ENGINE_PARSE',
-        detail: result.via || 'empty modules',
-        stop_reason: result.stopReason,
-        usage: result.usage
-      });
-      return;
-    }
-
     res.status(200).json({
       ok: true,
-      modules: result.modules,
+      modules: result.modules || empty(),
       via: result.via,
-      covered: result.covered,
+      covered: result.covered || 0,
       expected: atoms.length
     });
   } catch (e) {
-    logMaterials('throw', { detail: String(e && e.message) });
-    res.status(500).json({ ok: false, error: 'ENGINE_PARSE', detail: String(e && e.message) });
+    const aborted = e && (e.name === 'AbortError' || /abort/i.test(String(e && e.message)));
+    logMaterials(aborted ? 'timeout' : 'throw', { detail: String(e && e.message) });
+    res.status(200).json({
+      ok: true,
+      modules: empty(),
+      via: aborted ? 'timeout' : 'throw',
+      covered: 0,
+      expected: atoms.length
+    });
   }
 }
