@@ -1,5 +1,8 @@
 # Changelog
 
+## v13
+Modules ship at commission. The curriculum pass stays a compact skeleton. The materials pass writes one atom at a time: a short module, 2048 tokens, and the upstream call stops at 45 seconds so the function returns JSON instead of a Vercel 504. A timed-out atom is retried once. The rest of the track keeps going. Existing commissioned tracks keep their atoms and known-state. Opening one that has no modules starts the materials pass in place. It does not regenerate the curriculum, so progress keys stay put. Commissioned tracks open in the same shell as Creative Director. The module button is attached there when an atom already has a module. Creative Director and `substrate-cd-v5` are unchanged.
+
 ## v12
 Commission engine: structured tool_use, 8192 max tokens, JSON extract/repair/salvage so a truncated or messy first pass still populates layers instead of dying on ENGINE_PARSE. Client opens the generated track when a commission succeeds. Quote/stack overlap pad on commissioned cards stays.
 
